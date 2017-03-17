@@ -1,0 +1,418 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:head>  
+        <style type="text/css">
+            .fixed-size {
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .information-mssg {
+                color: blue;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .error-mssg {
+                color: red;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .success-mssg {
+                color: green;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+        </style>
+
+        <script type="text/javascript" src="/scripts/input_validator.js">
+        </script>
+    </h:head>  
+
+    <h:body>  
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="50" >
+                <p:panel>                     
+                    <table align="center">                         
+                        <tr>                             
+                            <td>                                 
+                                <p:graphicImage url="/images/copyright.jpg" height="30"/>                             
+                            </td>                             
+                            <td>                                 
+                                <p:outputLabel value="  S3-Systems #{menuManagerBean.getCurrentYear()} All Rights Reserved" styleClass="format" style="font-weight:bold;"/>                             
+                            </td>                         
+                        </tr>                     
+                    </table>                 
+                </p:panel>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="310" header="#{menuManagerBean.subsystemName}" collapsed="#{menuManagerBean.reportPanelCollapsed}" resizable="true" collapsible="true" effect="drop">
+                <ui:include src="/reports.xhtml"/>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="east" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+
+                <ui:include src="#{menuManagerBean.menuOfSubsystem}"/>
+
+
+                <h:form id="resultprocessform">
+                    <p:panel>
+                        <table>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="Student Result" styleClass="format" style="font-weight:bold;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="#{applicationMessageBean.message.messageText}" styleClass="#{applicationMessageBean.message.messageType}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </p:panel>
+
+                    <table border="0" align="left">
+                        <tr>
+                            <td valign="top">
+                                <table border="0" cellspacing="1" cellpadding="1">
+                                    <tr>
+                                        <td>
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        <table>
+                                                            <tr>
+                                                                <td nowrap="nowrap" width="25">
+                                                                    <div align="right">
+                                                                        <p:outputLabel escape="false" styleClass="format" value="Student Number"/>
+                                                                    </div>
+                                                                </td>
+                                                                <td nowrap="nowrap" width="40">
+                                                                    <div align="left">
+                                                                        <p:inputText id="studentNumberTxt" immediate="true" styleClass="format" value="#{academicScoresBean.studentNumber}"/>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <div align="right">
+                                                                        <p:outputLabel escape="false" styleClass="format" value="Course Title "/>
+                                                                    </div>
+                                                                </td>
+                                                                <td width="75%">
+                                                                    <div align="left">
+                                                                        <p:selectOneMenu id="courseCombo" immediate="true" styleClass="format" value="#{academicScoresBean.courseGrade.courseID}">
+                                                                            <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                                            <f:selectItems value="#{academicCourseBean.academicCourseItemList}"/>
+                                                                            <p:ajax update="courseCombo"/>
+                                                                        </p:selectOneMenu>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <div align="right">
+                                                                        <p:outputLabel escape="false" styleClass="format" value="Class/Level "/>
+                                                                    </div>
+                                                                </td>
+                                                                <td width="75%">
+                                                                    <div align="left">
+                                                                        <p:selectOneMenu id="academicLevelCombo" immediate="true" styleClass="format" value="#{academicScoresBean.courseGrade.academicLevel}">
+                                                                            <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                                            <f:selectItems value="#{academicLevelBean.academicLievelItemList}"/>
+                                                                            <p:ajax update="academicLevelCombo"/>
+                                                                        </p:selectOneMenu>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                <table border="0" cellspacing="1" cellpadding="1">
+                                    <tr>
+                                        <td>
+                                            <p:commandButton  value="Load" action="#{academicScoresBean.loadStudentGradeEntryList}" styleClass="button"/>
+                                        </td>
+                                        <td>
+                                            <p:commandButton  value="Clear" action="#{academicScoresBean.deleteGradeEntry}" styleClass="button"/>
+                                        </td>
+                                        <td>
+                                            <p:fieldset legend="Total Points" toggleable="true" toggleSpeed="500" style="margin-bottom:20px">
+                                                <table>
+                                                    <tr>
+                                                        <td>
+                                                            <p:inputText id="scorePointTxt" size="6" immediate="true" styleClass="format" value="#{academicScoresBean.studentScoreSummary.scorePointTotal}"/>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </p:fieldset>
+                                        </td>
+                                        <td>
+                                            <p:fieldset legend="Total Credit" toggleable="true" toggleSpeed="500" style="margin-bottom:20px">
+                                                <table>
+                                                    <tr>
+                                                        <td>
+                                                            <p:inputText id="totalCreditTxt" size="5" immediate="true" styleClass="format" value="#{academicScoresBean.studentScoreSummary.creditLoadTotal}"/>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </p:fieldset>
+                                        </td>
+                                        <td>
+                                            <p:fieldset legend="CGP" toggleable="true" toggleSpeed="500" style="margin-bottom:20px">
+                                                <table>
+                                                    <tr>
+                                                        <td>
+                                                            <p:inputText id="totalGradePointTxt" size="8" immediate="true" styleClass="format" value="#{academicScoresBean.studentScoreSummary.gradePointTotal}">
+                                                                <f:convertNumber maxFractionDigits="2"/>
+                                                            </p:inputText>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </p:fieldset>
+                                        </td>
+                                        <td>
+                                            <p:fieldset legend="CGPA" toggleable="true" toggleSpeed="500" style="margin-bottom:20px">
+                                                <table>
+                                                    <tr>
+                                                        <td>
+                                                            <p:inputText id="cgpaScoreTxt" size="4" immediate="true" styleClass="format" value="#{academicScoresBean.studentScoreSummary.gradePointAverage}">
+                                                                <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                                                            </p:inputText>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </p:fieldset>
+                                        </td>
+                                        <td>
+                                            <p:fieldset legend="Settings" toggleable="true" toggleSpeed="500" style="margin-bottom:20px">
+                                                <table>
+                                                    <tr>
+                                                        <td>
+                                                            <p:selectOneMenu id="reportFormatCombo" immediate="true" valueChangeListener="#{ulticoreReportBean.reportFormatSelected}" value="#{ulticoreReportBean.reportFormat}">
+                                                                <f:selectItem itemLabel="PDF" itemValue="PDF"/>
+                                                                <f:selectItem itemLabel="MS Excel" itemValue="XLS"/>
+                                                                <f:selectItem itemLabel="HTML" itemValue="HTML"/>
+                                                                <f:selectItem itemLabel="MS Word" itemValue="RTF"/>
+                                                                <p:ajax update="reportFormatCombo"/>
+                                                            </p:selectOneMenu>
+                                                        </td>
+                                                        <td>
+                                                            <p:selectOneMenu id="reportBodyTypeCombo" immediate="true" valueChangeListener="#{ulticoreReportBean.reportBodyTypeSelected}" value="#{ulticoreReportBean.reportBodyType}">
+                                                                <f:selectItem itemLabel="PLANE TABLE (INTUITIVE)" itemValue="INTUITIVE"/>
+                                                                <f:selectItem itemLabel="TEMPLATE BASED" itemValue="TEMPLATE"/>
+                                                                <p:ajax update="reportBodyTypeCombo"/>
+                                                            </p:selectOneMenu>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </p:fieldset>
+                                        </td>
+                                        <td>
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        <h:outputLink id="printReportLink" target="blank" value="#{outboundPaymentBean.contextRoot}/ReportServlet?ReportType=TABULAR&amp;ReportFormat=PDF">
+                                                            <p:outputLabel id="printReport" escape="false" value="Print Report"/>
+                                                        </h:outputLink>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="99%" valign="top">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <p:dataTable scrollable="true" id="dataTable" widgetVar="courseGradeTable" value="#{academicScoresBean.studentScoreSummary.studentSessionScoreList}" var="studentSessionScore" paginator="true" rows="10" >
+                                                <f:facet name="header">
+                                                    <p:outputLabel value="Course Grade Table"/>
+                                                </f:facet>
+                                                
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="Session"/>
+                                                    </f:facet>
+                                                    <p:outputLabel id="acadaSessionCol" value="#{studentSessionScore.sessionPeriod}"/>
+                                                </p:column>
+                                                
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="Session Course Scores"/>
+                                                    </f:facet>
+                                                    
+                                                    <p:dataTable scrollable="true" id="dataTable" widgetVar="sessionScoreBQID" value="#{studentSessionScore.studentSemesterScoreBQList}" var="studentSemesterScores" paginator="true" rows="10" >
+                                                        <p:column>
+                                                            <f:facet name="header">
+                                                                <p:outputLabel escape="false" value="Semester"/>
+                                                            </f:facet>
+                                                            <p:outputLabel id="acadaSemesterCol" value="#{studentSemesterScores.semesterTier}"/>
+                                                        </p:column>
+                                                        
+                                                        <p:column>
+                                                            <f:facet name="header">
+                                                                <p:outputLabel escape="false" value="Semester Course Scores"/>
+                                                            </f:facet>
+                                                            
+                                                            <p:dataTable scrollable="true" id="dataTable" widgetVar="semesterScoreBQID" value="#{studentSemesterScores.studentScoreReportList}" var="grade" paginator="true" rows="10" >
+                                                                <p:column>
+                                                                    <f:facet name="header">
+                                                                        <p:outputLabel escape="false" value="Course Code"/>
+                                                                    </f:facet>
+                                                                    <p:outputLabel id="courseCodeCol" value="#{grade.courseCode}"/>
+                                                                </p:column>
+                                                                
+                                                                <p:column>
+                                                                    <f:facet name="header">
+                                                                        <p:outputLabel escape="false" value="Course Title"/>
+                                                                    </f:facet>
+                                                                    <p:outputLabel id="courseTitleCol" value="#{grade.courseTitle}"/>
+                                                                </p:column>
+                                                                
+                                                                <p:column sortBy="subjectScoreCol">
+                                                                    <f:facet name="header">
+                                                                        <p:outputLabel escape="false" value="Subject Score"/>
+                                                                    </f:facet>
+                                                                    <p:outputLabel id="subjectScoreCol" escape="true" value="#{grade.courseScore}"/>
+                                                                </p:column>
+                                                                
+                                                                <p:column>
+                                                                    <f:facet name="header">
+                                                                        <p:outputLabel escape="false" value="Grade"/>
+                                                                    </f:facet>
+                                                                    <p:outputLabel id="gradeCol" value="#{grade.courseGrade}"/>
+                                                                </p:column>
+                                                                
+                                                                <p:column>
+                                                                    <f:facet name="header">
+                                                                        <p:outputLabel escape="false" value="Score Point"/>
+                                                                    </f:facet>
+                                                                    <p:outputLabel id="scorePointCol" value="#{grade.scorePoint}"/>
+                                                                </p:column>
+                                                                
+                                                                <p:column>
+                                                                    <f:facet name="header">
+                                                                        <p:outputLabel escape="false" value="Credit Load"/>
+                                                                    </f:facet>
+                                                                    <p:outputLabel id="creditLoadCol" value="#{grade.creditLoad}"/>
+                                                                </p:column>
+                                                                
+                                                                <p:column>
+                                                                    <f:facet name="header">
+                                                                        <p:outputLabel escape="false" value="Grade Point"/>
+                                                                    </f:facet>
+                                                                    <p:outputLabel id="gradePointCol" value="#{grade.gradePoint}"/>
+                                                                </p:column>
+                                                                
+                                                                <p:column>
+                                                                    <f:facet name="header">
+                                                                        <p:outputLabel escape="false" value="Position"/>
+                                                                    </f:facet>
+                                                                    <p:outputLabel id="positionTierCol" value="#{grade.classPosition}"/>
+                                                                </p:column>
+                                                            </p:dataTable>
+                                                        </p:column>
+                                                        <p:column>
+                                                            <f:facet name="header">
+                                                                <p:outputLabel escape="false" value="Semester Score Point"/>
+                                                            </f:facet>
+                                                            <p:outputLabel id="semScorePointCol" value="#{studentSemesterScores.scorePointTotal}"/>
+                                                        </p:column>
+                                                        
+                                                        <p:column>
+                                                            <f:facet name="header">
+                                                                <p:outputLabel escape="false" value="Semester Credit"/>
+                                                            </f:facet>
+                                                            <p:outputLabel id="semCreditCol" value="#{studentSemesterScores.creditLoadTotal}"/>
+                                                        </p:column>
+                                                        
+                                                        <p:column>
+                                                            <f:facet name="header">
+                                                                <p:outputLabel escape="false" value="Semester GP"/>
+                                                            </f:facet>
+                                                            <p:outputLabel id="semGradePointCol" value="#{studentSemesterScores.gradePointTotal}"/>
+                                                        </p:column>
+                                                        
+                                                        <p:column>
+                                                            <f:facet name="header">
+                                                                <p:outputLabel escape="false" value="Semester GPA"/>
+                                                            </f:facet>
+                                                            
+                                                            <p:outputLabel id="semGradePointAvgCol" value="#{studentSemesterScores.gradePointAverage}">
+                                                                <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                                                            </p:outputLabel>
+                                                        </p:column>
+                                                    </p:dataTable>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="Session Score Point"/>
+                                                    </f:facet>
+                                                    
+                                                    <p:outputLabel id="sessScorePointCol" value="#{studentSessionScore.scorePointTotal}"/>
+                                                </p:column>
+                                                
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="Session Credit"/>
+                                                    </f:facet>
+                                                    <p:outputLabel id="sessCreditCol" value="#{studentSessionScore.creditLoadTotal}"/>
+                                                </p:column>
+                                                
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="Session GP"/>
+                                                    </f:facet>
+                                                    <p:outputLabel id="sessGradePointCol" value="#{studentSessionScore.gradePointTotal}"/>
+                                                </p:column>
+                                                
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="Session GPA"/>
+                                                    </f:facet>
+                                                    
+                                                    <p:outputLabel id="sessGradePointAvgCol" value="#{studentSessionScore.gradePointAverage}">
+                                                        <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                                                    </p:outputLabel>
+                                                </p:column>
+                                            </p:dataTable>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+
+            </p:layoutUnit>
+        </p:layout>
+    </h:body> 
+
+</html>

@@ -1,0 +1,145 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+
+    <h:head>
+        <style type="text/css"> 
+            .fixed-size {
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .information-mssg {
+                color: blue;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .error-mssg {
+                color: red;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .success-mssg {
+                color: green;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+        </style>
+
+        <script type="text/javascript" src="/scripts/input_validator.js">
+        </script>
+    </h:head>
+
+    <h:body>
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="50">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="310" header="#{menuManagerBean.subsystemName}" collapsed="#{menuManagerBean.reportPanelCollapsed}" resizable="true" collapsible="true" effect="drop">
+                <ui:include src="/reports.xhtml"/>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="east" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+
+                <ui:include src="#{menuManagerBean.menuOfSubsystem}"/>
+
+                <h:form id="userAccountForm">
+                    <p:panel>
+                        <table>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="Logged In User Accounts" styleClass="format" style="font-weight:bold;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="#{applicationMessageBean.message.messageText}" styleClass="#{applicationMessageBean.message.messageType}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </p:panel>
+                    
+                    <table>
+                        <tr>
+                            <td>
+                                <div align="center">
+                                    <p:panelGrid columns="1">
+                                        <p:dataTable id="userAcctTable" styleClass="fixed-size" value="#{applicationManagerBean.userAccountList}" var="userRecord" paginator="true" rows="10">
+                                            <f:facet name="header">
+                                                <h:outputText value="User Account Table"/>
+                                            </f:facet>
+
+                                            <p:column width="5%">
+                                                <f:facet name="header">
+                                                    <h:outputText escape="false" value="Select"/>
+                                                </f:facet>
+                                                <p:selectBooleanCheckbox value="#{userRecord.selected}" valueChangeListener="#{userManagerBean.userAccountSelected}">
+                                                    <p:ajax update=":userAccountForm"/>
+                                                </p:selectBooleanCheckbox>
+                                            </p:column>
+
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText escape="false" value="User Name"/>
+                                                </f:facet>
+                                                <h:outputText value="#{userRecord.userName}"/>
+                                            </p:column>
+
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText escape="false" value="Email Address"/>
+                                                </f:facet>
+                                                <h:outputText value="#{userRecord.emailAddress}"/>
+                                            </p:column>
+
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText escape="false" value="Role"/>
+                                                </f:facet>
+                                                <h:outputText value="#{userRecord.role.roleName}"/>
+                                            </p:column>
+
+                                            <p:column  width="10%">
+                                                <f:facet name="header">
+                                                    <h:outputText escape="false" value="Activated"/>
+                                                </f:facet>
+                                                <p:selectBooleanCheckbox value="#{userRecord.activated}" disabled="true"/>
+                                            </p:column>
+
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText escape="false" value="Auth on AD"/>
+                                                </f:facet>
+                                                <p:selectBooleanCheckbox value="#{userRecord.alternativeLoginEnabled}" disabled="true"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </p:panelGrid>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+
+            </p:layoutUnit>
+
+        </p:layout>
+
+    </h:body>
+
+</html>

@@ -1,0 +1,294 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:head>  
+        <style type="text/css">
+            .fixed-size {
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .information-mssg {
+                color: blue;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .error-mssg {
+                color: red;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .success-mssg {
+                color: green;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+        </style>
+
+        <script type="text/javascript" src="/scripts/input_validator.js">
+        </script>
+    </h:head>  
+
+    <h:body>  
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="50" >
+                <p:panel>                     
+                    <table align="center">                         
+                        <tr>                             
+                            <td>                                 
+                                <p:graphicImage url="/images/copyright.jpg" height="30"/>                             
+                            </td>                             
+                            <td>                                 
+                                <p:outputLabel value="  S3-Systems #{menuManagerBean.getCurrentYear()} All Rights Reserved" styleClass="format" style="font-weight:bold;"/>                             
+                            </td>                         
+                        </tr>                     
+                    </table>                 
+                </p:panel>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="310" header="#{menuManagerBean.subsystemName}" collapsed="#{menuManagerBean.reportPanelCollapsed}" resizable="true" collapsible="true" effect="drop">
+                <ui:include src="/reports.xhtml"/>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="east" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+
+                <ui:include src="#{menuManagerBean.menuOfSubsystem}"/>
+
+                <h:form id="examPaperForm">
+                    <p:panel>
+                        <table>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="Exam Paper" styleClass="format" style="font-weight:bold;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="#{applicationMessageBean.message.messageText}" styleClass="#{applicationMessageBean.message.messageType}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </p:panel>
+
+                    <table border="0" align="left">
+                        <tr>
+                            <td width="99%" valign="top">
+                                <table  width="99%" border="0" cellspacing="1" cellpadding="1">
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Exam Paper Number"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:inputText id="examPaperNumberTxt" immediate="true" styleClass="format" value="#{examPaperBean.examPaper.examPaperNumber}"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Exam Paper Title"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:inputText id="examPaperTitleTxt" immediate="true" styleClass="format" value="#{examPaperBean.examPaper.examPaperTitle}"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Paper Date"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:calendar id="paperDateTxt" immediate="true" pattern="dd/MM/yyyy" value="#{examPaperBean.examPaper.paperDateTO}"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Paper Start Time"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:panelGrid columns="3">
+                                                    <p:inputText id="paperStartTimeTxt" immediate="true" styleClass="format" value="#{examPaperBean.examPaper.paperStartTime}"/>
+                                                    <p:commandButton id="paperStartTimeBtn" value="Paper Start Time"/>
+                                                    <p:overlayPanel for="paperStartTimeBtn" style="height:120px" showCloseIcon="true" dismissable="false">
+                                                        <ui:include src="paperstarttime.xhtml"/>
+                                                    </p:overlayPanel>
+                                                </p:panelGrid>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Start Time is Variable"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:selectBooleanCheckbox id="variableStartTimeChkBx" immediate="true" value="#{examPaperBean.examPaper.variableStartTime}"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Paper Duration (In Minutes)"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:inputText id="paperDurationInMinutesTxt" immediate="true" styleClass="format" value="#{examPaperBean.examPaper.paperDurationInMinutes}"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Subject Of Study"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:selectOneMenu id="subjectTitleCombo" immediate="true" styleClass="format" value="#{examPaperBean.examPaper.subjectID}" valueChangeListener="#{examPaperBean.subjectItemSelected}">
+                                                    <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                    <f:selectItems value="#{subjectOfStudyBean.subjectOfStudyItemList}"/>
+                                                    <p:ajax update="courseTitleCombo"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Course Title"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:selectOneMenu id="courseTitleCombo" immediate="true" styleClass="format" value="#{examPaperBean.examPaper.courseID}" valueChangeListener="#{examPaperBean.courseItemSelected}">
+                                                    <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                    <f:selectItems value="#{academicCourseBean.selectedAcademicCourseItemList}"/>
+                                                    <p:ajax update="courseTitleCombo"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p:panelGrid columns="2">
+                                    <p:commandButton ajax="false" value="Add" action="#{examPaperBean.addExamPaper}"/>
+                                    <p:commandButton ajax="false" value="Save/Update" action="#{examPaperBean.saveExamPaperList}"/>
+                                </p:panelGrid>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p:dataTable scrollable="true" id="dataTable" widgetVar="examPaperList" value="#{examPaperBean.examPaperList}" var="examPaperVar" paginator="true" rows="10" >
+                                    <f:facet name="header">
+                                        <p:outputLabel value="Data Table"/>
+                                    </f:facet>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="Select"/>
+                                        </f:facet>
+                                        <p:selectBooleanCheckbox id="examPaperChkBx" immediate="true" value="#{examPaperVar.selected}" valueChangeListener="#{examPaperBean.examPaperSelected}">
+                                            <p:ajax update="examPaperForm"/>
+                                        </p:selectBooleanCheckbox>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="examPaperNumber"/>
+                                        </f:facet>
+                                        <p:outputLabel id="examPaperNumberTabCol" value="#{examPaperVar.examPaperNumber}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="examPaperTitle"/>
+                                        </f:facet>
+                                        <p:outputLabel id="examPaperTitleTabCol" value="#{examPaperVar.examPaperTitle}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="paperDate"/>
+                                        </f:facet>
+                                        <p:outputLabel id="paperDateTabCol" value="#{examPaperVar.paperDateTO}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="paperStartTime"/>
+                                        </f:facet>
+                                        <p:outputLabel id="paperStartTimeTabCol" value="#{examPaperVar.paperStartTime}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="variableStartTime"/>
+                                        </f:facet>
+                                        <p:selectBooleanCheckbox id="variableStartTimeTabChkBx" disabled="true" value="#{examPaperVar.variableStartTime}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="paperDurationInMinutes"/>
+                                        </f:facet>
+                                        <p:outputLabel id="paperDurationInMinutesTabCol" value="#{examPaperVar.paperDurationInMinutes}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="subjectTitle"/>
+                                        </f:facet>
+                                        <p:outputLabel id="subjectTitleTabCol" value="#{examPaperVar.subjectTitle}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="courseTitle"/>
+                                        </f:facet>
+                                        <p:outputLabel id="courseTitleTabCol" value="#{examPaperVar.courseTitle}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+
+            </p:layoutUnit>
+        </p:layout>
+    </h:body> 
+
+</html>

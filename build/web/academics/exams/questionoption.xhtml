@@ -1,0 +1,107 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <table border="0" align="left">
+        <tr>
+            <td>
+                <div id="scrollDiv" style="height:375px;overflow:scroll">
+                    <table>
+                        <tr>
+                            <td width="99%" valign="top">
+                                <table  width="99%" border="0" cellspacing="1" cellpadding="1">
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Option Text"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:inputTextarea id="optionTextTxt" immediate="true" value="#{examQuestionBean.questionOption.optionText}" rows="2" cols="50"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Option Letter"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:inputText id="optionLetterTxt" immediate="true" styleClass="format" value="#{examQuestionBean.questionOption.optionLetter}"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Answer"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:selectBooleanCheckbox id="answerOptionChkBx" immediate="true" value="#{examQuestionBean.questionOption.answer}"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p:panelGrid columns="1">
+                                    <p:commandButton ajax="false" update="questionOptionForm" value="Add" action="#{examQuestionBean.addQuestionOption}" styleClass="button"/>
+                                </p:panelGrid>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p:panelGrid columns="1">
+                                    <p:dataTable scrollable="true" id="questionOptionList" value="#{examQuestionBean.examQuestion.optionList}" var="questionOptionVar" paginator="true" rows="4" >
+                                        <f:facet name="header">
+                                            <p:outputLabel value="Question Option Table"/>
+                                        </f:facet>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <p:outputLabel escape="false" value="Select"/>
+                                            </f:facet>
+                                            <p:selectBooleanCheckbox id="questionOptionChkBx" immediate="true" value="#{questionOptionVar.selected}" valueChangeListener="#{examQuestionBean.questionOptionSelected}">
+                                                <p:ajax update="questionOptionForm"/>
+                                            </p:selectBooleanCheckbox>
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <p:outputLabel escape="false" value="Option Text"/>
+                                            </f:facet>
+                                            <p:outputLabel id="optionTextTabCol" value="#{questionOptionVar.optionText}"/>
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <p:outputLabel escape="false" value="Option Letter"/>
+                                            </f:facet>
+                                            <p:outputLabel id="optionLetterTabCol" value="#{questionOptionVar.optionLetter}"/>
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <p:outputLabel escape="false" value="Answer"/>
+                                            </f:facet>
+                                            <p:selectBooleanCheckbox id="answerOptionTabChkBx" immediate="true" value="#{questionOptionVar.answer}"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:panelGrid>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+</html>

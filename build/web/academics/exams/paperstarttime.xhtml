@@ -1,0 +1,55 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <table width="99%" border="0" cellspacing="1" cellpadding="1">
+        <tr>
+            <td nowrap="nowrap">
+                <div align="right">
+                    <p:outputLabel escape="false" styleClass="format" value="Start Time (Hr): "/>
+                </div>
+            </td>
+            <td nowrap="nowrap">
+                <p:selectOneMenu id="startTimeHrTxt" immediate="true" valueChangeListener="#{examPaperBean.paperStartHourSelected}" value="#{examPaperBean.examPaper.paperStartTimeHour}">
+                    <f:selectItem itemValue="" itemLabel="--Select One--"/>
+                    <f:selectItems value="#{examPaperBean.hourItemList}"/>
+                    <p:ajax update="paperStartTimeTxt"/>
+                </p:selectOneMenu>
+                <p:message for="startTimeHrTxt"/>
+            </td>
+        </tr>
+        <tr>
+            <td nowrap="nowrap">
+                <div align="right">
+                    <p:outputLabel escape="false" styleClass="format" value="Start Time (Min): "/>
+                </div>
+            </td>
+            <td nowrap="nowrap">
+                <p:selectOneMenu id="startTimeMinTxt" immediate="true" value="#{examPaperBean.examPaper.paperStartTimeMinute}" valueChangeListener="#{examPaperBean.paperStartMinuteSelected}">
+                    <f:selectItem itemValue="" itemLabel="--Select One--"/>
+                    <f:selectItems value="#{examPaperBean.minuteItemList}"/>
+                    <p:ajax update="paperStartTimeTxt"/>
+                </p:selectOneMenu>
+                <p:message for="startTimeMinTxt"/>
+            </td>
+        </tr>
+        <tr>
+            <td nowrap="nowrap">
+                <div align="right">
+                    <p:outputLabel escape="false" styleClass="format" value="Meridiem: "/>
+                </div>
+            </td>
+            <td nowrap="nowrap">
+                <p:selectOneMenu id="startTimeMeridiemTxt" immediate="true" value="#{examPaperBean.examPaper.paperStartTimeMeridiem}" valueChangeListener="#{examPaperBean.paperStartMeridiemSelected}">
+                    <f:selectItem itemValue="" itemLabel="--Select One--"/>
+                    <f:selectItems value="#{examPaperBean.meridiemItemList}"/>
+                    <p:ajax update="paperStartTimeTxt"/>
+                </p:selectOneMenu>
+                <p:message for="startTimeMeridiemTxt"/>
+            </td>
+        </tr>
+    </table>
+
+</html>

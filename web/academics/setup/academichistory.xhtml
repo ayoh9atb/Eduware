@@ -1,0 +1,350 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:head>  
+        <style type="text/css">
+            .fixed-size {
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .information-mssg {
+                color: blue;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .error-mssg {
+                color: red;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .success-mssg {
+                color: green;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+        </style>
+
+        <script type="text/javascript" src="/scripts/input_validator.js">
+        </script>
+    </h:head>  
+
+    <h:body>  
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="50" >
+                <p:panel>                     
+                    <table align="center">                         
+                        <tr>                             
+                            <td>                                 
+                                <p:graphicImage url="/images/copyright.jpg" height="30"/>                             
+                            </td>                             
+                            <td>                                 
+                                <p:outputLabel value="  S3-Systems #{menuManagerBean.getCurrentYear()} All Rights Reserved" styleClass="format" style="font-weight:bold;"/>                             
+                            </td>                         
+                        </tr>                     
+                    </table>                 
+                </p:panel>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="310" header="#{menuManagerBean.subsystemName}" collapsed="#{menuManagerBean.reportPanelCollapsed}" resizable="true" collapsible="true" effect="drop">
+                <ui:include src="/reports.xhtml"/>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="east" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+
+                <ui:include src="#{menuManagerBean.menuOfSubsystem}"/>
+
+
+                <h:form id="academicHistoryForm">
+                    <p:panel>
+                        <table>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="Academic History" styleClass="format" style="font-weight:bold;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="#{applicationMessageBean.message.messageText}" styleClass="#{applicationMessageBean.message.messageType}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </p:panel>
+
+                    <table border="0" align="left">
+                        <tr>
+                            <td width="99%" valign="top">
+                                <table border="0" cellspacing="1" cellpadding="1">
+                                    <tr>
+                                        <td>
+                                            <p:fieldset legend="School Information" toggleable="true" toggleSpeed="500" style="margin-bottom:20px">
+                                                <table border="0" cellspacing="1" cellpadding="1">
+                                                    <tr>
+                                                        <td nowrap="nowrap" width="25">
+                                                            <div align="right">
+                                                                <p:outputLabel escape="false" styleClass="format" value="School Name"/>
+                                                            </div>
+                                                        </td>
+                                                        <td width="75">
+                                                            <div align="left">
+                                                                <p:selectOneMenu id="schoolCombo" immediate="true" valueChangeListener="#{academicHistoryBean.instituteMenuSelected}" value="#{academicHistoryBean.academicHistory.schoolID}">
+                                                                    <f:selectItem itemLabel="--Select One--" itemValue="-1"/>
+                                                                    <f:selectItems value="#{academicInstituteBean.selectedInstituteItemList}"/>
+                                                                    <p:ajax update="schoolCombo,schoolCountryDescCombo,stateDescCombo,stateDescCombo,cityDescCombo,schoolStreetAddressTxt"/>
+                                                                </p:selectOneMenu>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td nowrap="nowrap" width="25">
+                                                            <div align="right">
+                                                                <p:outputLabel escape="false" styleClass="format" value="Country"/>
+                                                            </div>
+                                                        </td>
+                                                        <td width="75">
+                                                            <div align="left">
+                                                                <p:selectOneMenu id="schoolCountryDescCombo" immediate="true" styleClass="format" value="#{academicHistoryBean.academicHistory.schoolCountryID}" valueChangeListener="#{academicHistoryBean.schoolCountryItemSelected}">
+                                                                    <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                                    <f:selectItems value="#{addressManagerBean.countryItemList}"/>
+                                                                    <p:ajax update="stateDescCombo"/>
+                                                                </p:selectOneMenu>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td nowrap="nowrap" width="25">
+                                                            <div align="right">
+                                                                <p:outputLabel escape="false" styleClass="format" value="State"/>
+                                                            </div>
+                                                        </td>
+                                                        <td width="75">
+                                                            <div align="left">
+                                                                <p:selectOneMenu id="stateDescCombo" immediate="true" styleClass="format" value="#{academicHistoryBean.academicHistory.stateCode}" valueChangeListener="#{academicHistoryBean.schoolStateItemSelected}">
+                                                                    <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                                    <f:selectItems value="#{addressManagerBean.selectedStateItemList}"/>
+                                                                    <p:ajax update="cityDescCombo"/>
+                                                                </p:selectOneMenu>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td nowrap="nowrap" width="25">
+                                                            <div align="right">
+                                                                <p:outputLabel escape="false" styleClass="format" value="City"/>
+                                                            </div>
+                                                        </td>
+                                                        <td width="75">
+                                                            <div align="left">
+                                                                <p:selectOneMenu id="cityDescCombo" immediate="true" styleClass="format" value="#{academicHistoryBean.academicHistory.cityID}">
+                                                                    <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                                    <f:selectItems value="#{addressManagerBean.selectedCityItemList}"/>
+                                                                </p:selectOneMenu>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td nowrap="nowrap" width="25">
+                                                            <div align="right">
+                                                                <p:outputLabel escape="false" styleClass="format" value="Street Address"/>
+                                                            </div>
+                                                        </td>
+                                                        <td width="75">
+                                                            <div align="left">
+                                                                <p:inputTextarea id="schoolStreetAddressTxt" immediate="true" value="#{academicHistoryBean.academicHistory.schoolStreetAddress}" rows="2" cols="50"/>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </p:fieldset>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <table border="0" cellspacing="1" cellpadding="1">
+                                                <tr>
+                                                    <td nowrap="nowrap" width="25">
+                                                        <div align="right">
+                                                            <p:outputLabel escape="false" styleClass="format" value="Admission Date"/>
+                                                        </div>
+                                                    </td>
+                                                    <td width="75">
+                                                        <div align="left">
+                                                            <p:calendar id="admissionDateTxt" immediate="true" pattern="dd/MM/yyyy" value="#{academicHistoryBean.academicHistory.admissionDateTO}"/>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td nowrap="nowrap" width="25">
+                                                        <div align="right">
+                                                            <p:outputLabel escape="false" styleClass="format" value="Completion Date"/>
+                                                        </div>
+                                                    </td>
+                                                    <td width="75">
+                                                        <div align="left">
+                                                            <p:calendar id="completionDateTxt" immediate="true" pattern="dd/MM/yyyy" value="#{academicHistoryBean.academicHistory.completionDateTO}"/>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td nowrap="nowrap" width="25">
+                                                        <div align="right">
+                                                            <p:outputLabel escape="false" styleClass="format" value="School Tier Type"/>
+                                                        </div>
+                                                    </td>
+                                                    <td width="75">
+                                                        <div align="left">
+                                                            <p:selectOneMenu id="schoolTierTypeDescCombo" immediate="true" styleClass="format" value="#{academicHistoryBean.academicHistory.schoolTierTypeID}">
+                                                                <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                                <f:selectItems value="#{schoolTierTypeBean.schoolTierTypeItemList}"/>
+                                                            </p:selectOneMenu>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td nowrap="nowrap" width="25">
+                                                        <div align="right">
+                                                            <p:outputLabel escape="false" styleClass="format" value="Certificate Type"/>
+                                                        </div>
+                                                    </td>
+                                                    <td width="75">
+                                                        <div align="left">
+                                                            <p:selectOneMenu id="qualificationTypeDescCombo" immediate="true" styleClass="format" value="#{academicHistoryBean.academicHistory.certificateID}">
+                                                                <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                                <f:selectItems value="#{academicQualificationBean.qualificationItemList}"/>
+                                                                <p:ajax update="academicHistoryForm"/>
+                                                            </p:selectOneMenu>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <p:panelGrid columns="5">
+                                                <p:outputLabel escape="false" styleClass="format" value="Student Number"/>
+                                                <p:inputText id="studentNumberTxt" immediate="true" styleClass="format" value="#{academicHistoryBean.academicHistory.studentNumber}"/>
+                                                
+                                                <p:commandButton ajax="false" value="Search" action="#{academicHistoryBean.searchAcademicHistoryList}" styleClass="button"/>
+                                                <p:commandButton ajax="false" value="Add" action="#{academicHistoryBean.addAcademicHistory}" styleClass="button"/>
+                                                <p:commandButton ajax="false" value="Save" action="#{academicHistoryBean.saveAcademicHistoryList}" styleClass="button"/>
+                                            </p:panelGrid>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <p:dataTable scrollable="true" id="dataTable" widgetVar="academicHistoryList" value="#{academicHistoryBean.academicHistoryList}" var="academicHistoryVar" paginator="true" rows="10" >
+                                                <f:facet name="header">
+                                                    <p:outputLabel value="Academic History Table"/>
+                                                </f:facet>
+
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="Select"/>
+                                                    </f:facet>
+                                                    <p:selectBooleanCheckbox id="academicHistoryChkBx" immediate="true" value="#{academicHistoryVar.selected}" valueChangeListener="#{academicHistoryBean.academicHistorySelected}">
+                                                        <p:ajax update=":academicHistoryForm"/>
+                                                    </p:selectBooleanCheckbox>
+                                                </p:column>
+
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="Student Number"/>
+                                                    </f:facet>
+                                                    <p:outputLabel id="studentNoTabCol" value="#{academicHistoryVar.studentNumber}"/>
+                                                </p:column>
+
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="School Name"/>
+                                                    </f:facet>
+                                                    <p:outputLabel id="schoolNameTabCol" value="#{academicHistoryVar.schoolName}"/>
+                                                </p:column>
+
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="Country"/>
+                                                    </f:facet>
+                                                    <p:outputLabel id="schoolCountryDescTabCol" value="#{academicHistoryVar.schoolCountryDesc}"/>
+                                                </p:column>
+
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="State"/>
+                                                    </f:facet>
+                                                    <p:outputLabel id="stateDescTabCol" value="#{academicHistoryVar.stateDesc}"/>
+                                                </p:column>
+
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="City"/>
+                                                    </f:facet>
+                                                    <p:outputLabel id="cityDescTabCol" value="#{academicHistoryVar.cityDesc}"/>
+                                                </p:column>
+
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="School Street Address"/>
+                                                    </f:facet>
+                                                    <p:outputLabel id="schoolStreetAddressTabCol" value="#{academicHistoryVar.schoolStreetAddress}"/>
+                                                </p:column>
+
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="Admission Date"/>
+                                                    </f:facet>
+                                                    <p:outputLabel id="admissionDateTabCol" value="#{academicHistoryVar.admissionDate}"/>
+                                                </p:column>
+
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="Completion Date"/>
+                                                    </f:facet>
+                                                    <p:outputLabel id="completionDateTabCol" value="#{academicHistoryVar.completionDate}"/>
+                                                </p:column>
+
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="School Tier Type"/>
+                                                    </f:facet>
+                                                    <p:outputLabel id="schoolTierTypeDescTabCol" value="#{academicHistoryVar.schoolTierTypeDesc}"/>
+                                                </p:column>
+
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="Certificate"/>
+                                                    </f:facet>
+                                                    <p:outputLabel id="certificateDescTabCol" value="#{academicHistoryVar.certificateDesc}"/>
+                                                </p:column>
+                                            </p:dataTable>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+
+            </p:layoutUnit>
+        </p:layout>
+    </h:body> 
+
+</html>

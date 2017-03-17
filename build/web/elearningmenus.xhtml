@@ -1,0 +1,121 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"   
+      xmlns:p="http://primefaces.org/ui"> 
+<f:view contentType="text/html" locale="#{userManagerBean.locale}" >
+    <p:toolbar styleClass="">
+        <f:facet name="left">
+            <p:graphicImage rendered="#{!menuManagerBean.multiTenancyEnabled}" value="/images/s3_logo.png" height="100"/>
+            <p:graphicImage rendered="#{menuManagerBean.multiTenancyEnabled}" value="#{userManagerBean.applicationLogo}" height="100"/>
+        </f:facet>
+
+        <f:facet name="left">
+            <h:form>
+                <p:megaMenu>
+                    <p:submenu label="#{menu.SETUP}" icon="ui-icon-check">
+                        <p:column>
+                            <p:submenu label="#{menu.ACADEMIC_SETUP}">
+                                <p:menuitem value="#{menu.SCHOOLS_AND_INSTITUTIONS}" url="/academics/setup/institutesetup.jsf" />
+                                <p:menuitem value="#{menu.FACULTIES_COLLEGES}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['FACULTY_SETP_MENU_ITEM'])}" ajax="false" action="#{menuManagerBean.gotoFaculty}"/>
+                                <p:menuitem value="#{menu.ACADEMIC_DEPARTMENTS}" url="/academics/setup/acadadepartment.jsf" />
+                                <p:menuitem value="#{menu.SCHOOL_TIERS}" url="/academics/setup/schooltiertype.jsf" />
+                                <p:menuitem value="#{menu.ACADEMIC_COURSES}" url="/academics/setup/acadacourse.jsf" />
+                                <p:menuitem value="#{menu.SUBJECTS_OF_STUDY}" url="/academics/setup/subjectofstudy.jsf" />
+                                <p:menuitem value="#{menu.ACADEMIC_SESSIONS}" url="/academics/setup/academicsession.jsf" />
+                                <p:menuitem value="#{menu.ACADEMIC_SEMESTER}" url="/academics/setup/academicsemester.jsf" />
+                                <p:menuitem value="#{menu.TEST_TYPES}" url="/academics/setup/testtype.jsf" />
+                                <p:menuitem value="#{menu.ACADEMIC_TIMETABLE}" url="/academics/setup/academictimetable.jsf" />
+                                <p:menuitem value="#{menu.ACADEMIC_CLASS_OF_DEGREE}" url="/academics/setup/classofdegree.jsf" />
+                                <p:menuitem value="#{menu.GRADING_MNU}" url="/academics/setup/academicgrade.jsf" />
+                            </p:submenu>
+                        </p:column>
+                    </p:submenu>
+
+                    <p:submenu label="#{menu.EXAMINATIONS_SETUP}" icon="ui-icon-document">
+
+                        <p:column>
+                            <p:submenu label="#{menu.EXAMINATIONS_SETUP}">
+                                <p:menuitem value="#{menu.EXAM_PAPER}" url="/academics/exams/exampaper.jsf" />
+                                <p:menuitem value="#{menu.EXAMINATION_QUESTIONS}" url="/academics/exams/examquestion.jsf" />
+                                <p:menuitem value="#{menu.STUDENT_OBJ_SUBMISSIONS}" url="/academics/exams/studentselectedoption.jsf" />
+                                <p:menuitem value="#{menu.STUDENT_ESSAY_SUBMISSIONS}" url="/academics/exams/studentessaysubmission.jsf" />
+                            </p:submenu>
+                        </p:column>
+
+                    </p:submenu>
+
+                    <p:submenu label="#{menu.STUDENT_AFFAIRS}" icon="ui-icon-pencil">
+                        <p:column>
+                            <p:submenu label="#{menu.STUDENT_AFFAIRS}">
+                                <p:menuitem value="#{menu.STUDENTS}" url="/academics/setup/student.jsf" />
+                                <p:menuitem value="#{menu.ACADEMIC_HISTORY}" url="/academics/setup/academichistory.jsf" />
+                                <p:menuitem value="#{menu.STUDENTS_COURSE_SELECTION}" url="academics/studenteffects/studentcourse.jsf" />
+                                <p:menuitem value="#{menu.STUDENTS_TIMETABLE}" url="academics/studenteffects/studenttimetable.jsf" />
+                                <p:menuitem value="#{menu.STUDENTS_SCORE_ENTRY}" url="/academics/setup/studentsubjectscoreentry.jsf" />
+                                <p:menuitem value="#{menu.STUDENTS_SUBJECT_SCORE}" url="academics/studenteffects/studentsubjectscore.jsf" />
+                                <p:menuitem value="#{menu.STUDENT_RESULTS}" url="/academics/setup/studentresult.jsf" />
+                                <p:menuitem value="#{menu.STUDENTS_INDIVIDUAL_RESULT}" url="academics/studenteffects/studentresult.jsf" />
+                            </p:submenu>
+                        </p:column>
+                    </p:submenu>
+
+                    <p:submenu label="#{menu.ONLINE_CLASS}" icon="ui-icon-contact">
+                        <p:column>
+                            <p:submenu label="#{menu.STAFF_RECORD}">
+                                <p:menuitem value="#{menu.ONLINE_CLASS_FORUM}" url="/academics/onlineclass/onlineforum.jsf" />
+                                <p:menuitem value="#{menu.FORUM_THREAD}" url="/academics/onlineclass/forumthread.jsf" />
+                                <p:menuitem value="#{menu.THREAD_RESPONSES}" url="/academics/onlineclass/threadresponse.jsf" />
+                            </p:submenu>
+                        </p:column>
+                    </p:submenu>
+
+                    <p:submenu label="#{menu.ACADEMIC_STAFF_AFFAIRS}" icon="ui-icon-contact">
+                        <p:column>
+                            <p:submenu label="#{menu.STAFF_SETUP}">
+                                <p:menuitem value="#{menu.ACADEMIC_RESPONSIBILITIES}" url="/academics/setup/academicresponsibilities.jsf" />
+                                <p:menuitem value="#{menu.STAFF_INDIVIDUAL_RESPONSIBILITIES}" url="/academics/setup/staffresponsibility.jsf" />
+                                <p:menuitem value="#{menu.CREATE_VIEW_STAFF}" url="/academics/setup/academicstaff.jsf" />
+                            </p:submenu>
+                        </p:column>
+                    </p:submenu>
+                    
+                    <p:submenu label="#{menu.SYSTEM_ADMIN}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['SECURITY_MENU_ITEM'])}" icon="ui-icon-contact">
+                        <p:column>
+                            <p:submenu label="#{menu.NEW_ENTITIES}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['NEW_ENTITIES_MENU_ITEM'])}">
+                                <p:menuitem value="#{menu.NEW_USER_ACCOUNT}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['NEW_USR_ACCT_MENU_ITEM'])}" ajax="false" action="#{menuManagerBean.gotoCreateUser}" />
+                                <p:menuitem value="#{menu.NEW_USER_ROLES}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['NEW_USR_ROLS_MENU_ITEM'])}" ajax="false" action="#{menuManagerBean.gotoCreateRole}" />
+                                <p:menuitem value="#{menu.NEW_PRIVILEGE_MENU}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['NEW_PRIVLG_MENU_ITEM'])}" ajax="false" action="#{menuManagerBean.gotoCreateMenu}" />
+                                <p:menuitem value="#{menu.NEW_APPLICATION_SYSTEM}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['NEW_APPLIC_SYS_MENU_ITEM'])}" ajax="false" action="#{menuManagerBean.gotoCreateApplication}" />
+                                <p:menuitem value="#{menu.NEW_SUBSYSTEM}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['NEW_SUBSYS_MENU_ITEM'])}" ajax="false" action="#{menuManagerBean.gotoCreateSubsystem}" />
+                                <p:menuitem value="#{menu.DEFINE_BUILD_ROLES}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['NEW_SYS_ROLS_MENU_ITEM'])}" ajax="false" action="#{menuManagerBean.gotoUserRole}" />
+                            </p:submenu>
+
+                            <p:submenu label="#{menu.MANAGE_USER_ACCOUNT}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['NEW_ENTITIES_MENU_ITEM'])}">
+                                <p:menuitem value="#{menu.MANAGE_USER_ACCOUNT}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['MANAGE_USR_ACCT_MENU_ITEM'])}" ajax="false" action="#{menuManagerBean.gotoManageUserAccount}" />
+                                <p:menuitem value="#{menu.ACTIVE_USER_SESSIONS}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['VIEW_LOGGEDIN_USERS_MENU_ITEM'])}" ajax="false" action="#{menuManagerBean.gotoLoggedOnUsers}" />
+                            </p:submenu>
+                        </p:column>
+
+                        <p:column>
+                            <p:submenu label="#{menu.AUDIT_TRAIL_ADMIN}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['AUDIT_TRAIL_ADM_MENU_ITEM'])}">
+                                <p:menuitem value="#{menu.AUDIT_TRAIL}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['AUDIT_TRAIL_MENU_ITEM'])}" ajax="false" action="#{menuManagerBean.gotoAuditTrail}"/>
+                            </p:submenu>
+
+                            <p:submenu label="#{menu.ROLES}" rendered="#{userManagerBean.userAccount.roleList.size() > 1}">
+                                <p:menuitem value="#{menu.SWITCH_ROLES}" ajax="false" action="#{menuManagerBean.gotoRoleSwitcher}"/>
+                            </p:submenu>
+
+                            <p:submenu label="#{menu.LOGOUT}">
+                                <p:menuitem value="#{menu.SWITCH_SYSTEMS}" ajax="false" action="#{userManagerBean.gotoSystemHome}"/>
+                                <p:menuitem value="#{menu.LOGOUT_USER}" ajax="false" action="#{userManagerBean.logOutUser}"/>
+                            </p:submenu>
+                        </p:column>
+                    </p:submenu>
+
+                </p:megaMenu>
+            </h:form>
+        </f:facet>
+
+    </p:toolbar>  
+</f:view>
+</html>  

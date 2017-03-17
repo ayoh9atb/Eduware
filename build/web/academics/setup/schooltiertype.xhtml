@@ -1,0 +1,161 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<f:view contentType="text/html" locale="#{userManagerBean.locale}" >
+    <h:head>  
+        <style type="text/css">
+            .fixed-size {
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .information-mssg {
+                color: blue;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .error-mssg {
+                color: red;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .success-mssg {
+                color: green;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+        </style>
+
+        <script type="text/javascript" src="/scripts/input_validator.js">
+        </script>
+    </h:head>  
+
+    <h:body>  
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="50" >
+                <p:panel>                     
+                    <table align="center">                         
+                        <tr>                             
+                            <td>                                 
+                                <p:graphicImage url="/images/copyright.jpg" height="30"/>                             
+                            </td>                             
+                            <td>                                 
+                                <p:outputLabel value="#{msg.S3_SYSTEMS_SOFTWARE_NIG_ALL_RIGHTS_RESERVED}" styleClass="format" style="font-weight:bold;"/>                             
+                            </td>                         
+                        </tr>                     
+                    </table>                 
+                </p:panel>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="310" header="#{menuManagerBean.subsystemName}" collapsed="#{menuManagerBean.reportPanelCollapsed}" resizable="true" collapsible="true" effect="drop">
+                <ui:include src="/reports.xhtml"/>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="east" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+
+                <ui:include src="#{menuManagerBean.menuOfSubsystem}"/>
+
+                <h:form>
+                    <div style="float: right;">
+                        <p:commandLink update="@all" action="#{userManagerBean.changeLocale('en')}" ajax="false" >
+                            EN
+                        </p:commandLink>
+                        <p:outputLabel value="  " />
+                        <p:commandLink update="@all" action="#{userManagerBean.changeLocale('fr')}" ajax="false" style=" margin-left: 20px;" >
+                            FR
+                        </p:commandLink>
+                    </div>
+                </h:form>
+                
+                <br/>
+
+                <h:form id="schoolTierTypeForm">
+                    <p:panel>
+                        <table>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="#{msg.SCHOOL_TIER_TYPE}" styleClass="format" style="font-weight:bold;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="#{applicationMessageBean.message.messageText}" styleClass="#{applicationMessageBean.message.messageType}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </p:panel>
+
+                    <table border="0" align="left">
+                        <tr>
+                            <td width="99%" valign="top">
+                                <table  width="99%" border="0" cellspacing="1" cellpadding="1">
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="#{msg.SCHOOL_TIER_NAME}"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:inputText required="true" requiredMessage="School Tier Name is Required!" id="schoolTierNameTxt" immediate="true" styleClass="format" value="#{schoolTierTypeBean.schoolTierType.schoolTierName}"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p:panelGrid columns="2">
+                                    <p:commandButton ajax="false" value="#{msg.ADD}" action="#{schoolTierTypeBean.addSchoolTierType}" styleClass="button"/>
+                                    <p:commandButton immediate="true" ajax="false" value="#{msg.SAVE_UPDATE}" action="#{schoolTierTypeBean.saveSchoolTierTypeList}" styleClass="button"/>
+                                </p:panelGrid>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p:panelGrid columns="1">
+                                    <p:dataTable emptyMessage="#{msg.NO_RECORDS_FOUND}" paginatorPosition="bottom" scrollable="true" id="dataTable" widgetVar="schoolTierTypeList" value="#{schoolTierTypeBean.schoolTierTypeList}" var="schoolTierTypeVar" paginator="true" rows="10" >
+                                        <f:facet name="header">
+                                            <p:outputLabel value="#{msg.DATA_TABLE}"/>
+                                        </f:facet>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <p:outputLabel escape="false" value="#{msg.SELECT}"/>
+                                            </f:facet>
+                                            <p:selectBooleanCheckbox id="schoolTierTypeChkBx" immediate="true" value="#{schoolTierTypeVar.selected}" valueChangeListener="#{schoolTierTypeBean.schoolTierTypeSelected}">
+                                                <p:ajax update="schoolTierTypeForm"/>
+                                            </p:selectBooleanCheckbox>
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <p:outputLabel escape="false" value="#{msg.SCHOOL_TIER_NAME}"/>
+                                            </f:facet>
+                                            <p:outputLabel id="schoolTierNameTabCol" value="#{schoolTierTypeVar.schoolTierName}"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:panelGrid>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+
+            </p:layoutUnit>
+        </p:layout>
+    </h:body> 
+</f:view>
+</html>

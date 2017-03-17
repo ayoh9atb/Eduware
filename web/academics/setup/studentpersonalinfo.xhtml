@@ -1,0 +1,144 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <table border="0" align="left">
+        <tr>
+            <td valign="top">
+                <table>
+                    <tr>
+                        <td>
+                            <table border="0" cellspacing="1" cellpadding="1">
+                                <tr>
+                                    <td nowrap="nowrap" width="25">
+                                        <div align="right">
+                                            <p:outputLabel escape="false" styleClass="format" value="Last Name"/>
+                                        </div>
+                                    </td>
+                                    <td nowrap="nowrap" width="75">
+                                        <div align="left">
+                                            <p:inputText id="lastNameTxt" immediate="true" styleClass="format" value="#{studentBean.student.lastName}"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td nowrap="nowrap" width="25">
+                                        <div align="right">
+                                            <p:outputLabel escape="false" styleClass="format" value="First Name"/>
+                                        </div>
+                                    </td>
+                                    <td nowrap="nowrap" width="75">
+                                        <div align="left">
+                                            <p:inputText id="firstNameTxt" immediate="true" styleClass="format" value="#{studentBean.student.firstName}"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td nowrap="nowrap" width="25">
+                                        <div align="right">
+                                            <p:outputLabel escape="false" styleClass="format" value="Middle Name"/>
+                                        </div>
+                                    </td>
+                                    <td nowrap="nowrap" width="75">
+                                        <div align="left">
+                                            <p:inputText id="middleNameTxt" immediate="true" styleClass="format" value="#{studentBean.student.middleName}"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p:fieldset legend="Place of Origin" toggleable="true" toggleSpeed="500" style="margin-bottom:20px">
+                                <table border="0" cellspacing="1" cellpadding="1">
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Country"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:selectOneMenu id="countryDescCombo" immediate="true" styleClass="format" value="#{studentBean.student.countryID}" valueChangeListener="#{studentBean.countryItemSelected}">
+                                                    <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                    <f:selectItems value="#{addressManagerBean.countryItemList}"/>
+                                                    <p:ajax update="stateDescCombo"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="State"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:selectOneMenu id="stateDescCombo" immediate="true" styleClass="format" value="#{studentBean.student.stateCode}" valueChangeListener="#{studentBean.stateItemSelected}">
+                                                    <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                    <f:selectItems value="#{addressManagerBean.selectedStateItemList}"/>
+                                                    <p:ajax update="cityDescCombo"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="City"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:selectOneMenu id="cityDescCombo" immediate="true" styleClass="format" value="#{studentBean.student.cityID}">
+                                                    <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                    <f:selectItems value="#{addressManagerBean.selectedCityItemList}"/>
+                                                    <p:ajax update="cityDescCombo"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Street Address"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:inputTextarea id="streetAddressTxt" immediate="true" value="#{studentBean.student.streetAddress}" rows="2" cols="50"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </p:fieldset>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table border="0" cellspacing="1" cellpadding="1">
+                                <tr>
+                                    <td nowrap="nowrap" width="25">
+                                        <div align="right">
+                                            <p:outputLabel escape="false" styleClass="format" value="Date Of Birth"/>
+                                        </div>
+                                    </td>
+                                    <td nowrap="nowrap" width="75">
+                                        <div align="left">
+                                            <p:calendar id="dateOfBirthTxt" immediate="true" pattern="dd/MM/yyyy" value="#{studentBean.student.dateOfBirthTO}"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+</html>

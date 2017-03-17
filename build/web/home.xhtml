@@ -1,0 +1,111 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">  
+
+    <h:head>  
+
+    </h:head>  
+
+    <h:body>  
+
+        <p:layout fullPage="false">
+
+            <p:layoutUnit position="north" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="60" >                 
+                <p:panel>                     
+                    <table align="center">                         
+                        <tr>                             
+                            <td>                                 
+                                <p:graphicImage url="/images/copyright.jpg" height="30"/>                             
+                            </td>                             
+                            <td>                                 
+                                <p:outputLabel value="  S3-Systems #{menuManagerBean.getCurrentYear()} All Rights Reserved" styleClass="format" style="font-weight:bold;"/>                             
+                            </td>                         
+                        </tr>                     
+                    </table>                 
+                </p:panel>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="310" header="#{menuManagerBean.subsystemName}" collapsed="#{menuManagerBean.reportPanelCollapsed}" resizable="true" collapsible="true" effect="drop">
+                <ui:include src="reports.xhtml"/>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="east" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+                <ui:include rendered="false" src="#{menuManagerBean.menuOfSubsystem}"/>
+
+                <div style="height:600px">
+                    <h:form>
+                        <p:growl id="msgs" showDetail="true" />
+                        <p:panelGrid columns="2">
+                            <p:panel id="agentPerformance">
+                                <p:chart type="pie" model="#{performanceChartBean.pieModel2}" style="width:300px;height:200px" />
+                            </p:panel>
+
+                            <p:panel id="productTypePerf">
+                                <p:chart type="bar" model="#{performanceChartBean.barModel}" style="width:450px;height:250px" />
+                            </p:panel>
+
+                            <p:panel id="productTypeGuage">
+                                <p:chart type="metergauge" model="#{performanceChartBean.meterGaugeModel1}" style="width:300px;height:200px" />
+                            </p:panel>
+
+                            <p:panel id="sales" header="Sales Figures">
+                                <h:outputText style="font-size: 16" value="Policies Sold Today: 0 (NGN 0.00)" />
+                                <br/>
+                                <h:outputText style="font-size: 16" value="Policies This Month: 0 (NGN 0.00)" />
+                                <br/>
+                                <h:outputText style="font-size: 16" value="Policies This Year: 0 (NGN 0.00)" />
+                                <br/>
+                                <h:outputText style="font-size: 16" value="%tage of Monthly Sales: 0.00%" />
+                                <br/>
+                                <h:outputText style="font-size: 16" value="%tage of Annual Sales: 0.00%" />
+                            </p:panel>
+
+                            <p:panel id="totalOrders" header="Financials">
+                                <h:outputText style="font-size: 16" value="Number of Proposals Awaiting Payment: 0" />
+                                <br/>
+                                <h:outputText style="font-size: 16" value="Number of Receipts Unmatched: 0" />
+                                <br/>
+                                <h:outputText style="font-size: 16" value="Collections Due: 0" />
+                                <br/>
+                                <h:outputText style="font-size: 16" value="Collections Past Due: 0" />
+                            </p:panel>
+
+                            <p:panel id="pendingOrders" header="Claims">
+                                <h:outputText style="font-size: 16" value="Number of Registered Claims" />
+                                <br/>
+                                <h:outputText style="font-size: 16" value="Total Registered Claims Amount: 0" />
+                                <br/>
+                                <h:outputText style="font-size: 16" value="Total Paid Claims Amount Today: 0" />
+                                <br/>
+                                <h:outputText style="font-size: 16"  value="Total Paid Claims Amount Monthly: 0" />
+                                <br/>
+                                <h:outputText style="font-size: 16" value="Total Paid Claims Amount Annually: 0" />
+                            </p:panel>
+
+                            <p:panel id="totalCollections" header="Settlements">
+                                <h:outputText style="font-size: 16" value="Number of Insurance Payments Due Today: 0" />
+                                <br/>
+                                <h:outputText style="font-size: 16" value="Number of Insurance Payments Due This Month: 0" />
+                                <br/>
+                                <h:outputText style="font-size: 16" value="Number of Insurance Payments Due Next Month: 0" />
+                            </p:panel>
+                        </p:panelGrid>
+                        <div style="clear:both" />
+                    </h:form>
+                </div>
+            </p:layoutUnit>
+
+        </p:layout>
+
+    </h:body>  
+</html>  

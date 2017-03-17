@@ -1,0 +1,83 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">  
+
+    <h:form>
+        <p:growl autoUpdate="true"/>
+
+        <p:panel id="logon">
+            <h:panelGroup>
+                <h:outputText value="Welcome "/>
+                <b><h:outputText value="#{userManagerBean.userAccount.userName}"/></b>
+                <h:outputText value=" You are Logged In As "/>
+                <b><h:outputText value="#{userManagerBean.userAccount.role.roleName}"/></b>
+            </h:panelGroup>
+        </p:panel>
+
+        <p:panel>
+            <ui:remove>
+            <ui:include src="/exitbutton.xhtml"/>
+            </ui:remove>
+        </p:panel>
+
+        <p:panel rendered="#{userManagerBean.userAccount.payReqApprovalID > 100}" id="reqApprovals" header="Requisition Approvals">
+            <h:panelGroup>
+                <p:outputLabel value="There is/are #{userManagerBean.pendingRequisitionCount} pending requisitions..."/>
+                <p:commandButton ajax="false" action="#{userManagerBean.gotoReqApprovialPage}" value="View Requisition Page"/>
+            </h:panelGroup>
+        </p:panel>
+
+        <p:panelMenu style="width:300px;">
+            <p:submenu label="General Applications" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['GENERAL_APPLICATIONS_MENU_ITEM'])}" expanded="true">
+                <p:menuitem value="Financials" ajax="false" action="#{menuManagerBean.selectFinancialMenu}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['FINANCIALS_MENU_ITEM'])}"/>
+                <p:menuitem value="Human Resources" ajax="false"  action="#{menuManagerBean.selectHumanResourcesMenu}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['HUMAN_RESOURCE_MENU_ITEM'])}"/>
+                <p:menuitem value="CRM" ajax="false" action="#{menuManagerBean.selectCustomerRelationsMenu}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['CUSTOMER_RELATIONS_MENU_ITEM'])}"/>
+                <p:menuitem value="Procurement" ajax="false" action="#{menuManagerBean.selectProcurementMenu}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['PROCUREMENT_MENU_ITEM'])}"/>
+                <p:menuitem value="Inventory" ajax="false" action="#{menuManagerBean.selectInventoryMenu}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['INVENTORY_MENU_ITEM'])}"/>
+                <p:menuitem value="Fixed Asset Management" ajax="false" action="#{menuManagerBean.selectFixedAssetMenu}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['FIXED_ASSET_MENU_ITEM'])}"/>
+            </p:submenu>
+
+            <p:submenu label="Insurance" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['INSURANCE_SYSTEM_MENU_ITEM'])}" expanded="true">
+                <p:menuitem value="Life Insurance" ajax="false" action="#{menuManagerBean.selectLifeInsuranceMenu}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['LIFE_INSURANCE_MENU_ITEM'])}"/>
+                <p:menuitem value="Annuity Insurance" ajax="false"  action="#{menuManagerBean.selectAnnuityInsuranceMenu}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['ANNUITY_INSURANCE_MENU_ITEM'])}"/>
+                <p:menuitem value="Nonlife Insurance" ajax="false" action="#{menuManagerBean.selectNonlifeInsuranceMenu}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['NONLIFE_INSURANCE_MENU_ITEM'])}"/>
+                <p:menuitem value="Health Insurance" ajax="false" action="#{menuManagerBean.selectHealthInsuranceMenu}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['HEALTH_INSURANCE_MENU_ITEM'])}"/>
+            </p:submenu>
+
+            <p:submenu label="Financial Assets" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['FINANCIAL_ASSETS_SYSTEM_MENU_ITEM'])}" expanded="true">
+                <p:menuitem value="Investment &amp; Portfolio Mgt" ajax="false" action="#{menuManagerBean.selectInvestmentMenu}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['INVESTMENT_SYS_MENU_ITEM'])}"/>
+            </p:submenu>
+
+            <p:submenu label="Education" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['EDUCATION_SYSTEM_MENU_ITEM'])}" expanded="true">
+                <p:menuitem value="Academic Record Management" ajax="false" action="#{menuManagerBean.selectAcademicRecordsMenu}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['ACADEMIC_RECORD_SYS_MENU_ITEM'])}"/>
+                <p:menuitem value="Library Management" ajax="false" action="#{menuManagerBean.selectLibraryManagementMenu}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['LIBRARY_SYS_MGT_MENU_ITEM'])}"/>
+                <p:menuitem value="E-Learning" ajax="false" action="#{menuManagerBean.selectEduwareMenu}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['ELEARNING_SYS_MENU_ITEM'])}"/>
+            </p:submenu>
+
+            <p:submenu label="Health" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['HEALTH_SYSTEM_MENU_ITEM'])}" expanded="true">
+                <p:menuitem value="Health Information System" ajax="false" action="#{menuManagerBean.selectHealthInformationSysMenu}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['HEALTH_INFO_SYSTEM_MENU_ITEM'])}"/>
+            </p:submenu>
+
+            <p:submenu label="Reporting/BI" expanded="true">
+                <p:menuitem ajax="false" value="#{menuManagerBean.systemMap['RPTS_CATGRY_MENU_ITEM']}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['RPTS_CATGRY_MENU_ITEM'])}" action="#{menuManagerBean.gotoReportCategorySetup}"/>
+                <p:menuitem ajax="false" value="#{menuManagerBean.systemMap['SETP_RPTS_MENU_ITEM']}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['SETP_RPTS_MENU_ITEM'])}" action="#{menuManagerBean.gotoReportConfigurer}"/>
+                <p:menuitem ajax="false" value="#{menuManagerBean.systemMap['SETP_CHRTS_MENU_ITEM']}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['SETP_CHRTS_MENU_ITEM'])}" action="#{menuManagerBean.gotoChartConfigurer}"/>
+                <p:menuitem ajax="false" value="#{menuManagerBean.systemMap['RPTS_TRGRS_MENU_ITEM']}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['RPTS_TRGRS_MENU_ITEM'])}" action="#{menuManagerBean.gotoReportTriggerSetup}"/>
+                <p:menuitem ajax="false" value="#{menuManagerBean.systemMap['RPTS_ALRT_SCHD_MENU_ITEM']}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['RPTS_ALRT_SCHD_MENU_ITEM'])}" action="#{menuManagerBean.gotoReportScheduleSetup}"/>
+            </p:submenu>
+
+            <p:submenu label="Logout">
+                <p:menuitem value="Logout User" ajax="false" action="#{userManagerBean.logOutUser}"/>
+            </p:submenu>
+
+        </p:panelMenu>
+
+        <ui:remove>
+        <h:panelGroup>
+            <p:schedule value="#{scheduleBean.model}" view="month"/>
+        </h:panelGroup>
+        </ui:remove>
+    </h:form>
+</html>  

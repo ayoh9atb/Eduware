@@ -1,0 +1,267 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:head>      
+        <style type="text/css">
+            .fixed-size {
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .information-mssg {
+                color: blue;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .error-mssg {
+                color: red;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .success-mssg {
+                color: green;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+        </style>
+
+        <script type="text/javascript" src="/scripts/input_validator.js">
+        </script>
+    </h:head>  
+
+    <h:body>  
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="60" >                 
+                <p:panel>                     
+                    <table align="center">                         
+                        <tr>                             
+                            <td>                                 
+                                <p:graphicImage url="/images/copyright.jpg" height="30"/>                             
+                            </td>                             
+                            <td>                                 
+                                <p:outputLabel value="  S3-Systems #{menuManagerBean.getCurrentYear()} All Rights Reserved" styleClass="format" style="font-weight:bold;"/>                             
+                            </td>                         
+                        </tr>                     
+                    </table>                 
+                </p:panel>
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="310" header="#{menuManagerBean.subsystemName}" collapsed="#{menuManagerBean.reportPanelCollapsed}" resizable="true" collapsible="true" effect="drop">
+                <ui:include src="/reports.xhtml"/>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="east" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+
+                <ui:include src="#{menuManagerBean.menuOfSubsystem}"/>
+
+                <h:form id="createUserForm">
+                    <p:panel>
+                        <table>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="Create User" styleClass="format" style="font-weight:bold;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="#{applicationMessageBean.message.messageText}" styleClass="#{applicationMessageBean.message.messageType}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </p:panel>
+
+                    <table width="75%">
+                        <tr>
+                            <td>
+                                <div align="right">
+                                    <table width="99%">
+                                        <tr>
+                                            <td>
+                                                <p:fieldset legend="Login Credentials" toggleable="true" toggleSpeed="500" style="margin-bottom:20px">
+                                                    <table align="center" width="99%" border="0" cellspacing="1" cellpadding="1">
+                                                        <tr>
+                                                            <td colspan="2">
+                                                                <h:outputText id="applicationMessageID" escape="false" styleClass="errorMessage"/>
+                                                                <h:outputText value="#{applicationMessages.applicationMessage}" styleClass="format"/>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td align="right" width="40" nowrap="nowrap">
+                                                                <h:outputText escape="false" value="User Name"  styleClass="format"/>
+                                                            </td>
+                                                            <td align="left">
+                                                                <p:inputText id="logonId" size="20" value="#{userManagerBean.account.userName}" styleClass="format"/>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td align="right" nowrap="nowrap">
+                                                                <h:outputText value="Password" styleClass="format"/>
+                                                            </td>
+                                                            <td align="left">
+                                                                <p:password id="password" size="20" value="#{userManagerBean.account.password}"/>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td align="right" nowrap="nowrap">
+                                                                <h:outputText value="Confirm Password" styleClass="format"/>
+                                                            </td>
+                                                            <td align="left">
+                                                                <p:password id="confirmedpassword" size="20" value="#{userManagerBean.account.confirmedPassword}"/>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td align="right">
+                                                                <h:outputText escape="false" value="Email Address"/>
+                                                            </td>
+                                                            <td align="left">
+                                                                <p:inputText id="emailAddrId" size="20" value="#{userManagerBean.account.emailAddress}"/>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td align="right">
+                                                                <h:outputText escape="false" value="Employee Name"/>
+                                                            </td>
+                                                            <td align="left">
+                                                                <p:panelGrid  columns="2">
+                                                                    <p:inputText id="employeeCodeTxt" size="20" value="#{userManagerBean.account.employeeCode}"/>
+                                                                    <p:commandButton ajax="false" value="Search Employee" action="#{userManagerBean.gotoEmployeeSearchPage()}"/>
+                                                                </p:panelGrid>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td nowrap="nowrap" width="25%">
+                                                                <div align="right">
+                                                                    <p:outputLabel escape="false" styleClass="format" value="Branch:"/>
+                                                                </div>
+                                                            </td>
+                                                            <td width="75%">
+                                                                <div align="left">
+                                                                    <p:selectOneMenu id="branchCombo1" immediate="true" valueChangeListener="#{userManagerBean.branchMenuSelected}" value="#{userManagerBean.account.branchID}">
+                                                                        <f:selectItem itemLabel="--Select One--" itemValue="-1"/>
+                                                                        <f:selectItems value="#{branchBean.branchItemList}"/>
+                                                                        <p:ajax update="departmentCombo"/>
+                                                                    </p:selectOneMenu>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td nowrap="nowrap" width="25%">
+                                                                <div align="right">
+                                                                    <p:outputLabel escape="false" styleClass="format" value="Department:"/>
+                                                                </div>
+                                                            </td>
+                                                            <td width="75%">
+                                                                <div align="left">
+                                                                    <p:selectOneMenu id="departmentCombo" immediate="true" valueChangeListener="#{userManagerBean.departmentMenuSelected}" value="#{userManagerBean.account.departmentID}">
+                                                                        <f:selectItem itemLabel="--Select One--" itemValue="-1"/>
+                                                                        <f:selectItems value="#{departmentBean.departmentItemList}"/>
+                                                                        <p:ajax update="departmentCombo"/>
+                                                                    </p:selectOneMenu>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </p:fieldset>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <p:fieldset legend="User Roles" toggleable="true" toggleSpeed="500" style="margin-bottom:20px">
+                                                    <table>
+                                                        <tr>
+                                                            <td nowrap="nowrap">
+                                                                <div align="right">
+                                                                    <h:outputText value="Role" styleClass="format"/>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div align="left">
+                                                                    <p:panelGrid columns="3">
+                                                                        <p:selectOneMenu id="roleMenu" immediate="true" valueChangeListener="#{privilegeBean.roleMenuSelected}" value="#{userManagerBean.account.roleID}">
+                                                                            <f:selectItem itemValue="" itemLabel="--Select One--"/>
+                                                                            <f:selectItems value="#{privilegeBean.roleItemList}"/>
+                                                                            <p:ajax update="roleTable"/>
+                                                                        </p:selectOneMenu>
+
+                                                                        <p:commandButton ajax="false" value="Add" action="#{userManagerBean.addRoleToUserAccount}"/>
+                                                                        <p:commandButton ajax="false" value="Delete" action="#{userManagerBean.removeRoleToUserAccount}"/>
+                                                                    </p:panelGrid>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                    <br/>
+                                                    <table>
+                                                        <tr>
+                                                            <td>
+                                                                <p:dataTable id="roleTable" styleClass="fixed-size" value="#{userManagerBean.account.roleList}" var="role" paginator="true" rows="10" >
+                                                                    <f:facet name="header">
+                                                                        <h:outputText value="User Roles"/>
+                                                                    </f:facet>
+
+                                                                    <p:column width="20%">
+                                                                        <f:facet name="header">
+                                                                            <h:outputText escape="false" value="Select"/>
+                                                                        </f:facet>
+                                                                        <p:selectBooleanCheckbox id="uSelectBox" value="#{role.selected}" valueChangeListener="#{userManagerBean.userRoleSelected}">
+                                                                            <p:ajax update=":createUserForm"/>
+                                                                        </p:selectBooleanCheckbox>
+                                                                    </p:column>
+
+                                                                    <p:column>
+                                                                        <f:facet name="header">
+                                                                            <h:outputText escape="false" value="Role Name"/>
+                                                                        </f:facet>
+                                                                        <h:outputText id="uPrivilegeDescId" value="#{role.roleName}"/>
+                                                                    </p:column>
+                                                                </p:dataTable>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </p:fieldset>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <p:panelGrid columns="4">
+                                                    <p:commandButton ajax="false" value="Save/Update" action="#{userManagerBean.insertUserAccount}" rendered="#{menuManagerBean.hasRWPrivilege(menuManagerBean.systemMap['NEW_USR_ACCT_MENU_ITEM'])}"/>
+                                                    <p:commandButton ajax="false" value="Done" action="#{sessionDataReinitBean.navigateHome}"/>
+                                                </p:panelGrid>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
+
+</html>

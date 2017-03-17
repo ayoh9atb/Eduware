@@ -1,0 +1,244 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">  
+
+    <h:head> 
+        <style type="text/css">
+            .fixed-size {
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .information-mssg {
+                color: blue;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .error-mssg {
+                color: red;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .success-mssg {
+                color: green;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+        </style>
+
+        <script type="text/javascript" src="/scripts/input_validator.js">
+        </script>
+    </h:head>  
+
+    <h:body>  
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="60" >                 
+                <p:panel>                     
+                    <table align="center">                         
+                        <tr>                             
+                            <td>                                 
+                                <p:graphicImage url="/images/copyright.jpg" height="30"/>                             
+                            </td>                             
+                            <td>                                 
+                                <p:outputLabel value="  S3-Systems #{menuManagerBean.getCurrentYear()} All Rights Reserved" styleClass="format" style="font-weight:bold;"/>
+                            </td>                         
+                        </tr>                     
+                    </table>                 
+                </p:panel>
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="310" header="#{menuManagerBean.subsystemName}" collapsed="#{menuManagerBean.reportPanelCollapsed}" resizable="true" collapsible="true" effect="drop">
+                <ui:include src="/reports.xhtml"/>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="east" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+
+                <ui:include src="#{menuManagerBean.menuOfSubsystem}"/>
+
+                <h:form id="empsearchform">
+                    <p:panel>
+                        <table>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="Employee Search" styleClass="format" style="font-weight:bold;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="#{applicationMessageBean.message.messageText}" styleClass="#{applicationMessageBean.message.messageType}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </p:panel>
+                    <table width="95%" border="0" cellspacing="1" cellpadding="1">
+                        <tr>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td width="25%">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Last Name:"/>
+                                            </div>
+                                        </td>
+                                        <td width="75%">
+                                            <div align="left">
+                                                <p:inputText id="lastNameTxt" immediate="true" value="#{curriculumVitaeBean.curriculum.lastName}" size="30" styleClass="format" style="text-transform:uppercase;">                                         <f:converter converterId="convertToUpper"></f:converter>                                     </p:inputText>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td width="25%">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="First Name:"/>
+                                            </div>
+                                        </td>
+                                        <td width="75%">
+                                            <div align="left">
+                                                <p:inputText id="firstNameTxt" immediate="true" value="#{curriculumVitaeBean.curriculum.firstName}" size="30" styleClass="format" style="text-transform:uppercase;">                                         <f:converter converterId="convertToUpper"></f:converter>                                     </p:inputText>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td width="25%">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Middle Name:"/>
+                                            </div>
+                                        </td>
+                                        <td width="75%">
+                                            <div align="left">
+                                                <p:inputText id="middleNameTxt" immediate="true" value="#{curriculumVitaeBean.curriculum.middleName}" size="30" styleClass="format" style="text-transform:uppercase;">                                         <f:converter converterId="convertToUpper"></f:converter>                                     </p:inputText>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td nowrap="nowrap">
+                                            <h:panelGroup>
+                                                <p:commandButton ajax="false" value="&lt;&lt; Back" action="#{menuManagerBean.backToCallerPage()}"/>
+                                                <p:commandButton ajax="false" value="Search" action="#{recruitmentBean.searchEmployee}"/>
+                                                <p:commandButton ajax="false" value="View Details" action="#{recruitmentBean.viewEmployeeDetail}"/>
+                                            </h:panelGroup>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="99%" valign="top">
+                                <p:dataTable id="dataTable" widgetVar="empeeTable" styleClass="fixed-size" value="#{curriculumVitaeBean.curriculumVitaeList}" var="cvitae" paginator="true" rows="10" >
+                                    <f:facet name="header">
+                                        <p:outputLabel value="Resume Table"/>
+                                    </f:facet>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="Select"/>
+                                        </f:facet>
+                                        <h:selectBooleanCheckbox id="cvsrchCheckBox" immediate="true" value="#{cvitae.selected}" valueChangeListener="#{userManagerBean.resumeSelectedForEmpSearch}">
+                                            <p:ajax event="change" update=":empsearchform"/>
+                                        </h:selectBooleanCheckbox>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="Last Name"/>
+                                        </f:facet>
+                                        <p:outputLabel id="lastNameResCol" value="#{cvitae.lastName}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="First Name"/>
+                                        </f:facet>
+                                        <p:outputLabel id="firstNameResCol" value="#{cvitae.firstName}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="Middle Name"/>
+                                        </f:facet>
+                                        <p:outputLabel id="middleNameResCol" value="#{cvitae.middleName}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="Sex"/>
+                                        </f:facet>
+                                        <p:outputLabel id="sexResCol" value="#{cvitae.personalInfo.sex}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="Mobile Phone"/>
+                                        </f:facet>
+                                        <p:outputLabel id="mobileResCol" value="#{cvitae.personalInfo.mobilePhone}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="Email"/>
+                                        </f:facet>
+                                        <p:outputLabel id="emailResCol" value="#{cvitae.personalInfo.publicEmailAddress}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="Country"/>
+                                        </f:facet>
+                                        <p:outputLabel id="countryResCol" value="#{cvitae.personalInfo.countryName}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="State/Province"/>
+                                        </f:facet>
+                                        <p:outputLabel id="stateResCol" value="#{cvitae.personalInfo.stateDesc}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="City"/>
+                                        </f:facet>
+                                        <p:outputLabel id="cityResCol" value="#{cvitae.personalInfo.cityDesc}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="Street Address"/>
+                                        </f:facet>
+                                        <p:outputLabel id="streetResCol" value="#{cvitae.personalInfo.streetAddress}"/>
+                                    </p:column>
+
+                                </p:dataTable>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+            </p:layoutUnit>
+
+        </p:layout>
+
+    </h:body>  
+</html>  

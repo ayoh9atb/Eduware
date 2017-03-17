@@ -1,0 +1,190 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:head>  
+        <style type="text/css">
+            .fixed-size {
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .information-mssg {
+                color: blue;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .error-mssg {
+                color: red;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .success-mssg {
+                color: green;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+        </style>
+
+        <script type="text/javascript" src="/scripts/input_validator.js">
+        </script>
+    </h:head>  
+
+    <h:body>  
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="50" >
+                <p:panel>                     
+                    <table align="center">                         
+                        <tr>                             
+                            <td>                                 
+                                <p:graphicImage url="/images/copyright.jpg" height="30"/>                             
+                            </td>                             
+                            <td>                                 
+                                <p:outputLabel value="  S3-Systems #{menuManagerBean.getCurrentYear()} All Rights Reserved" styleClass="format" style="font-weight:bold;"/>                             
+                            </td>                         
+                        </tr>                     
+                    </table>                 
+                </p:panel>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="310" header="#{menuManagerBean.subsystemName}" collapsed="#{menuManagerBean.reportPanelCollapsed}" resizable="true" collapsible="true" effect="drop">
+                <ui:include src="/reports.xhtml"/>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="east" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+
+                <ui:include src="#{menuManagerBean.menuOfSubsystem}"/>
+
+
+                <h:form id="todayScheduleForm">
+                    <p:panel>
+                        <table>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="Student Timetable" styleClass="format" style="font-weight:bold;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="#{applicationMessageBean.message.messageText}" styleClass="#{applicationMessageBean.message.messageType}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </p:panel>
+
+                    <table>
+                        <tr>
+                            <td>
+                                <table border="0" align="center">
+                                    <tr>
+                                        <td>
+                                            <table border="0" align="left">
+                                                <td nowrap="nowrap" width="25">
+                                                    <div align="right">
+                                                        <p:outputLabel escape="false" styleClass="format" value="Student Number"/>
+                                                    </div>
+                                                </td>
+                                                <td nowrap="nowrap" width="40">
+                                                    <div align="left">
+                                                        <p:inputText id="studentNumberTxt" immediate="true" styleClass="format" value="#{studentTimetableBean.studentNumber}"/>
+                                                    </div>
+                                                </td>
+                                                <td nowrap="nowrap" width="35">
+                                                    <div align="left">
+                                                        <p:commandButton ajax="false" value="Load Timetable" action="#{studentTimetableBean.loadStudentCoursesByStudNumber}"/>
+                                                    </div>
+                                                </td>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center">
+                                            <p:dataTable scrollable="true" id="dataTable" widgetVar="todaySchedule" value="#{studentTimetableBean.todayTimetable}" var="ttableEntry" paginator="true" rows="10" >
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="Course Code"/>
+                                                    </f:facet>
+                                                    <p:outputLabel id="tdayCourseCodeTabCol" value="#{ttableEntry.courseCode}"/>
+                                                </p:column>
+
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="Course Title"/>
+                                                    </f:facet>
+                                                    <p:outputLabel id="tdaycourseTitleTabCol" value="#{ttableEntry.courseTitle}"/>
+                                                </p:column>
+
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="Start Time"/>
+                                                    </f:facet>
+                                                    <p:outputLabel id="tdaystartTimeTabCol" value="#{ttableEntry.startTime}"/>
+                                                </p:column>
+
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="End Time"/>
+                                                    </f:facet>
+                                                    <p:outputLabel id="tdayendTimeTabCol" value="#{ttableEntry.endTime}"/>
+                                                </p:column>
+
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="Lecture Venue"/>
+                                                    </f:facet>
+                                                    <p:outputLabel id="tdaylectureTabCol" value="#{ttableEntry.lectureVenue}"/>
+                                                </p:column>
+
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="Credit Load"/>
+                                                    </f:facet>
+                                                    <p:outputLabel id="tdaytodaySchedule" value="#{ttableEntry.creditLoad}"/>
+                                                </p:column>
+                                            </p:dataTable>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table border="0">
+                                    <tr>
+                                        <td width="99%" valign="top">
+                                            <p:accordionPanel id="timetabletabpanel" dynamic="true">
+                                                <p:tab title="Course-based Timetable" id="tab1">
+                                                    <ui:include src="coursetimetable.xhtml"/>
+                                                </p:tab>
+
+                                                <p:tab title="Daily Timetable" id="tab2">
+                                                    <ui:include src="dailytimetable.xhtml"/>
+                                                </p:tab>
+                                            </p:accordionPanel>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+
+            </p:layoutUnit>
+        </p:layout>
+    </h:body> 
+
+</html>

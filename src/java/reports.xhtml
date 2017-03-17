@@ -1,0 +1,78 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui">  
+
+    <h:form>
+        <p:growl id="messages" showDetail="false"/>
+        
+        <p:slideMenu style="width:300px">
+            <p:submenu label="Groupings" icon="ui-icon-refresh">
+                <p:menuitem value="Report Categories" url="/setup/reportcategorysetup.jsf" icon="ui-icon-disk" />
+            </p:submenu>
+            <p:submenu label="Reports &amp; Charts" icon="ui-icon-newwin">
+                <p:menuitem value="Setup Reports" url="/reports/reportconfigurer.jsf" icon="ui-icon-newwin"/>
+                <p:menuitem value="Setup Charts" url="/reports/chartconfigurer.jsf" icon="ui-icon-newwin"/>
+            </p:submenu>
+            <p:submenu label="Automation" icon="ui-icon-extlink">
+                <p:menuitem value="Report Triggers" url="/reports/reporttriggersetup.jsf" icon="ui-icon-extlink"/>
+                <p:menuitem value="Notification Schedules" url="/reports/reportschedulesetup.jsf" icon="ui-icon-extlink"/>
+                <p:menuitem value="Expression Function" url="/reports/expressionfunction.jsf" icon="ui-icon-extlink"/>
+            </p:submenu>
+        </p:slideMenu>
+        
+        <p:separator/>
+        
+        <h:panelGroup>
+            <p:schedule value="#{scheduleBean.model}" view="month"/>
+        </h:panelGroup>
+        
+        <p:separator/>
+        
+        <p:panelMenu style="width:300px">
+            <p:submenu label="System Setup">
+                <p:menuitem value="Organizational Setup" actionListener="#{menuView.save}" update="messages" icon="ui-icon-disk"/>
+                <p:menuitem value="Individual Customer" actionListener="#{menuView.update}" update="messages" icon="ui-icon-arrowrefresh-1-w"/>
+            </p:submenu>
+            <p:submenu label="General Ledger">
+                <p:menuitem value="Generate Debit" actionListener="#{menuView.delete}" update="messages" ajax="false" icon="ui-icon-close"/>
+                <p:menuitem value="Generate Credit" actionListener="#{menuView.delete}" update="messages" ajax="false" icon="ui-icon-close"/>
+            </p:submenu>
+            <p:submenu label="CRM">
+                <p:menuitem value="Branch Delivery" actionListener="#{menuView.delete}" update="messages" ajax="false" icon="ui-icon-close"/>
+                <p:menuitem value="Customer Delivery" actionListener="#{menuView.delete}" update="messages" ajax="false" icon="ui-icon-close"/>
+            </p:submenu>
+            <p:submenu label="Human Resources">
+                <p:menuitem value="Upload Settlement" actionListener="#{menuView.delete}" update="messages" ajax="false" icon="ui-icon-close"/>
+            </p:submenu>
+            <p:submenu label="Sales">
+                <p:menuitem value="Credit Advice" actionListener="#{menuView.delete}" update="messages" ajax="false" icon="ui-icon-close"/>
+                <p:menuitem value="Debit Advice" actionListener="#{menuView.delete}" update="messages" ajax="false" icon="ui-icon-close"/>
+                <p:menuitem value="Min Repayment Advice" actionListener="#{menuView.delete}" update="messages" ajax="false" icon="ui-icon-close"/>
+                <p:menuitem value="Late Payment Advice" actionListener="#{menuView.delete}" update="messages" ajax="false" icon="ui-icon-close"/>
+            </p:submenu>
+            <p:submenu label="Receivables">
+                <p:menuitem value="Reports_1" actionListener="#{menuView.delete}" update="messages" ajax="false" icon="ui-icon-close"/>
+            </p:submenu>
+            <p:submenu label="Payables">
+                <p:menuitem value="Reports_1" actionListener="#{menuView.delete}" update="messages" ajax="false" icon="ui-icon-close"/>
+            </p:submenu>
+            <p:submenu label="Purchases">
+                <p:menuitem value="Reports_1" actionListener="#{menuView.delete}" update="messages" ajax="false" icon="ui-icon-close"/>
+            </p:submenu>
+            <p:submenu label="Inventory">
+                <p:menuitem value="Reports_1" actionListener="#{menuView.delete}" update="messages" ajax="false" icon="ui-icon-close"/>
+            </p:submenu>
+            <p:submenu label="Asset Management">
+                <p:menuitem value="Project Search" actionListener="#{menuView.delete}" update="messages" ajax="false" icon="ui-icon-close">
+                    <p:tree value="#{treeBasicView.root}" var="node">
+                        <p:treeNode expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">
+                            <h:outputText value="#{node}" />
+                        </p:treeNode>
+                    </p:tree>
+                </p:menuitem>
+            </p:submenu>
+        </p:panelMenu>
+
+    </h:form>
+</html>  

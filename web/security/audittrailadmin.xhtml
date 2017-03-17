@@ -1,0 +1,191 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">  
+
+    <h:head> 
+        <style type="text/css"> 
+            .fixed-size {
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .information-mssg {
+                color: blue;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .error-mssg {
+                color: red;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .success-mssg {
+                color: green;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+        </style>
+
+        <script type="text/javascript" src="/scripts/input_validator.js"/>
+    </h:head>  
+
+    <h:body>  
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="60" >                 
+                <p:panel>                     
+                    <table align="center">                         
+                        <tr>                             
+                            <td>                                 
+                                <p:graphicImage url="/images/copyright.jpg" height="30"/>                             
+                            </td>                             
+                            <td>                                 
+                                <p:outputLabel value="  S3-Systems #{menuManagerBean.getCurrentYear()} All Rights Reserved" styleClass="format" style="font-weight:bold;"/>                             
+                            </td>                         
+                        </tr>                     
+                    </table>                 
+                </p:panel>
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="310" header="#{menuManagerBean.subsystemName}" collapsed="#{menuManagerBean.reportPanelCollapsed}" resizable="true" collapsible="true" effect="drop">
+                <ui:include src="../reports.xhtml"/>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="east" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+
+                <ui:include src="#{menuManagerBean.menuOfSubsystem}"/>
+
+                <h:form id="audittrailform">
+                    <p:panel>
+                        <table>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="Audit Trail" styleClass="format" style="font-weight:bold;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="#{applicationMessageBean.message.messageText}" styleClass="#{applicationMessageBean.message.messageType}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </p:panel>
+
+                    <table border="0" align="left">
+                        <tr>
+                            <td width="99%" valign="top">
+                                <table width="99%" border="0" cellspacing="1" cellpadding="1">
+                                    <tr>
+                                        <td width="25%">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Entity Name: "/>
+                                            </div>
+                                        </td>
+                                        <td width="75%">
+                                            <div align="left">
+                                                <p:selectOneMenu id="entityNameMenu" immediate="true" value="#{businessActionTrailBean.businessActionTrail.entityNameType}" valueChangeListener="#{businessActionTrailBean.entityNameMenuSelected}" filter="true" filterMatchMode="contains">
+                                                    <f:selectItem itemValue="" itemLabel="--Select One--"/>
+                                                    <f:selectItems value="#{businessActionTrailBean.businessActionTrailItemList}"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td width="25%">
+                                            <div align="right">
+                                                <p:calendar  id="dateStartTxt" placeholder="Lower Bound" immediate="true" pattern="dd/MM/yyyy" value="#{businessActionTrailBean.startDate}"/>
+                                            </div>
+                                        </td>
+                                        <td width="75%">
+                                            <div align="left">
+                                                <p:calendar  id="dateEndTxt" placeholder="Upper Bound" immediate="true" pattern="dd/MM/yyyy" value="#{businessActionTrailBean.endDate}"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                </table>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td align="left">
+                                <p:panelGrid columns="3">
+                                    <p:commandButton ajax="false" value="Load Audit Trail" rendered="#{menuManagerBean.hasRWPrivilege(menuManagerBean.systemMap['AUDIT_TRAIL_MENU_ITEM'])}" action="#{businessActionTrailBean.loadBusinessActionTrailList}"/>
+                                    <p:commandButton ajax="false" value="Show Detail" rendered="#{menuManagerBean.hasRWPrivilege(menuManagerBean.systemMap['AUDIT_TRAIL_MENU_ITEM'])}" action="#{businessActionTrailBean.showBusinessActionTrailDetail}"/>
+                                    <p:commandButton ajax="false" value="Done" action="#{sessionDataReinitBean.navigateHome}"/>
+                                </p:panelGrid>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="3">
+                                <p:dataTable id="auditTrailTable" styleClass="fixed-size" value="#{businessActionTrailBean.businessActionTrailList}" var="trail" paginator="true" rows="10">
+                                    <f:facet name="header">
+                                        <h:outputText value="Audit Trail Table"/>
+                                    </f:facet>
+
+                                    <p:column width="7%">
+                                        <f:facet name="header">
+                                            <h:outputText escape="false" value="Select"/>
+                                        </f:facet>
+                                        <p:selectBooleanCheckbox id="stateCheckBox" immediate="true" value="#{trail.selected}" valueChangeListener="#{businessActionTrailBean.auditTrailSelected}">
+                                            <p:ajax event="change" update=":audittrailform"/> 
+                                        </p:selectBooleanCheckbox>                                   
+                                    </p:column>
+
+                                    <p:column width="30%">
+                                        <f:facet name="header">
+                                            <h:outputText escape="false" value="Entity Name"/>
+                                        </f:facet>
+                                        <p:outputLabel value="#{trail.entityName}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText escape="false" value="Action Type"/>
+                                        </f:facet>
+                                        <p:outputLabel value="#{trail.actionType}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText escape="false" value="Username"/>
+                                        </f:facet>
+                                        <p:outputLabel value="#{trail.approver}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText escape="false" value="Entry Date"/>
+                                        </f:facet>
+                                        <p:outputLabel value="#{trail.entryDate}">
+
+                                        </p:outputLabel>
+                                    </p:column>
+
+                                </p:dataTable>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+            </p:layoutUnit>
+
+        </p:layout>
+
+    </h:body>  
+</html>  

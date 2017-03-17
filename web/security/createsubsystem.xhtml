@@ -1,0 +1,190 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:head>  
+        <style type="text/css">
+            .fixed-size {
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .information-mssg {
+                color: blue;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .error-mssg {
+                color: red;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .success-mssg {
+                color: green;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+        </style>
+
+        <script type="text/javascript" src="/scripts/input_validator.js">
+        </script>
+    </h:head>  
+
+    <h:body>  
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="60" >                 
+                <p:panel>                     
+                    <table align="center">                         
+                        <tr>                             
+                            <td>                                 
+                                <p:graphicImage url="/images/copyright.jpg" height="30"/>                             
+                            </td>                             
+                            <td>                                 
+                                <p:outputLabel value="  S3-Systems #{menuManagerBean.getCurrentYear()} All Rights Reserved" styleClass="format" style="font-weight:bold;"/>                             
+                            </td>                         
+                        </tr>                     
+                    </table>                 
+                </p:panel>
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="310" header="#{menuManagerBean.subsystemName}" collapsed="#{menuManagerBean.reportPanelCollapsed}" resizable="true" collapsible="true" effect="drop">
+                <ui:include src="/reports.xhtml"/>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="east" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+
+                <ui:include src="#{menuManagerBean.menuOfSubsystem}"/>
+
+                <body>
+                    <table border="0" cellspacing="1" cellpadding="1">
+                        <tr>
+                            <td width="25%">
+                                <h:form id="createSubsystemForm">
+                                    <p:panel>
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <p:outputLabel value="Create Subsystem" styleClass="format" style="font-weight:bold;"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <p:outputLabel value="#{applicationMessageBean.message.messageText}" styleClass="#{applicationMessageBean.message.messageType}"/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </p:panel>
+
+                                    <table width="99%" border="0" cellspacing="1" cellpadding="1">
+                                        <tr>
+                                            <td width="25%">
+                                                <div align="right">
+                                                    <h:outputText escape="false" styleClass="format" value="Application Name: "/>
+                                                </div>
+                                            </td>
+                                            <td width="75%">
+                                                <div align="left">
+                                                    <p:selectOneMenu id="applicationCombo" immediate="true" value="#{privilegeBean.subsystem.applicationSystemID}" valueChangeListener="#{privilegeBean.applicationSystemMenuSelected}">
+                                                        <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                        <f:selectItems value="#{privilegeBean.applicationSystemItemList}"/>
+                                                        <p:ajax update="subsystemTable"/>
+                                                    </p:selectOneMenu>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td width="25%">
+                                                <div align="right">
+                                                    <h:outputText escape="false" styleClass="format" value="Subsystem Name: "/>
+                                                </div>
+                                            </td>
+                                            <td width="75%">
+                                                <div align="left">
+                                                    <p:inputText id="subsysNameTxt" value="#{privilegeBean.subsystem.subsystemName}" size="30" styleClass="format"/>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <br/>
+                                    <table width="99%">
+                                        <tr>
+                                            <td align="left">
+                                                <h:panelGroup>
+                                                    <p:commandButton ajax="false" value="Add Subsystem" action="#{privilegeBean.addSubsystem}" rendered="#{menuManagerBean.hasRWPrivilege(menuManagerBean.systemMap['NEW_SUBSYS_MENU_ITEM'])}"/>
+                                                    <p:commandButton ajax="false" value="Save/Update" action="#{privilegeBean.saveSubsystemList}" rendered="#{menuManagerBean.hasRWPrivilege(menuManagerBean.systemMap['NEW_SUBSYS_MENU_ITEM'])}"/>
+                                                    <p:commandButton ajax="false" value="Approve" action="#{privilegeBean.activate}" rendered="#{menuManagerBean.hasRWPrivilege(menuManagerBean.systemMap['NEW_SUBSYS_MENU_ITEM'])}"/>
+                                                    <p:commandButton ajax="false" value="Delete" action="#{privilegeBean.removeSubsystem}" rendered="#{menuManagerBean.hasRWPrivilege(menuManagerBean.systemMap['NEW_SUBSYS_MENU_ITEM'])}"/>
+                                                    <p:commandButton ajax="false" value="History" action="#{privilegeBean.gotoSubsystemAuditTrailPage}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['AUDIT_TRAIL_MENU_ITEM'])}"/>
+                                                    <p:commandButton ajax="false" value="Back" action="#{privilegeBean.backToRolesPage}"/>
+                                                    <p:commandButton ajax="false" value="Done" action="#{sessionDataReinitBean.navigateHome}"/>
+                                                </h:panelGroup>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="left" width="60%" valign="top">
+                                                <p:dataTable id="subsystemTable" styleClass="fixed-size" value="#{privilegeBean.selectedSubsystemList}" var="subsys" paginator="true" rows="10" >
+                                                    <f:facet name="header">
+                                                        <h:outputText value="Subsystem Table"/>
+                                                    </f:facet>
+
+                                                    <p:column width="7%">
+                                                        <f:facet name="header">
+                                                            <h:outputText escape="false" value="Select"/>
+                                                        </f:facet>
+                                                        <p:selectBooleanCheckbox id="uSelectBox" immediate="true" value="#{subsys.selected}" valueChangeListener="#{privilegeBean.subsystemSelected}">
+                                                            <p:ajax update=":createSubsystemForm" event="change"/>
+                                                        </p:selectBooleanCheckbox>
+                                                    </p:column>
+
+                                                    <p:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText escape="false" value="Subsystem Name"/>
+                                                        </f:facet>
+                                                        <h:outputText id="subsysNameCol" value="#{subsys.subsystemName}"/>
+                                                    </p:column>
+                                                    
+                                                    <p:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText escape="false" value="Application Name"/>
+                                                        </f:facet>
+                                                        <h:outputText id="applicationNameCol" value="#{subsys.applicationName}"/>
+                                                    </p:column>
+
+                                                    <p:column width="7%">
+                                                        <f:facet name="header">
+                                                            <h:outputText escape="false" value="Approved"/>
+                                                        </f:facet>
+                                                        <p:selectBooleanCheckbox value="#{subsys.activated}" disabled="true"/>
+                                                    </p:column>
+
+                                                </p:dataTable>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </h:form>
+                            </td>
+                        </tr>
+                    </table>
+                </body>
+
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
+
+</html>

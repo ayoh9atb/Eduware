@@ -1,0 +1,114 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <table border="0" align="left">
+        <tr>
+            <td valign="top">
+                <table>
+                    <tr>
+                        <td>
+                            <p:fieldset legend="Contact Address" toggleable="true" toggleSpeed="500" style="margin-bottom:20px">
+                                <table border="0" cellspacing="1" cellpadding="1">
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Country"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:selectOneMenu id="contactCountryCombo" immediate="true" styleClass="format" value="#{studentBean.student.contactCountryID}" valueChangeListener="#{studentBean.contactCountryItemSelected}">
+                                                    <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                    <f:selectItems value="#{addressManagerBean.countryItemList}"/>
+                                                    <p:ajax update="contactStateCombo"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="State"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:selectOneMenu id="contactStateCombo" immediate="true" styleClass="format" value="#{studentBean.student.contactStateCode}" valueChangeListener="#{studentBean.contactStateItemSelected}">
+                                                    <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                    <f:selectItems value="#{addressManagerBean.selectedStateItemList2}"/>
+                                                    <p:ajax update="contactCityCombo"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="City"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:selectOneMenu id="contactCityCombo" immediate="true" styleClass="format" value="#{studentBean.student.contactCityID}">
+                                                    <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                    <f:selectItems value="#{addressManagerBean.selectedCityItemList2}"/>
+                                                    <p:ajax update="contactCityCombo"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Street Address"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:inputTextarea id="contactStreetAddressTxt" immediate="true" value="#{studentBean.student.contactStreetAddress}" rows="2" cols="50"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </p:fieldset>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table border="0" cellspacing="1" cellpadding="1">
+                                <tr>
+                                    <td nowrap="nowrap" width="25">
+                                        <div align="right">
+                                            <p:outputLabel escape="false" styleClass="format" value="Mobile Number"/>
+                                        </div>
+                                    </td>
+                                    <td nowrap="nowrap" width="75">
+                                        <div align="left">
+                                            <p:inputText id="phoneNumberTxt" immediate="true" styleClass="format" value="#{studentBean.student.phoneNumber}"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td nowrap="nowrap" width="25">
+                                        <div align="right">
+                                            <p:outputLabel escape="false" styleClass="format" value="Email Address"/>
+                                        </div>
+                                    </td>
+                                    <td nowrap="nowrap" width="75">
+                                        <div align="left">
+                                            <p:inputText id="emailAddressTxt" immediate="true" styleClass="format" value="#{studentBean.student.emailAddress}"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+</html>

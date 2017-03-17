@@ -1,0 +1,236 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:head>  
+        <style type="text/css">
+            .fixed-size {
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .information-mssg {
+                color: blue;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .error-mssg {
+                color: red;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .success-mssg {
+                color: green;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+        </style>
+
+        <script type="text/javascript" src="/scripts/input_validator.js">
+        </script>
+    </h:head>  
+
+    <h:body>  
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="60" >                 
+                <p:panel>                     
+                    <table align="center">                         
+                        <tr>                             
+                            <td>                                 
+                                <p:graphicImage url="/images/copyright.jpg" height="30"/>                             
+                            </td>                             
+                            <td>                                 
+                                <p:outputLabel value="  S3-Systems #{menuManagerBean.getCurrentYear()} All Rights Reserved" styleClass="format" style="font-weight:bold;"/>                             
+                            </td>                         
+                        </tr>                     
+                    </table>                 
+                </p:panel>
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="310" header="#{menuManagerBean.subsystemName}" collapsed="#{menuManagerBean.reportPanelCollapsed}" resizable="true" collapsible="true" effect="drop">
+                <ui:include src="/reports.xhtml"/>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="east" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+
+                <ui:include src="#{menuManagerBean.menuOfSubsystem}"/>
+
+                <body>
+                    <h:form id="menuForm">
+                        <p:panel>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <p:outputLabel value="Create Menu" styleClass="format" style="font-weight:bold;"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p:outputLabel value="#{applicationMessageBean.message.messageText}" styleClass="#{applicationMessageBean.message.messageType}"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </p:panel>
+
+                        <table border="0" align="left">
+                            <tr>
+                                <td>
+                                    <table border="0" align="left">
+                                        <tr>
+                                            <td>
+                                                <table width="99%" border="0" align="left">
+                                                    <tr>
+                                                        <td width="25%" nowrap="nowrap">
+                                                            <div align="left">
+                                                                <h:outputText escape="false" styleClass="format" value="Menu Name/Label:"/>
+                                                            </div>
+                                                        </td>
+                                                        <td width="75%">
+                                                            <div align="left">
+                                                                <p:inputText id="menuNameTxt" immediate="true" value="#{privilegeBean.appMenu.menuLabel}" size="30" styleClass="format"/>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="25%">
+                                                            <div align="right">
+                                                                <h:outputText escape="false" styleClass="format" value="Application Name: "/>
+                                                            </div>
+                                                        </td>
+                                                        <td width="75%">
+                                                            <div align="left">
+                                                                <p:selectOneMenu id="applicationCombo" immediate="true" value="#{privilegeBean.subsystem.applicationSystemID}" valueChangeListener="#{privilegeBean.applicationSystemMenuSelected}">
+                                                                    <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                                    <f:selectItems value="#{privilegeBean.applicationSystemItemList}"/>
+                                                                    <p:ajax update="subsysCombo"/>
+                                                                </p:selectOneMenu>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="25%">
+                                                            <div align="right">
+                                                                <h:outputText escape="false" styleClass="format" value="Subsystem: "/>
+                                                            </div>
+                                                        </td>
+                                                        <td width="75%">
+                                                            <div align="left">
+                                                                <p:selectOneMenu id="subsysCombo" immediate="true" value="#{privilegeBean.appMenu.subsystemID}" valueChangeListener="#{privilegeBean.subsystemMenuSelected}">
+                                                                    <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                                    <f:selectItems value="#{privilegeBean.subsystemItemList}"/>
+                                                                    <p:ajax update="menuDataTable"/>
+                                                                </p:selectOneMenu>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="25%" nowrap="nowrap">
+                                                            <div align="left">
+                                                                <h:outputText escape="false" styleClass="format" value="Approval Levels:"/>
+                                                            </div>
+                                                        </td>
+                                                        <td width="75%">
+                                                            <div align="left">
+                                                                <p:inputText id="approvedStatusTxt" immediate="true" value="#{privilegeBean.appMenu.approvedStatusID}" size="30" styleClass="format"/>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td align="left">
+                                    <p:panelGrid columns="8">
+                                        <p:commandButton value="Add Menu" ajax="false" action="#{privilegeBean.addMenu}" rendered="#{menuManagerBean.hasRWPrivilege(menuManagerBean.systemMap['NEW_PRIVLG_MENU_ITEM'])}"/>
+                                        
+                                        <p:selectOneMenu id="applicationCombo2" immediate="true" value="#{privilegeBean.applicationSystemID}">
+                                            <f:selectItem itemValue="-1" itemLabel="--Select Application--"/>
+                                            <f:selectItems value="#{privilegeBean.applicationSystemItemList}"/>
+                                            <p:ajax update="subsysCombo"/>
+                                        </p:selectOneMenu>
+                                        
+                                        <p:commandButton value="Copy To Application" ajax="false" action="#{privilegeBean.copyToSelectedApplication}" rendered="#{menuManagerBean.hasRWPrivilege(menuManagerBean.systemMap['NEW_PRIVLG_MENU_ITEM'])}"/>
+                                        
+                                        <p:commandButton value="Approve" ajax="false" action="#{privilegeBean.activatePrivilege}" rendered="#{menuManagerBean.hasRWPrivilege(menuManagerBean.systemMap['NEW_PRIVLG_MENU_ITEM'])}"/>
+                                        <p:commandButton value="Delete" ajax="false" action="#{privilegeBean.removeMenu}" rendered="#{menuManagerBean.hasRWPrivilege(menuManagerBean.systemMap['NEW_PRIVLG_MENU_ITEM'])}"/>
+                                        <p:commandButton ajax="false" value="History" action="#{privilegeBean.gotoMenuAuditTrailPage()}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['AUDIT_TRAIL_MENU_ITEM'])}"/>
+                                        <p:commandButton value="Back" ajax="false" action="#{privilegeBean.backToRolesPage}"/>
+                                        <p:commandButton ajax="false" value="Done" action="#{sessionDataReinitBean.navigateHome}"/>
+                                    </p:panelGrid>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:dataTable id="menuDataTable" styleClass="fixed-size" value="#{privilegeBean.selectedMenuList}" var="menu" paginator="true" rows="10" >
+                                        <f:facet name="header">
+                                            <h:outputText value="Menu Table"/>
+                                        </f:facet>
+
+                                        <p:column width="7%">
+                                            <f:facet name="header">
+                                                <h:outputText escape="false" value="Select"/>
+                                            </f:facet>
+                                            <p:selectBooleanCheckbox id="menuCheckBox" immediate="true" value="#{menu.selected}" valueChangeListener="#{privilegeBean.menuSelected}">
+                                                <p:ajax update=":menuForm" event="change"/>
+                                            </p:selectBooleanCheckbox>
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText escape="false" value="Menu Name"/>
+                                            </f:facet>
+                                            <h:outputText id="menuNameCol" value="#{menu.menuLabel}"/>
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText escape="false" value="Subsystem"/>
+                                            </f:facet>
+                                            <h:outputText id="subsysNameCol" value="#{menu.subsystemName}"/>
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText escape="false" value="Approval Levels"/>
+                                            </f:facet>
+                                            <h:outputText id="approvedStatusCol" value="#{menu.approvedStatusID}"/>
+                                        </p:column>
+
+                                        <p:column width="7%">
+                                            <f:facet name="header">
+                                                <h:outputText escape="false" value="Approved"/>
+                                            </f:facet>
+                                            <p:selectBooleanCheckbox value="#{menu.activated}" disabled="true"/>
+                                        </p:column>
+
+                                    </p:dataTable>
+                                </td>
+                            </tr>
+                        </table>
+                    </h:form>
+                </body>
+
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
+
+</html>

@@ -1,0 +1,151 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<f:view contentType="text/html" locale="#{userManagerBean.locale}" >
+    <h:head>  
+        <style type="text/css">
+            .fixed-size {
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .information-mssg {
+                color: blue;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .error-mssg {
+                color: red;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .success-mssg {
+                color: green;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+        </style>
+
+        <script type="text/javascript" src="/scripts/input_validator.js">
+        </script>
+    </h:head>  
+
+    <h:body>  
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="50" >
+                <p:panel>                     
+                    <table align="center">                         
+                        <tr>                             
+                            <td>                                 
+                                <p:graphicImage url="/images/copyright.jpg" height="30"/>                             
+                            </td>                             
+                            <td>                                 
+                                <p:outputLabel value="  S3-Systems #{menuManagerBean.getCurrentYear()} All Rights Reserved" styleClass="format" style="font-weight:bold;"/>                             
+                            </td>                         
+                        </tr>                     
+                    </table>                 
+                </p:panel>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="310" header="#{menuManagerBean.subsystemName}" collapsed="#{menuManagerBean.reportPanelCollapsed}" resizable="true" collapsible="true" effect="drop">
+                <ui:include src="/reports.xhtml"/>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="east" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+
+                <ui:include src="#{menuManagerBean.menuOfSubsystem}"/>
+
+                <h:form>
+                    <div style="float: right;">
+                        <p:commandLink update="@all" action="#{userManagerBean.changeLocale('en')}" ajax="false" >
+                            EN
+                        </p:commandLink>
+                        <p:outputLabel value="  " />
+                        <p:commandLink update="@all" action="#{userManagerBean.changeLocale('fr')}" ajax="false" style=" margin-left: 20px;" >
+                            FR
+                        </p:commandLink>
+                    </div>
+                </h:form>
+                
+                <br/>
+
+                <h:form id="academicGradeForm">
+                    <p:panel>
+                        <table>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="Academic Grades Setup" styleClass="format" style="font-weight:bold;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="#{applicationMessageBean.message.messageText}" styleClass="#{applicationMessageBean.message.messageType}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </p:panel>
+
+                    <table border="0" align="left">
+                        <tr>
+                            <td>
+                                <p:panelGrid columns="1">
+                                    <p:dataTable scrollable="true" id="dataTable" widgetVar="academicGradeList" value="#{academicGradePointBean.academicGradePointList}" var="academicGradeVar" paginator="true" rows="10" >
+                                        <f:facet name="header">
+                                            <p:outputLabel value="Grade Setup Table"/>
+                                        </f:facet>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <p:outputLabel escape="false" value="Grade"/>
+                                            </f:facet>
+                                            <p:outputLabel id="gradeTabCol" value="#{academicGradeVar.gradeCharacter}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <p:outputLabel escape="false" value="Description"/>
+                                            </f:facet>
+                                            <p:outputLabel id="descriptionTabCol" value="#{academicGradeVar.gradeTitle}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <p:outputLabel escape="false" value="Lower Limit"/>
+                                            </f:facet>
+                                            <p:outputLabel id="lowerLimitTabCol" value="#{academicGradeVar.lowerLimit}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <p:outputLabel escape="false" value="Upper Limit"/>
+                                            </f:facet>
+                                            <p:outputLabel id="upperLimitTabCol" value="#{academicGradeVar.upperLimit}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <p:outputLabel escape="false" value="Grade Point"/>
+                                            </f:facet>
+                                            <p:outputLabel id="gradePointTabCol" value="#{academicGradeVar.gradePoint}"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:panelGrid>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+
+            </p:layoutUnit>
+        </p:layout>
+    </h:body> 
+</f:view>
+</html>

@@ -1,0 +1,256 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:head>  
+        <style type="text/css">
+            .fixed-size {
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .information-mssg {
+                color: blue;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .error-mssg {
+                color: red;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .success-mssg {
+                color: green;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+        </style>
+
+        <script type="text/javascript" src="/scripts/input_validator.js">
+        </script>
+    </h:head>  
+
+    <h:body>  
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="50" >
+                <p:panel>                     
+                    <table align="center">                         
+                        <tr>                             
+                            <td>                                 
+                                <p:graphicImage url="/images/copyright.jpg" height="30"/>                             
+                            </td>                             
+                            <td>                                 
+                                <p:outputLabel value="  S3-Systems #{menuManagerBean.getCurrentYear()} All Rights Reserved" styleClass="format" style="font-weight:bold;"/>                             
+                            </td>                         
+                        </tr>                     
+                    </table>                 
+                </p:panel>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="310" header="#{menuManagerBean.subsystemName}" collapsed="#{menuManagerBean.reportPanelCollapsed}" resizable="true" collapsible="true" effect="drop">
+                <ui:include src="/reports.xhtml"/>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="east" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+
+                <ui:include src="#{menuManagerBean.menuOfSubsystem}"/>
+
+
+                <h:form id="studentSelectedOptionForm">
+                    <p:panel>
+                        <table>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="Student Selected Option" styleClass="format" style="font-weight:bold;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="#{applicationMessageBean.message.messageText}" styleClass="#{applicationMessageBean.message.messageType}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </p:panel>
+
+                    <table border="0" align="left">
+                        <tr>
+                            <td valign="top">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <table border="0" cellspacing="1" cellpadding="1">
+                                            </table>
+                                        </td>
+                                        <td>
+                                            <p:fieldset legend="Score Summary" toggleable="true" toggleSpeed="500" style="margin-bottom:20px">
+                                                <table>
+                                                    <tr>
+                                                        <td nowrap="nowrap" width="25">
+                                                            <div align="right">
+                                                                <p:outputLabel escape="false" styleClass="format" value="Correct Submissions"/>
+                                                            </div>
+                                                        </td>
+                                                        <td width="75">
+                                                            <div align="left">
+                                                                <p:inputText id="correctSubCountTxt" immediate="true" styleClass="format" value="#{studentSelectedOptionBean.correctOptionCount}"/>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td nowrap="nowrap" width="25">
+                                                            <div align="right">
+                                                                <p:outputLabel escape="false" styleClass="format" value="Incorrect Submissions"/>
+                                                            </div>
+                                                        </td>
+                                                        <td width="75">
+                                                            <div align="left">
+                                                                <p:inputText id="inCorrectSubCountTxt" immediate="true" styleClass="format" value="#{studentSelectedOptionBean.wrongOptionCount}"/>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td nowrap="nowrap" width="25">
+                                                            <div align="right">
+                                                                <p:outputLabel escape="false" styleClass="format" value="Total Submissions"/>
+                                                            </div>
+                                                        </td>
+                                                        <td width="75">
+                                                            <div align="left">
+                                                                <p:inputText id="submissionCountTxt" immediate="true" styleClass="format" value="#{studentSelectedOptionBean.totalOptionCount}"/>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td nowrap="nowrap" width="25">
+                                                            <div align="right">
+                                                                <p:outputLabel escape="false" styleClass="format" value="Total No of Questions"/>
+                                                            </div>
+                                                        </td>
+                                                        <td width="75">
+                                                            <div align="left">
+                                                                <p:inputText id="questionCountTxt" immediate="true" styleClass="format" value="#{studentSelectedOptionBean.totalNumberOfQuestions}"/>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td nowrap="nowrap" width="25">
+                                                            <div align="right">
+                                                                <p:outputLabel escape="false" styleClass="format" value="%tage Score"/>
+                                                            </div>
+                                                        </td>
+                                                        <td width="75">
+                                                            <div align="left">
+                                                                <p:inputText id="percentScoreTxt" immediate="true" styleClass="format" value="#{studentSelectedOptionBean.percentScore}"/>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </p:fieldset>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p:panelGrid columns="3">
+                                    <h:panelGroup>
+                                        <p:outputLabel escape="false" styleClass="format" value="Student Number"/>
+                                        <p:inputText id="studentNoTxt" immediate="true" styleClass="format" value="#{studentSelectedOptionBean.studentSelectedOption.studentNumber}"/>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup>
+                                        <p:outputLabel escape="false" styleClass="format" value="Exam Paper Title"/>
+                                        <p:selectOneMenu id="examPaperTitleCombo" immediate="true" styleClass="format" value="#{studentSelectedOptionBean.studentSelectedOption.examPaperID}">
+                                            <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                            <f:selectItems value="#{examPaperBean.examPaperItemList}"/>
+                                            <p:ajax update="examPaperTitleCombo"/>
+                                        </p:selectOneMenu>
+                                    </h:panelGroup>
+
+                                    <p:commandButton  value="Search" action="#{studentSelectedOptionBean.searchStudentSelectedOption}" styleClass="button"/>
+                                </p:panelGrid>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p:dataTable scrollable="true" id="dataTable" widgetVar="studentSelectedOptionList" value="#{studentSelectedOptionBean.studentSelectedOptionList}" var="studentSelectedOptionVar" paginator="true" rows="10" >
+                                    <f:facet name="header">
+                                        <p:outputLabel value="Data Table"/>
+                                    </f:facet>
+                                    
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="Select"/>
+                                        </f:facet>
+                                        <p:selectBooleanCheckbox id="studentSelectedOptionChkBx" immediate="true" value="#{studentSelectedOptionVar.selected}" valueChangeListener="#{studentSelectedOptionBean.studentSelectedOptionSelected}">
+                                            <p:ajax update="studentSelectedOptionForm"/>
+                                        </p:selectBooleanCheckbox>
+                                    </p:column>
+                                    
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="Option Letter"/>
+                                        </f:facet>
+                                        <p:outputLabel id="optionLetterTabCol" value="#{studentSelectedOptionVar.optionLetter}"/>
+                                    </p:column>
+                                    
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="Option Text"/>
+                                        </f:facet>
+                                        <p:outputLabel id="optionTextTabCol" value="#{studentSelectedOptionVar.optionText}"/>
+                                    </p:column>
+                                    
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="Question Number"/>
+                                        </f:facet>
+                                        <p:outputLabel id="questionNumberTabCol" value="#{studentSelectedOptionVar.questionNumber}"/>
+                                    </p:column>
+                                    
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="Question Statement"/>
+                                        </f:facet>
+                                        <p:outputLabel id="questionStatementTabCol" value="#{studentSelectedOptionVar.questionStatement}"/>
+                                    </p:column>
+                                    
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="Answer"/>
+                                        </f:facet>
+                                        <p:outputLabel id="answerTabCol" value="#{studentSelectedOptionVar.answer}"/>
+                                    </p:column>
+                                    
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="Number Of Points"/>
+                                        </f:facet>
+                                        <p:outputLabel id="numberOfPointsTabCol" value="#{studentSelectedOptionVar.numberOfPoints}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+
+            </p:layoutUnit>
+        </p:layout>
+    </h:body> 
+
+</html>

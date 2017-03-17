@@ -1,0 +1,234 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:head>  
+        <style type="text/css">
+            .fixed-size {
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .information-mssg {
+                color: blue;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .error-mssg {
+                color: red;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .success-mssg {
+                color: green;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+        </style>
+
+        <script type="text/javascript" src="/scripts/input_validator.js">
+        </script>
+    </h:head>  
+
+    <h:body>  
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="50" >
+                <p:panel>                     
+                    <table align="center">                         
+                        <tr>                             
+                            <td>                                 
+                                <p:graphicImage url="/images/copyright.jpg" height="30"/>                             
+                            </td>                             
+                            <td>                                 
+                                <p:outputLabel value="  S3-Systems #{menuManagerBean.getCurrentYear()} All Rights Reserved" styleClass="format" style="font-weight:bold;"/>                             
+                            </td>                         
+                        </tr>                     
+                    </table>                 
+                </p:panel>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="310" header="#{menuManagerBean.subsystemName}" collapsed="#{menuManagerBean.reportPanelCollapsed}" resizable="true" collapsible="true" effect="drop">
+                <ui:include src="/reports.xhtml"/>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="east" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+
+                <ui:include src="#{menuManagerBean.menuOfSubsystem}"/>
+
+
+                <h:form id="facultyForm">
+                    <p:panel>
+                        <table>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="Student Sponsor Information" styleClass="format" style="font-weight:bold;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="#{applicationMessageBean.message.messageText}" styleClass="#{applicationMessageBean.message.messageType}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </p:panel>
+
+                    <table border="0" align="left">
+                        <tr>
+                            <td valign="top">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <table border="0" cellspacing="1" cellpadding="1">
+                                                <tr>
+                                                    <td nowrap="nowrap" width="25">
+                                                        <div align="right">
+                                                            <p:outputLabel escape="false" styleClass="format" value="Sponsor's Name"/>
+                                                        </div>
+                                                    </td>
+                                                    <td nowrap="nowrap" width="75">
+                                                        <div align="left">
+                                                            <p:inputText id="sponsorNameTxt" immediate="true" styleClass="format" value="#{studentBean.student.sponsorName}"/>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td nowrap="nowrap" width="25">
+                                                        <div align="right">
+                                                            <p:outputLabel escape="false" styleClass="format" value="Relationship to Student"/>
+                                                        </div>
+                                                    </td>
+                                                    <td nowrap="nowrap" width="75">
+                                                        <div align="left">
+                                                            <p:selectOneMenu id="sponsorReltnCombo" immediate="true" styleClass="format" value="#{studentBean.student.sponsorRelationshipID}" valueChangeListener="#{studentBean.relationshipItemSelected}">
+                                                                <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                                <f:selectItems value="#{relationshipTypeBean.relationshipTypeItemList}"/>
+                                                                <p:ajax update="sponsorReltnCombo"/>
+                                                            </p:selectOneMenu>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <p:fieldset legend="Sponsor's Address" toggleable="true" toggleSpeed="500" style="margin-bottom:20px">
+                                                <table border="0" cellspacing="1" cellpadding="1">
+                                                    <tr>
+                                                        <td nowrap="nowrap" width="25">
+                                                            <div align="right">
+                                                                <p:outputLabel escape="false" styleClass="format" value="Sponsor's Country"/>
+                                                            </div>
+                                                        </td>
+                                                        <td nowrap="nowrap" width="75">
+                                                            <div align="left">
+                                                                <p:selectOneMenu id="sponsorCountryDescCombo" immediate="true" styleClass="format" value="#{studentBean.student.sponsorCountryID}" valueChangeListener="#{studentBean.sponsorCountryItemSelected}">
+                                                                    <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                                    <f:selectItems value="#{addressManagerBean.countryItemList}"/>
+                                                                    <p:ajax update="sponsorStateCombo"/>
+                                                                </p:selectOneMenu>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td nowrap="nowrap" width="25">
+                                                            <div align="right">
+                                                                <p:outputLabel escape="false" styleClass="format" value="Sponsor's State"/>
+                                                            </div>
+                                                        </td>
+                                                        <td nowrap="nowrap" width="75">
+                                                            <div align="left">
+                                                                <p:selectOneMenu id="sponsorStateCombo" immediate="true" styleClass="format" value="#{studentBean.student.sponsorStateCode}" valueChangeListener="#{studentBean.sponsorStateItemSelected}">
+                                                                    <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                                    <f:selectItems value="#{addressManagerBean.selectedStateItemList3}"/>
+                                                                    <p:ajax update="sponsorCityCombo"/>
+                                                                </p:selectOneMenu>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td nowrap="nowrap" width="25">
+                                                            <div align="right">
+                                                                <p:outputLabel escape="false" styleClass="format" value="Sponsor's City"/>
+                                                            </div>
+                                                        </td>
+                                                        <td nowrap="nowrap" width="75">
+                                                            <div align="left">
+                                                                <p:selectOneMenu id="sponsorCityCombo" immediate="true" styleClass="format" value="#{studentBean.student.sponsorCityID}">
+                                                                    <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                                    <f:selectItems value="#{addressManagerBean.selectedCityItemList3}"/>
+                                                                    <p:ajax update="sponsorCityCombo"/>
+                                                                </p:selectOneMenu>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td nowrap="nowrap" width="25">
+                                                            <div align="right">
+                                                                <p:outputLabel escape="false" styleClass="format" value="Sponsor's Street Address"/>
+                                                            </div>
+                                                        </td>
+                                                        <td nowrap="nowrap" width="75">
+                                                            <div align="left">
+                                                                <p:inputTextarea id="sponsorStreetAddressTxt" immediate="true" value="#{studentBean.student.sponsorStreetAddress}" rows="2" cols="50"/>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </p:fieldset>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <table  width="800px" border="0" cellspacing="1" cellpadding="1">
+                                                <tr>
+                                                    <td nowrap="nowrap" width="25">
+                                                        <div align="right">
+                                                            <p:outputLabel escape="false" styleClass="format" value="Sponsor's Phone"/>
+                                                        </div>
+                                                    </td>
+                                                    <td nowrap="nowrap" width="75">
+                                                        <div align="left">
+                                                            <p:inputText id="sponsorPhoneTxt" immediate="true" styleClass="format" value="#{studentBean.student.sponsorPhoneNumber}"/>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td nowrap="nowrap" width="25">
+                                                        <div align="right">
+                                                            <p:outputLabel escape="false" styleClass="format" value="Sponsor's Email"/>
+                                                        </div>
+                                                    </td>
+                                                    <td nowrap="nowrap" width="75">
+                                                        <div align="left">
+                                                            <p:inputText id="sponsorEmailTxt" immediate="true" styleClass="format" value="#{studentBean.student.sponsorEmailAddress}"/>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+
+            </p:layoutUnit>
+        </p:layout>
+    </h:body> 
+
+</html>

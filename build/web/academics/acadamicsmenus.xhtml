@@ -1,0 +1,105 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"   
+      xmlns:p="http://primefaces.org/ui"> 
+
+    <p:toolbar styleClass="">
+        <f:facet name="left">
+            <p:graphicImage url="/images/logo.png" height="40"/>
+        </f:facet>
+
+        <f:facet name="right">
+            <h:form>
+                <p:megaMenu>
+                    <p:submenu label="Setup" icon="ui-icon-check">
+                        <p:column>
+                            <p:submenu label="Academic Setup">
+                                <p:menuitem value="Schools/Institutions" url="/academics/setup/institutesetup.jsf" />
+                                <p:menuitem value="Faculties/Colleges" url="/academics/setup/faculty.jsf" />
+                                <p:menuitem value="Academic Departments" url="/academics/setup/acadadepartment.jsf" />
+                                <p:menuitem value="School Tiers" url="/academics/setup/schooltiertype.jsf" />
+                                <p:menuitem value="Academic Courses" url="/academics/setup/acadacourse.jsf" />
+                                <p:menuitem value="Subjects of Study" url="/academics/setup/subjectofstudy.jsf" />
+                                <p:menuitem value="Academic Sessions" url="/academics/setup/academicsession.jsf" />
+                                <p:menuitem value="Academic Semester" url="/academics/setup/academicsemester.jsf" />
+                                <p:menuitem value="Test Types" url="/academics/setup/testtype.jsf" />
+                                <p:menuitem value="Academic Timetable" url="/academics/setup/academictimetable.jsf" />
+                                <p:menuitem value="Academic Class of Degree" url="/academics/setup/classofdegree.jsf" />
+                                <p:menuitem value="Grading" url="/academics/setup/academicgrade.jsf" />
+                            </p:submenu>
+                        </p:column>
+                    </p:submenu>
+
+                    <p:submenu label="Examinations Setup" icon="ui-icon-document">
+
+                        <p:column>
+                            <p:submenu label="Examinations Setups">
+                                <p:menuitem value="Exam Paper" url="/academics/exams/exampaper.jsf" />
+                                <p:menuitem value="Examination Questions" url="/academics/exams/examquestion.jsf" />
+                                <p:menuitem value="Student OBJ Submissions" url="/academics/exams/studentselectedoption.jsf" />
+                                <p:menuitem value="Student Essay Submissions" url="/academics/exams/studentessaysubmission.jsf" />
+                            </p:submenu>
+                        </p:column>
+
+                    </p:submenu>
+
+                    <p:submenu label="Student Affairs" icon="ui-icon-pencil">
+                        <p:column>
+                            <p:submenu label="Student Affairs">
+                                <p:menuitem value="Students" url="/academics/setup/student.jsf" />
+                                <p:menuitem value="Academic History" url="/academics/setup/academichistory.jsf" />
+                                <p:menuitem value="Student's Course Selection" url="academics/studenteffects/studentcourse.jsf" />
+                                <p:menuitem value="Student's Timetable" url="academics/studenteffects/studenttimetable.jsf" />
+                                <p:menuitem value="Student's Score Entry" url="/academics/setup/studentsubjectscoreentry.jsf" />
+                                <p:menuitem value="Student's Subject Score" url="academics/studenteffects/studentsubjectscore.jsf" />
+                                <p:menuitem value="Student Results" url="/academics/setup/studentresult.jsf" />
+                                <p:menuitem value="Student's Individual Result" url="academics/studenteffects/studentresult.jsf" />
+                            </p:submenu>
+                        </p:column>
+                    </p:submenu>
+
+                    <p:submenu label="Online Class" icon="ui-icon-contact">
+                        <p:column>
+                            <p:submenu label="Staff Record">
+                                <p:menuitem value="Online Class Forum" url="/academics/onlineclass/onlineforum.jsf" />
+                                <p:menuitem value="Forum Thread" url="/academics/onlineclass/forumthread.jsf" />
+                                <p:menuitem value="Thread Responses" url="/academics/onlineclass/threadresponse.jsf" />
+                            </p:submenu>
+                        </p:column>
+                    </p:submenu>
+
+                    <p:submenu label="Academic Staff Affairs" icon="ui-icon-contact">
+                        <p:column>
+                            <p:submenu label="Staff Setup">
+                                <p:menuitem value="Academic Responsibilities" url="/academics/setup/academicresponsibilities.jsf" />
+                                <p:menuitem value="Staff Individual Responsibilities" url="/academics/setup/staffresponsibility.jsf" />
+                                <p:menuitem value="Create/View Staff" url="/academics/setup/academicstaff.jsf" />
+                            </p:submenu>
+                        </p:column>
+                    </p:submenu>
+                    
+                    <p:submenu label="Security" icon="ui-icon-contact">
+                        <p:column>
+                            <p:submenu label="My Credentials">
+                                <p:menuitem value="Change Password" url="/security/changepassword.jsf" />
+                            </p:submenu>
+                            
+                            <p:submenu label="New Entities">
+                                <p:menuitem value="New User Account" url="/security/createuser.jsf" />
+                                <p:menuitem value="New Roles Names" url="/security/createrole.jsf" />
+                                <p:menuitem value="New Menu" url="/security/createmenu.jsf" />
+                                <p:menuitem value="New Subsystem" url="/security/createsubsystem.jsf" />
+                                <p:menuitem value="New System Roles" url="/security/roles.jsf" />
+                            </p:submenu>
+                            <p:submenu label="Logout">
+                                <p:menuitem value="Logout User" action="#{userManagerBean.logOutUser}"/>
+                            </p:submenu>
+                        </p:column>
+                    </p:submenu>
+
+                </p:megaMenu>
+            </h:form>
+        </f:facet>
+
+    </p:toolbar>  
+</html>  

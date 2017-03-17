@@ -1,0 +1,308 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+
+    <h:head>
+        <style type="text/css"> 
+            .fixed-size {
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .information-mssg {
+                color: blue;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .error-mssg {
+                color: red;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .success-mssg {
+                color: green;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+        </style>
+
+        <script type="text/javascript" src="/scripts/input_validator.js">
+        </script>
+    </h:head>
+
+    <h:body>
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="50">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="310" header="#{menuManagerBean.subsystemName}" collapsed="#{menuManagerBean.reportPanelCollapsed}" resizable="true" collapsible="true" effect="drop">
+                <ui:include src="/reports.xhtml"/>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="east" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+
+                <ui:include src="#{menuManagerBean.menuOfSubsystem}"/>
+
+                <h:form id="userAccountForm">
+                    <p:panel>
+                        <table>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="Manage User Account" styleClass="format" style="font-weight:bold;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="#{applicationMessageBean.message.messageText}" styleClass="#{applicationMessageBean.message.messageType}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </p:panel>
+
+                    <table  width="65%">
+                        <tr>
+                            <td>
+                                <table  cols="2" border="0" cellspacing="1" cellpadding="1">
+                                    <tr>
+                                        <td>
+                                            <div align="right">
+                                                <h:outputText value="User Name"/>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div align="left">
+                                                <p:inputText id="logonId" size="20" value="#{userManagerBean.account.userName}" styleClass="format"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <div align="right">
+                                                <h:outputText value="Email Address"/>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div align="left">
+                                                <p:inputText id="emailAddrId" size="20" value="#{userManagerBean.account.emailAddress}"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td nowrap="nowrap" width="25%">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Branch:"/>
+                                            </div>
+                                        </td>
+                                        <td width="75%">
+                                            <div align="left">
+                                                <p:selectOneMenu id="branchCombo1" immediate="true" valueChangeListener="#{userManagerBean.branchMenuSelected}" value="#{userManagerBean.account.branchID}">
+                                                    <f:selectItem itemLabel="--Select One--" itemValue="-1"/>
+                                                    <f:selectItems value="#{branchBean.branchItemList}"/>
+                                                    <p:ajax update="departmentCombo"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td nowrap="nowrap" width="25%">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Department:"/>
+                                            </div>
+                                        </td>
+                                        <td width="75%">
+                                            <div align="left">
+                                                <p:selectOneMenu id="departmentCombo" immediate="true" valueChangeListener="#{userManagerBean.departmentMenuSelected}" value="#{userManagerBean.account.departmentID}">
+                                                    <f:selectItem itemLabel="--Select One--" itemValue="-1"/>
+                                                    <f:selectItems value="#{departmentBean.departmentItemList}"/>
+                                                    <p:ajax update="departmentCombo"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <div align="right">
+                                                <p:selectBooleanCheckbox value="#{userManagerBean.account.alternativeLoginEnabled}" valueChangeListener="#{userManagerBean.alternateAuthenticationControlSelected}">
+                                                    <p:ajax event="change"/>
+                                                </p:selectBooleanCheckbox>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div align="left">
+                                                <h:outputText value="Enable Authentication on Active Directory"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p:fieldset legend="User Roles" toggleable="true" toggleSpeed="500" style="margin-bottom:20px">
+                                    <table width="50%">
+                                        <tr>
+                                            <td nowrap="nowrap">
+                                                <div align="right">
+                                                    <h:outputText value="Role" styleClass="format"/>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div align="left">
+                                                    <p:panelGrid columns="3">
+                                                        <p:selectOneMenu id="roleMenu" immediate="true" valueChangeListener="#{privilegeBean.roleMenuSelected}" value="#{userManagerBean.account.roleID}">
+                                                            <f:selectItem itemValue="" itemLabel="--Select One--"/>
+                                                            <f:selectItems value="#{privilegeBean.roleItemList}"/>
+                                                            <p:ajax update="roleTable"/>
+                                                        </p:selectOneMenu>
+
+                                                        <p:commandButton ajax="false" value="Add" action="#{userManagerBean.addRoleToUserAccount}"/>
+                                                        <p:commandButton ajax="false" value="Delete" action="#{userManagerBean.removeRoleToUserAccount}"/>
+                                                    </p:panelGrid>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <br/>
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <p:dataTable id="roleTable" styleClass="fixed-size" value="#{userManagerBean.account.roleList}" var="role" paginator="true" rows="10" >
+                                                    <f:facet name="header">
+                                                        <h:outputText value="User Roles"/>
+                                                    </f:facet>
+
+                                                    <p:column width="20%">
+                                                        <f:facet name="header">
+                                                            <h:outputText escape="false" value="Select"/>
+                                                        </f:facet>
+                                                        <p:selectBooleanCheckbox id="uSelectBox" value="#{role.selected}" valueChangeListener="#{userManagerBean.userRoleSelected}">
+                                                            <p:ajax update=":userAccountForm"/>
+                                                        </p:selectBooleanCheckbox>
+                                                    </p:column>
+
+                                                    <p:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText escape="false" value="Role Name"/>
+                                                        </f:facet>
+                                                        <h:outputText id="uPrivilegeDescId" value="#{role.roleName}"/>
+                                                    </p:column>
+                                                </p:dataTable>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </p:fieldset>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div align="left">
+                                    <p:panelGrid columns="7">
+                                        <p:commandButton ajax="false" value="Search" action="#{userManagerBean.findUserAccountByCriteria}"/>
+                                        <p:commandButton ajax="false" value="Save/Update" rendered="#{menuManagerBean.hasRWPrivilege(menuManagerBean.systemMap['MANAGE_USR_ACCT_MENU_ITEM'])}" action="#{userManagerBean.modifyUserAccount}"/>
+                                        <p:commandButton ajax="false" value="Approve" rendered="#{menuManagerBean.hasRWPrivilege(menuManagerBean.systemMap['MANAGE_USR_ACCT_MENU_ITEM'])}" action="#{userManagerBean.activate}"/>
+                                        <p:commandButton ajax="false" value="Clear" action="#{userManagerBean.clearAccountCache}"/>
+                                        <p:commandButton ajax="false" value="Re-load" action="#{userManagerBean.reloadUserAccountList()}"/>
+                                        <p:commandButton ajax="false" value="History" action="#{userManagerBean.gotoAuditTrailPage()}" rendered="#{menuManagerBean.hasPrivilege(menuManagerBean.systemMap['AUDIT_TRAIL_MENU_ITEM'])}"/>
+                                        <p:commandButton ajax="false" value="Done" action="#{sessionDataReinitBean.navigateHome}"/>
+                                    </p:panelGrid>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <br/>
+                    <table>
+                        <tr>
+                            <td>
+                                <div align="center">
+                                    <p:panelGrid columns="1">
+                                        <p:dataTable id="userAcctTable" styleClass="fixed-size" value="#{userManagerBean.userAccountList}" var="userRecord" paginator="true" rows="10">
+                                            <f:facet name="header">
+                                                <h:outputText value="User Account Table"/>
+                                            </f:facet>
+
+                                            <p:column width="5%">
+                                                <f:facet name="header">
+                                                    <h:outputText escape="false" value="Select"/>
+                                                </f:facet>
+                                                <p:selectBooleanCheckbox value="#{userRecord.selected}" valueChangeListener="#{userManagerBean.userAccountSelected}">
+                                                    <p:ajax update=":userAccountForm"/>
+                                                </p:selectBooleanCheckbox>
+                                            </p:column>
+
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText escape="false" value="User Name"/>
+                                                </f:facet>
+                                                <h:outputText value="#{userRecord.userName}"/>
+                                            </p:column>
+
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText escape="false" value="Email Address"/>
+                                                </f:facet>
+                                                <h:outputText value="#{userRecord.emailAddress}"/>
+                                            </p:column>
+                                            
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText escape="false" value="Branch"/>
+                                                </f:facet>
+                                                <h:outputText value="#{userRecord.branchName}"/>
+                                            </p:column>
+                                            
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText escape="false" value="Department"/>
+                                                </f:facet>
+                                                <h:outputText value="#{userRecord.departmentName}"/>
+                                            </p:column>
+
+                                            <p:column  width="10%">
+                                                <f:facet name="header">
+                                                    <h:outputText escape="false" value="Activated"/>
+                                                </f:facet>
+                                                <p:selectBooleanCheckbox value="#{userRecord.activated}" disabled="true"/>
+                                            </p:column>
+
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText escape="false" value="Auth on AD"/>
+                                                </f:facet>
+                                                <p:selectBooleanCheckbox value="#{userRecord.alternativeLoginEnabled}" disabled="true"/>
+                                            </p:column>
+
+                                        </p:dataTable>
+                                    </p:panelGrid>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+
+            </p:layoutUnit>
+
+        </p:layout>
+
+    </h:body>
+
+</html>

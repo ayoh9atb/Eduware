@@ -1,0 +1,143 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+
+    <h:head>
+        <style type="text/css"> 
+            .fixed-size {
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .information-mssg {
+                color: blue;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .error-mssg {
+                color: red;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .success-mssg {
+                color: green;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+        </style>
+
+        <script type="text/javascript" src="/scripts/input_validator.js">
+        </script>
+    </h:head>
+
+    <h:body>
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="50">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="310" header="#{menuManagerBean.subsystemName}" collapsed="#{menuManagerBean.reportPanelCollapsed}" resizable="true" collapsible="true" effect="drop">
+                <ui:include src="/reports.xhtml"/>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="east" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+
+                <ui:include src="#{menuManagerBean.menuOfSubsystem}"/>
+
+                <h:form id="userAccountForm">
+                    <p:panel>
+                        <table>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="Switch User Role" styleClass="format" style="font-weight:bold;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="#{applicationMessageBean.message.messageText}" styleClass="#{applicationMessageBean.message.messageType}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </p:panel>
+                    <table>
+                        <tr>
+                            <td>
+                                <p:fieldset legend="User Roles" toggleable="true" toggleSpeed="500" style="margin-bottom:20px">
+                                    <table width="50%">
+                                        <tr>
+                                            <td nowrap="nowrap">
+                                                <div align="right">
+                                                    <h:outputText value="Role" styleClass="format"/>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div align="left">
+                                                    <p:panelGrid columns="2">
+                                                        <p:selectOneMenu id="roleMenu" disabled="true" valueChangeListener="#{privilegeBean.roleMenuSelected}" value="#{userManagerBean.userAccount.role.roleID}">
+                                                            <f:selectItem itemValue="" itemLabel="--Select One--"/>
+                                                            <f:selectItems value="#{privilegeBean.roleItemList}"/>
+                                                            <p:ajax update="roleTable"/>
+                                                        </p:selectOneMenu>
+
+                                                        <p:commandButton ajax="false" value="Switch To Selected Role" action="#{userManagerBean.switchUserAccountToRole}"/>
+                                                    </p:panelGrid>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <br/>
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <p:dataTable id="roleTable" styleClass="fixed-size" value="#{userManagerBean.userAccount.roleList}" var="role" paginator="true" rows="10" >
+                                                    <f:facet name="header">
+                                                        <h:outputText value="User Roles"/>
+                                                    </f:facet>
+
+                                                    <p:column width="20%">
+                                                        <f:facet name="header">
+                                                            <h:outputText escape="false" value="Select"/>
+                                                        </f:facet>
+                                                        <p:selectBooleanCheckbox id="uSelectBox" value="#{role.selected}" valueChangeListener="#{userManagerBean.myRoleSelected}">
+                                                            <p:ajax update=":userAccountForm"/>
+                                                        </p:selectBooleanCheckbox>
+                                                    </p:column>
+
+                                                    <p:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText escape="false" value="Role Name"/>
+                                                        </f:facet>
+                                                        <h:outputText id="uPrivilegeDescId" value="#{role.roleName}"/>
+                                                    </p:column>
+                                                </p:dataTable>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </p:fieldset>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+
+            </p:layoutUnit>
+
+        </p:layout>
+
+    </h:body>
+
+</html>

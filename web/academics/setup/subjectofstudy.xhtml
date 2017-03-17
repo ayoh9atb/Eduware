@@ -1,0 +1,225 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<f:view contentType="text/html" locale="#{userManagerBean.locale}" >
+    <h:head>  
+        <style type="text/css">
+            .fixed-size {
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .information-mssg {
+                color: blue;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .error-mssg {
+                color: red;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .success-mssg {
+                color: green;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+        </style>
+
+        <script type="text/javascript" src="/scripts/input_validator.js">
+        </script>
+    </h:head>  
+
+    <h:body>  
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="50" >
+                <p:panel>                     
+                    <table align="center">                         
+                        <tr>                             
+                            <td>                                 
+                                <p:graphicImage url="/images/copyright.jpg" height="30"/>                             
+                            </td>                             
+                            <td>                                 
+                                <p:outputLabel value="#{msg.S3_SYSTEMS_SOFTWARE_NIG_ALL_RIGHTS_RESERVED}" styleClass="format" style="font-weight:bold;"/>                             
+                            </td>                         
+                        </tr>                     
+                    </table>                 
+                </p:panel>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="310" header="#{menuManagerBean.subsystemName}" collapsed="#{menuManagerBean.reportPanelCollapsed}" resizable="true" collapsible="true" effect="drop">
+                <ui:include src="/reports.xhtml"/>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="east" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+
+                <ui:include src="#{menuManagerBean.menuOfSubsystem}"/>
+                
+                <h:form>
+                    <div style="float: right;">
+                        <p:commandLink update="@all" action="#{userManagerBean.changeLocale('en')}" ajax="false" >
+                            EN
+                        </p:commandLink>
+                        <p:outputLabel value="  " />
+                        <p:commandLink update="@all" action="#{userManagerBean.changeLocale('fr')}" ajax="false" style=" margin-left: 20px;" >
+                            FR
+                        </p:commandLink>
+                    </div>
+                </h:form>
+                
+                <br/>
+
+                <h:form id="subjectOfStudyForm">
+                    <p:panel>
+                        <table>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="#{msg.SUBJECT_OF_STUDY_SETUP}" styleClass="format" style="font-weight:bold;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="#{applicationMessageBean.message.messageText}" styleClass="#{applicationMessageBean.message.messageType}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </p:panel>
+
+                    <table border="0" align="left">
+                        <tr>
+                            <td width="99%" valign="top">
+                                <table  width="99%" border="0" cellspacing="1" cellpadding="1">
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="#{msg.SUBJECT_TITLE}"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:inputText required="true" requiredMessage="Subject Title is Required" id="subjectTitleTxt" immediate="true" styleClass="format" value="#{subjectOfStudyBean.subjectOfStudy.subjectTitle}"/>
+                                                <p:message style=" width: 400px; font-size: 10pt;" for="subjectTitleTxt" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="#{msg.FACULTY_NAME}"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:selectOneMenu id="facultyNameCombo" immediate="true" styleClass="format" value="#{subjectOfStudyBean.subjectOfStudy.facultyID}" valueChangeListener="#{subjectOfStudyBean.facultyItemSelected}">
+                                                    <f:selectItem itemValue="-1" itemLabel="--#{msg.SELECT_ONE}--"/>
+                                                    <f:selectItems value="#{facultyBean.facultyItemList}"/>
+                                                    <p:ajax update="departmentNameCombo"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="#{msg.DEPARTMENT_NAME}"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:selectOneMenu id="departmentNameCombo" immediate="true" styleClass="format" value="#{subjectOfStudyBean.subjectOfStudy.departmentID}" valueChangeListener="#{subjectOfStudyBean.departmentItemSelected}">
+                                                    <f:selectItem itemValue="-1" itemLabel="--#{msg.SELECT_ONE}--"/>
+                                                    <f:selectItems value="#{academicDepartmentBean.selectedAcademicDepartmentItemList}"/>
+                                                    <p:ajax update="departmentNameCombo"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="#{msg.NUMBER_OF_LEVELS}"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:inputText validatorMessage="The Required Range is 1 - 6" required="true" requiredMessage="Number of Level is Required" id="numberOfLevelsTxt" styleClass="format" value="#{subjectOfStudyBean.subjectOfStudy.numberOfLevels}">
+                                                    <f:validateLongRange minimum="1" maximum="6" />
+                                                </p:inputText>
+                                                <p:message style=" width: 400px; font-size: 10pt;" for="numberOfLevelsTxt" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p:panelGrid columns="2">
+                                    <p:commandButton ajax="false" value="#{msg.ADD}" action="#{subjectOfStudyBean.addSubjectOfStudy}"/>
+                                    <p:commandButton value="#{msg.SAVE}" action="#{subjectOfStudyBean.saveSubjectOfStudyList}" immediate="true"/>
+                                </p:panelGrid>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p:dataTable paginatorPosition="bottom" scrollable="true" id="dataTable" widgetVar="subjectOfStudyList" value="#{subjectOfStudyBean.subjectOfStudyList}" var="subjectOfStudyVar" paginator="true" rows="10" >
+                                    <f:facet name="header">
+                                        <p:outputLabel value="#{msg.DATA_TABLE}"/>
+                                    </f:facet>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="#{msg.SELECT}"/>
+                                        </f:facet>
+                                        <p:selectBooleanCheckbox id="subjectOfStudyChkBx" immediate="true" value="#{subjectOfStudyVar.selected}" valueChangeListener="#{subjectOfStudyBean.subjectOfStudySelected}">
+                                            <p:ajax update="subjectOfStudyForm"/>
+                                        </p:selectBooleanCheckbox>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="#{msg.SUBJECT_TITLE}"/>
+                                        </f:facet>
+                                        <p:outputLabel id="subjectTitleTabCol" value="#{subjectOfStudyVar.subjectTitle}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="#{msg.FACULTY_NAME}"/>
+                                        </f:facet>
+                                        <p:outputLabel id="facultyNameTabCol" value="#{subjectOfStudyVar.facultyName}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="#{msg.DEPARTMENT_NAME}"/>
+                                        </f:facet>
+                                        <p:outputLabel id="departmentNameTabCol" value="#{subjectOfStudyVar.departmentName}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="#{msg.NUMBER_OF_LEVELS}"/>
+                                        </f:facet>
+                                        <p:outputLabel id="numberOfLevelsTabCol" value="#{subjectOfStudyVar.numberOfLevels}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+
+            </p:layoutUnit>
+        </p:layout>
+    </h:body> 
+</f:view>
+</html>

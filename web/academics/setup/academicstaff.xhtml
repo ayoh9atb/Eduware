@@ -1,0 +1,257 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:head>  
+        <style type="text/css">
+            .fixed-size {
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .information-mssg {
+                color: blue;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .error-mssg {
+                color: red;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .success-mssg {
+                color: green;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+        </style>
+
+        <script type="text/javascript" src="/scripts/input_validator.js">
+        </script>
+    </h:head>  
+
+    <h:body>  
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="50" >
+                <p:panel>                     
+                    <table align="center">                         
+                        <tr>                             
+                            <td>                                 
+                                <p:graphicImage url="/images/copyright.jpg" height="30"/>                             
+                            </td>                             
+                            <td>                                 
+                                <p:outputLabel value="  S3-Systems #{menuManagerBean.getCurrentYear()} All Rights Reserved" styleClass="format" style="font-weight:bold;"/>                             
+                            </td>                         
+                        </tr>                     
+                    </table>                 
+                </p:panel>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="310" header="#{menuManagerBean.subsystemName}" collapsed="#{menuManagerBean.reportPanelCollapsed}" resizable="true" collapsible="true" effect="drop">
+                <ui:include src="/reports.xhtml"/>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="east" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+
+                <ui:include src="#{menuManagerBean.menuOfSubsystem}"/>
+
+
+                <h:form id="acadastaffform">
+                    <p:panel>
+                        <table>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="Academic Staff Setup" styleClass="format" style="font-weight:bold;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="#{applicationMessageBean.message.messageText}" styleClass="#{applicationMessageBean.message.messageType}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </p:panel>
+
+                    <table border="0" align="left">
+                        <tr>
+                            <td valign="top">
+                                <table border="0" cellspacing="1" cellpadding="1">
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Staff Name"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:inputText id="staffNameTxt" immediate="true" size="45" value="#{academicStaffBean.staff.staffName}"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Username"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:inputText id="userNameTxt" immediate="true" size="25" value="#{academicStaffBean.staff.username}"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Password"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <h:inputSecret id="passwordTxt" immediate="true" size="25" value="#{academicStaffBean.staff.password}"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Confirm Password"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <h:inputSecret id="confrmdPasswordTxt" immediate="true" size="25" value="#{academicStaffBean.staff.confirmedPassword}"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" value="Email Address"  styleClass="format"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:inputText onblur="" id="emailAddrId" immediate="true" size="27" value="#{academicStaffBean.staff.emailAddress}" styleClass="format"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Faculty"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:selectOneMenu id="facultyCombo" immediate="true" styleClass="format" value="#{academicStaffBean.staff.facultyID}" valueChangeListener="#{academicStaffBean.facultyItemSelected}">
+                                                    <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                    <f:selectItems value="#{facultyBean.facultyItemList}"/>
+                                                    <p:ajax update="departmentCombo"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Department"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:selectOneMenu id="departmentCombo" immediate="true" styleClass="format" value="#{academicStaffBean.staff.departmentID}" valueChangeListener="#{academicStaffBean.departmentItemSelected}">
+                                                    <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                    <f:selectItems value="#{academicDepartmentBean.selectedAcademicDepartmentItemList}"/>
+                                                    <p:ajax update="departmentCombo"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p:panelGrid columns="3">
+                                    <p:commandButton ajax="false" value="Add" action="#{academicStaffBean.addStaff}" styleClass="button"/>
+                                    <p:commandButton ajax="false" value="Save/Update" action="#{academicStaffBean.saveStaff}" styleClass="button"/>
+                                    <p:commandButton ajax="false" value="Search" action="#{academicStaffBean.searchForStaff}" styleClass="button"/>
+                                </p:panelGrid>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <p:dataTable scrollable="true" id="dataTable" widgetVar="staffTable" value="#{academicStaffBean.staffList}" var="staff" paginator="true" rows="10" >
+                                                <f:facet name="header">
+                                                    <p:outputLabel value="Staff Table"/>
+                                                </f:facet>
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="Select"/>
+                                                    </f:facet>
+                                                    <p:selectBooleanCheckbox id="staffCheckBox" disabled="true" immediate="true" value="#{cgpa.selected}" valueChangeListener="#{academicScoresBean.scoreSelected}">
+                                                        <p:ajax update="acadastaffform"/>
+                                                    </p:selectBooleanCheckbox>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="Staff Name"/>
+                                                    </f:facet>
+                                                    <p:outputLabel id="staffNameCol"  value="#{staff.staffName}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="Login"/>
+                                                    </f:facet>
+                                                    <p:outputLabel id="loginCol"  value="#{staff.username}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="Email Address"/>
+                                                    </f:facet>
+                                                    <p:outputLabel id="emailAddressCol"  value="#{staff.emailAddress}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="Faculty"/>
+                                                    </f:facet>
+                                                    <p:outputLabel id="staffFacultyCol"  value="#{staff.facultyDesc}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="Department"/>
+                                                    </f:facet>
+                                                    <p:outputLabel id="staffDeptCol"  value="#{staff.departmentDesc}"/>
+                                                </p:column>
+                                            </p:dataTable>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+
+            </p:layoutUnit>
+        </p:layout>
+    </h:body> 
+
+</html>

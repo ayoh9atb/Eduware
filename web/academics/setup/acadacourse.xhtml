@@ -1,0 +1,287 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<f:view contentType="text/html" locale="#{userManagerBean.locale}" >
+    <h:head>  
+        <style type="text/css">
+            .fixed-size {
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .information-mssg {
+                color: blue;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .error-mssg {
+                color: red;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .success-mssg {
+                color: green;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+        </style>
+
+        <script type="text/javascript" src="/scripts/input_validator.js">
+        </script>
+    </h:head>  
+
+    <h:body>  
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="50" >
+                <p:panel>                     
+                    <table align="center">                         
+                        <tr>                             
+                            <td>                                 
+                                <p:graphicImage url="/images/copyright.jpg" height="30"/>                             
+                            </td>                             
+                            <td>                                 
+                                <p:outputLabel value="  S3-Systems #{menuManagerBean.getCurrentYear()} All Rights Reserved" styleClass="format" style="font-weight:bold;"/>                             
+                            </td>                         
+                        </tr>                     
+                    </table>                 
+                </p:panel>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="310" header="#{menuManagerBean.subsystemName}" collapsed="#{menuManagerBean.reportPanelCollapsed}" resizable="true" collapsible="true" effect="drop">
+                <ui:include src="/reports.xhtml"/>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="east" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+
+                <ui:include src="#{menuManagerBean.menuOfSubsystem}"/>
+                
+                <h:form>
+                    <div style="float: right;">
+                        <p:commandLink update="@all" action="#{userManagerBean.changeLocale('en')}" ajax="false" >
+                            EN
+                        </p:commandLink>
+                        <p:outputLabel value="  " />
+                        <p:commandLink update="@all" action="#{userManagerBean.changeLocale('fr')}" ajax="false" style=" margin-left: 20px;" >
+                            FR
+                        </p:commandLink>
+                    </div>
+                </h:form>
+                
+                <br/>
+
+                <h:form id="academicCourseForm">
+                    <p:panel>
+                        <table>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="#{msg.ACADEMIC_COURSE_SETUP}" styleClass="format" style="font-weight:bold;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="#{applicationMessageBean.message.messageText}" styleClass="#{applicationMessageBean.message.messageType}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </p:panel>
+
+                    <table border="0" align="left">
+                        <tr>
+                            <td align="left">
+                                <table  width="99%" border="0" cellspacing="1" cellpadding="1">
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="#{msg.COURSE_CODE}"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:inputText id="courseCodeTxt" required="true" requiredMessage="Course Code is Required" styleClass="format" value="#{academicCourseBean.academicCourse.courseCode}"/>
+                                                <p:message style=" width: 400px; font-size: 10pt;" for="courseCodeTxt" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="#{msg.COURSE_TITLE}"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:inputText required="true" requiredMessage="Course Title is Required" id="courseTitleTxt" immediate="true" styleClass="format" value="#{academicCourseBean.academicCourse.courseTitle}"/>
+                                                <p:message style=" width: 400px; font-size: 10pt;" for="courseTitleTxt" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="#{msg.SUBJECT_TITLE}"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:selectOneMenu required="true" requiredMessage="Subject Title is Required" id="subjectTitleCombo" immediate="true" styleClass="format" value="#{academicCourseBean.academicCourse.subjectID}" valueChangeListener="#{academicCourseBean.subjectOfStudyItemSelected}">
+                                                    <f:selectItem itemValue="-1" itemLabel="--#{msg.SELECT_ONE}--"/>
+                                                    <f:selectItems value="#{subjectOfStudyBean.subjectOfStudyItemList}"/>
+                                                    <p:ajax update="subjectTitleCombo"/>
+                                                </p:selectOneMenu>
+                                                <p:message style=" width: 400px; font-size: 10pt;" for="subjectTitleCombo" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="#{msg.SEMESTER_TERM_TIER}"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:selectOneMenu required="true" requiredMessage="Semester Term Tier is Required" id="semesterTierCombo" immediate="true" styleClass="format" value="#{academicCourseBean.academicCourse.semesterTier}" valueChangeListener="#{academicCourseBean.semesterTierItemSelected}">
+                                                    <f:selectItem itemValue="" itemLabel="--#{msg.SELECT_ONE}--"/>
+                                                    <f:selectItems value="#{academicSessionBean.academicSemesterItemList}"/>
+                                                    <p:ajax update="semesterTierCombo"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="#{msg.LEVEL_NUMBER}"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:inputText validatorMessage="Accepted Range is Between 1 - 10" id="levelNumberTxt" immediate="true" styleClass="format" value="#{academicCourseBean.academicCourse.levelNumber}">
+                                                    <f:validateLongRange minimum="1" maximum="10" />
+                                                </p:inputText>
+                                                <p:message style=" width: 300px; font-size: 10pt;" for="levelNumberTxt" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="#{msg.CREDIT_LOAD}"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:inputText  validatorMessage="Accepted Range is Between 1 - 24" id="creditLoadTxt" immediate="true" styleClass="format" value="#{academicCourseBean.academicCourse.creditLoad}">
+                                                    <f:validateLongRange minimum="1" maximum="24" />
+                                                </p:inputText>
+                                                <p:message style=" width: 300px; font-size: 10pt;" for="creditLoadTxt" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="#{msg.COURSE_COST}"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:inputText validatorMessage="Accepted Range is Between 1 - 24"  id="courseCostTxt" immediate="true" styleClass="format" value="#{academicCourseBean.academicCourse.courseCostAmount}">
+                                                    <f:validateLongRange minimum="1" maximum="24" />
+                                                </p:inputText>
+                                                <p:message style=" width: 300px; font-size: 10pt;" for="courseCostTxt" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p:panelGrid columns="2">
+                                    <p:commandButton ajax="false" value="#{msg.ADD}" action="#{academicCourseBean.addAcademicCourse}" />
+                                    <p:commandButton value="#{msg.SAVE}" action="#{academicCourseBean.saveAcademicCourseList}" immediate="true"/>
+                                </p:panelGrid>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p:dataTable paginatorPosition="bottom" scrollable="true" id="dataTable" widgetVar="academicCourseList" value="#{academicCourseBean.academicCourseList}" var="academicCourseVar" paginator="true" rows="10" >
+                                    <f:facet name="header">
+                                        <p:outputLabel value="#{msg.ACADEMIC_COURSE_TABLE}"/>
+                                    </f:facet>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="Select"/>
+                                        </f:facet>
+                                        <p:selectBooleanCheckbox id="academicCourseChkBx" immediate="true" value="#{academicCourseVar.selected}" valueChangeListener="#{academicCourseBean.academicCourseSelected}">
+                                            <p:ajax update=":academicCourseForm"/>
+                                        </p:selectBooleanCheckbox>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="Course Code"/>
+                                        </f:facet>
+                                        <p:outputLabel id="courseCodeTabCol" value="#{academicCourseVar.courseCode}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="Course Title"/>
+                                        </f:facet>
+                                        <p:outputLabel id="courseTitleTabCol" value="#{academicCourseVar.courseTitle}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="Subject Title"/>
+                                        </f:facet>
+                                        <p:outputLabel id="subjectTitleTabCol" value="#{academicCourseVar.subjectTitle}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="Semester Tier"/>
+                                        </f:facet>
+                                        <p:outputLabel id="semesterTierTabCol" value="#{academicCourseVar.semesterTier}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="Level Number"/>
+                                        </f:facet>
+                                        <p:outputLabel id="levelNumberTabCol" value="#{academicCourseVar.levelNumber}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="Credit Load"/>
+                                        </f:facet>
+                                        <p:outputLabel id="creditLoadTabCol" value="#{academicCourseVar.creditLoad}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="Course Cost"/>
+                                        </f:facet>
+                                        <p:outputLabel id="courseCostTabCol" value="#{academicCourseVar.courseCostAmount}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+
+            </p:layoutUnit>
+        </p:layout>
+    </h:body> 
+</f:view>
+</html>

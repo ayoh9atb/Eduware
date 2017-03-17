@@ -1,0 +1,113 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">  
+
+    <h:head>  
+
+    </h:head>  
+
+    <h:body>  
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="50" >
+                
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="310" header="#{menuManagerBean.subsystemName}" collapsed="#{menuManagerBean.reportPanelCollapsed}" resizable="true" collapsible="true" effect="drop">
+                <ui:include src="reports.xhtml"/>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="east" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+                <ui:include src="menus.xhtml"/>
+
+                <div style="height:500px">
+                    <h:form>
+                        <p:growl id="msgs" showDetail="true" />
+
+                        <p:dashboard id="board" model="#{dashboardView.model}">
+                            <p:ajax event="reorder" listener="#{dashboardView.handleReorder}" update="msgs"/>
+
+                            <p:panel id="sales" header="Sales Figures">
+                                <h:outputText value="Sales Content" />
+                            </p:panel>
+
+                            <p:panel id="charts" header="Charts">
+                                <h:outputText value="Charts Content" />
+                            </p:panel>
+
+                            <p:panel id="totalOrders" header="Total Orders">
+                                <h:outputText value="Totla Orders Content" />
+                            </p:panel>
+
+                            <p:panel id="pendingOrders" header="Pending Orders">
+                                <h:outputText value="Pending Orders Content" />
+                            </p:panel>
+
+                            <p:panel id="totalCollections" header="Total Collections">
+                                <h:outputText value="Content" />
+                            </p:panel>
+
+                            <p:panel id="top10Sales" header="Top 10 Sales">
+                                <h:outputText value="Content" />
+                            </p:panel>
+
+                            <p:panel id="returnedItems" header="Returned Items">
+                                <h:outputText value="Content" />
+                            </p:panel>
+
+                            <p:panel id="stockLevels" header="Stock Levels">
+                                <h:outputText value="Content" />
+                            </p:panel>
+
+                            <p:panel id="purchaseOrders" header="Purchase Orders">
+                                <h:outputText value="Content" />
+                            </p:panel>
+
+                            <p:panel id="ageAnalysis" header="Age Analysis">
+                                <h:outputText value="Content" />
+                            </p:panel>
+
+                            <p:panel id="expiries" header="Expiries">
+                                <h:outputText value="Content" />
+                            </p:panel>
+
+                            <p:panel rendered="#{userManagerBean.userAccount.payReqApprovalID > 100}" id="reqApprovals" header="Requisition Approvals">
+                                <h:panelGroup>
+                                    <p:outputLabel value="There is/are #{userManagerBean.pendingRequisitionCount} pending requisitions..."/>
+                                    <p:commandButton ajax="false" action="#{userManagerBean.gotoReqApprovialPage}" value="View Requisition Page"/>
+                                </h:panelGroup>
+                            </p:panel>
+
+                            <p:panel id="top10Accounts" header="Top 10 Accounts">
+                                <h:outputText value="Content"  />
+                            </p:panel>
+
+                            <p:panel id="salesTeamPerf" header="Sales Team Performance">
+                                <h:outputText value="Content"  />
+                            </p:panel>
+
+                            <p:panel id="growthAnalysis" header="Growth Analysis">
+                                <h:outputText value="Content"  />
+                            </p:panel>
+                        </p:dashboard>
+
+                        <div style="clear:both" />
+                    </h:form>
+                </div>
+            </p:layoutUnit>
+
+        </p:layout>
+
+    </h:body>  
+</html>  

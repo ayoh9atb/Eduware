@@ -1,0 +1,278 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">  
+    <f:view contentType="text/html" locale="#{userManagerBean.locale}" >
+    <h:head>  
+        <style type="text/css">
+            .fixed-size {
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .information-mssg {
+                color: blue;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .error-mssg {
+                color: red;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .success-mssg {
+                color: green;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+        </style>
+
+        <script type="text/javascript" src="/scripts/input_validator.js">
+        </script>
+    </h:head>  
+
+    <h:body>  
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="60" >                 
+                <p:panel>                     
+                    <table align="center">                         
+                        <tr>                             
+                            <td>                                 
+                                <p:graphicImage url="/images/copyright.jpg" height="30"/>                             
+                            </td>                             
+                            <td>                                 
+                                <p:outputLabel value="#{msg.S3_SYSTEMS_SOFTWARE_NIG_ALL_RIGHTS_RESERVED}" styleClass="format" style="font-weight:bold;"/>                             
+                            </td>                         
+                        </tr>                     
+                    </table>                 
+                </p:panel>
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="310" header="#{menuManagerBean.subsystemName}" collapsed="#{menuManagerBean.reportPanelCollapsed}" resizable="true" collapsible="true" effect="drop">
+                <ui:include src="/reports.xhtml"/>
+            </p:layoutUnit>
+
+          <!--  <p:layoutUnit position="east" visible="false">
+
+            </p:layoutUnit>-->
+
+            <p:layoutUnit position="center">
+
+                <ui:include src="#{menuManagerBean.menuOfSubsystem}"/>
+                
+                <h:form>
+                    <div style="float: right;">
+                        <p:commandLink update="@all" action="#{userManagerBean.changeLocale('en')}" ajax="false" >
+                            EN
+                        </p:commandLink>
+                        <p:outputLabel value="  " />
+                        <p:commandLink update="@all" action="#{userManagerBean.changeLocale('fr')}" ajax="false" style=" margin-left: 20px;" >
+                            FR
+                        </p:commandLink>
+                    </div>
+                </h:form>
+                
+                <br/>
+
+                <h:form id="schoolform">
+                    <p:panel>
+                        <table>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="#{msg.ACADEMIC_INSTITUTE_SETUP}" styleClass="format" style="font-weight:bold;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="#{applicationMessageBean.message.messageText}" styleClass="#{applicationMessageBean.message.messageType}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </p:panel>
+                    
+                    
+                    <!--Global Messages for this page
+                    <p:messages globalOnly="true" style=" width: 1000px; font-size: 10pt; margin-left: 3px;" />-->
+                    
+                    <table border="0" align="left">
+                        <tr>
+                            <td width="99%" valign="top">
+                                <table width="99%" border="0" cellspacing="1" cellpadding="1">
+                                    <tr>
+                                        <td>
+                                            <table>
+                                                <tr>
+                                                    <td nowrap="nowrap" width="25%">
+                                                        <div align="right">
+                                                            <p:outputLabel for="schoolNameTxt" value="#{msg.SCHOOL_NAME} "/>
+                                                        </div>
+                                                    </td>
+                                                    <td width="75%">
+                                                        <div align="left">
+                                                            <p:inputText required="true" requiredMessage="Name of School is required" id="schoolNameTxt" value="#{academicInstituteBean.institute.schoolName}" size="30" label="Name of School" style="text-transform:uppercase;">                                         <f:converter converterId="convertToUpper"></f:converter>                                     </p:inputText>
+                                                            <p:message style=" width: 400px; font-size: 10pt; margin-left: 3px;" for="schoolNameTxt" />
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td >
+                                            <fieldset>
+                                                <legend style="font-family : Verdana,Arial,Helvetica,sans-serif; font-size : 11px;">#{msg.SCHOOL_ADDRESS}</legend>
+                                                <table>
+                                                    <tr>
+                                                        <td width="25%">
+                                                            <div align="right">
+                                                                <p:outputLabel escape="false" for="countryCombo" styleClass="format" value="#{msg.COUNTRY}:"/>
+                                                            </div>
+                                                        </td>
+                                                        <td width="75%">
+                                                            <div align="left">
+                                                                <p:selectOneMenu required="true" requiredMessage="Country is required" id="countryCombo" immediate="true" valueChangeListener="#{addressManagerBean.countryMenuSelected(vce)}" value="#{academicInstituteBean.institute.countryID}" filter="true" filterMatchMode="contains">
+                                                                    <f:selectItem itemLabel="--#{msg.SELECT_ONE}--" itemValue="-1"/>
+                                                                    <f:selectItems value="#{addressManagerBean.countryItemList}"/>
+                                                                    <p:ajax update="stateCombo"/>
+                                                                </p:selectOneMenu>
+                                                                <p:message style=" width: 400px; font-size: 10pt;" for="countryCombo" />
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td width="25%">
+                                                            <div align="right">
+                                                                <p:outputLabel escape="false" styleClass="format" value="#{msg.STATE_PROVINCE}"/>
+                                                            </div>
+                                                        </td>
+                                                        <td width="75%">
+                                                            <div align="left">
+                                                                <p:selectOneMenu required="true" requiredMessage="State/Province required" id="stateCombo" immediate="true" valueChangeListener="#{addressManagerBean.stateSelected}" value="#{academicInstituteBean.institute.stateCode}" filter="true" filterMatchMode="contains">
+                                                                    <f:selectItem itemLabel="#{msg.SELECT_ONE}" itemValue="-1"/>
+                                                                    <f:selectItems value="#{addressManagerBean.selectedStateItemList}"/>
+                                                                    <p:ajax update="cityCombo"/>
+                                                                </p:selectOneMenu>
+                                                                <p:message style=" width: 400px; font-size: 10pt;" for="stateCombo" />
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td width="25%">
+                                                            <div align="right">
+                                                                <p:outputLabel escape="false" styleClass="format" value="#{msg.CITY}"/>
+                                                            </div>
+                                                        </td>
+                                                        <td width="75%">
+                                                            <div align="left">
+                                                                <p:selectOneMenu required="true" requiredMessage="City required" id="cityCombo" immediate="true" valueChangeListener="#{addressManagerBean.citySelected}" value="#{academicInstituteBean.institute.cityID}" filter="true" filterMatchMode="contains">
+                                                                    <f:selectItem itemLabel="--#{msg.SELECT_ONE}--" itemValue="-1"/>
+                                                                    <f:selectItems value="#{addressManagerBean.selectedCityItemList}"/>
+                                                                </p:selectOneMenu>
+                                                                <p:message style=" width: 400px; font-size: 10pt;" for="cityCombo" />
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td width="25%">
+                                                            <div align="right">
+                                                                <p:outputLabel escape="false" styleClass="format" value="#{msg.ADDRESS}:"/>
+                                                            </div>
+                                                        </td>
+                                                        <td width="75%">
+                                                            <div align="left">
+                                                                <p:inputTextarea required="true" requiredMessage="Address required" id="streetAddressArea" value="#{academicInstituteBean.institute.schoolAddress}" rows="2" cols="50" style="text-transform:uppercase;"/>                                         <f:converter converterId="convertToUpper"></f:converter>                                     </p:inputTextarea>
+                                                                <p:message style=" width: 400px; font-size: 10pt;" for="streetAddressArea" />
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </fieldset>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td align="left">
+                                <p:panelGrid columns="3">
+                                    <p:commandButton value="#{msg.ADD_SCHOOL}" action="#{academicInstituteBean.addInstitute}" update="schoolform" />
+                                    <p:commandButton value="#{msg.SAVE_UPDATE}" action="#{academicInstituteBean.saveInstituteList}" />
+                                    <p:commandButton value="#{msg.RELOAD}" action="#{academicInstituteBean.loadInstitute}" />
+                                </p:panelGrid>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="3">
+                                <p:dataTable emptyMessage="#{msg.NO_RECORDS_FOUND}"  id="dataTable" widgetVar="schoolTable" styleClass="fixed-size" value="#{academicInstituteBean.instituteList}" var="school" paginator="true" rows="10" >
+                                    <f:facet name="header">
+                                        <p:outputLabel value="#{msg.SCHOOL_TABLE}"/>
+                                    </f:facet>
+
+                                    <p:column width="5%">
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="#{msg.SELECT}"/>
+                                        </f:facet>
+                                        <p:selectBooleanCheckbox id="schoolCheckBox" immediate="true" value="#{school.selected}" valueChangeListener="#{academicInstituteBean.instituteSelected}"/>
+                                    </p:column>
+
+                                    <p:column sortBy="#{school.schoolName}">
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="#{msg.SCHOOL_NAME}"/>
+                                        </f:facet>
+                                        <p:outputLabel id="schoolNameCol" value="#{school.schoolName}"/>
+                                    </p:column>
+
+                                    <p:column sortBy="#{school.country}">
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="#{msg.COUNTRY}"/>
+                                        </f:facet>
+                                        <p:outputLabel id="countryDescCol" value="#{school.country}"/>
+                                    </p:column>
+                                    
+                                    <p:column sortBy="#{school.stateDesc}">
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="#{msg.STATE}"/>
+                                        </f:facet>
+                                        <p:outputLabel id="stateDescCol" value="#{school.stateDesc}"/>
+                                    </p:column>
+                                    
+                                    <p:column sortBy="#{school.cityDesc}">
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="#{msg.CITY}"/>
+                                        </f:facet>
+                                        <p:outputLabel id="cityDescCol" value="#{school.cityDesc}"/>
+                                    </p:column>
+                                    
+                                    <p:column sortBy="#{school.schoolAddress}">
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="#{msg.ADDRESS}"/>
+                                        </f:facet>
+                                        <p:outputLabel id="schoolAddressCol" value="#{school.schoolAddress}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+            </p:layoutUnit>
+
+        </p:layout>
+
+    </h:body>  
+        </f:view>
+</html>  

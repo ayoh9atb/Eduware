@@ -1,0 +1,43 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui">
+    <p:panel>
+        <table border="0">
+            <tr>
+                <td width="40%" valign="top">
+                    <div align="right">
+                        <p:outputLabel escape="false" styleClass="format" value="PIN: "/>
+                    </div>
+                </td>
+                <td width="60%">
+                    <div align="left">
+                        <p:password placeholder="PIN" size="30" value="#{userManagerBean.userAccount.authPin}"/>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td nowrap="nowrap" width="40%">
+                    <div align="right">
+                        <h:outputText escape="false" styleClass="format" value="OTP: "/>
+                    </div>
+                </td>
+                <td width="60%">
+                    <div align="left">
+                        <p:inputText value="#{userManagerBean.userAccount.oneTimePassword}" size="30" styleClass="format" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td width="40%">
+                </td>
+                <td width="60%">
+                    <div align="left">
+                        <p:commandButton ajax="false" value="Continue" action="#{userManagerBean.authenticateUser}"/>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </p:panel>
+
+</html>

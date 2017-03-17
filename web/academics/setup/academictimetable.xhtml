@@ -1,0 +1,375 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<f:view contentType="text/html" locale="#{userManagerBean.locale}" >
+    <h:head>  
+        <style type="text/css">
+            .fixed-size {
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .information-mssg {
+                color: blue;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .error-mssg {
+                color: red;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .success-mssg {
+                color: green;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+        </style>
+
+        <script type="text/javascript" src="/scripts/input_validator.js">
+        </script>
+    </h:head>  
+
+    <h:body>  
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="50" >
+                <p:panel>                     
+                    <table align="center">                         
+                        <tr>                             
+                            <td>                                 
+                                <p:graphicImage url="/images/copyright.jpg" height="30"/>                             
+                            </td>                             
+                            <td>                                 
+                                <p:outputLabel value="#{msg.S3_SYSTEMS_SOFTWARE_NIG_ALL_RIGHTS_RESERVED}" styleClass="format" style="font-weight:bold;"/>                             
+                            </td>                         
+                        </tr>                     
+                    </table>                 
+                </p:panel>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="310" header="#{menuManagerBean.subsystemName}" collapsed="#{menuManagerBean.reportPanelCollapsed}" resizable="true" collapsible="true" effect="drop">
+                <ui:include src="/reports.xhtml"/>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="east" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+
+                <ui:include src="#{menuManagerBean.menuOfSubsystem}"/>
+
+                <h:form>
+                    <div style="float: right;">
+                        <p:commandLink update="@all" action="#{userManagerBean.changeLocale('en')}" ajax="false" >
+                            EN
+                        </p:commandLink>
+                        <p:outputLabel value="  " />
+                        <p:commandLink update="@all" action="#{userManagerBean.changeLocale('fr')}" ajax="false" style=" margin-left: 20px;" >
+                            FR
+                        </p:commandLink>
+                    </div>
+                </h:form>
+                
+                <br/>
+                
+                <h:form id="acadatimetableform">
+                    <p:panel>
+                        <table>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="#{msg.ACADEMIC_TIMETABLE_SETUP}" styleClass="format" style="font-weight:bold;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="#{applicationMessageBean.message.messageText}" styleClass="#{applicationMessageBean.message.messageType}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </p:panel>
+
+                    <table border="0" align="left">
+                        <tr>
+                            <td valign="top">
+                                <table border="0" cellspacing="1" cellpadding="1">
+                                    <tr>
+                                        <td>
+                                            <p:fieldset legend="#{msg.ADMINISTRATIVE}" toggleable="true" toggleSpeed="500" style="margin-bottom:20px">
+                                                <table border="0" cellspacing="1" cellpadding="1">
+                                                    <tr>
+                                                        <td>
+                                                            <table>
+                                                                <tr>
+                                                                    <td>
+                                                                        <div align="left">
+                                                                            <p:selectOneMenu id="facultyCombo" valueChangeListener="#{academicTimetableBean.facultyItemSelected}" immediate="true" styleClass="format" value="#{academicTimetableBean.academicTimetable.facultyID}">
+                                                                                <f:selectItem itemValue="-1" itemLabel="--#{msg.SELECT_FACULTY}--"/>
+                                                                                <f:selectItems value="#{facultyBean.facultyItemList}"/>
+                                                                                <p:ajax update="departmentCombo"/>
+                                                                            </p:selectOneMenu>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div align="left">
+                                                                            <p:selectOneMenu id="departmentCombo" immediate="true" styleClass="format" value="#{academicTimetableBean.academicTimetable.departmentID}" valueChangeListener="#{academicTimetableBean.departmentItemSelected}">
+                                                                                <f:selectItem itemValue="-1" itemLabel="--#{msg.SELECT_DEPARTMENT}--"/>
+                                                                                <f:selectItems value="#{academicDepartmentBean.selectedAcademicDepartmentItemList}"/>
+                                                                                <p:ajax update="departmentCombo"/>
+                                                                            </p:selectOneMenu>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div align="left">
+                                                                            <p:selectOneMenu id="sessionCombo" immediate="true" styleClass="format" value="#{academicTimetableBean.academicTimetable.sessionID}">
+                                                                                <f:selectItem itemValue="-1" itemLabel="--#{msg.SELECT_SESSION}--"/>
+                                                                                <f:selectItems value="#{academicSessionBean.academicSessionItemList}"/>
+                                                                                <p:ajax update="sessionCombo"/>
+                                                                            </p:selectOneMenu>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </p:fieldset>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        <table>
+                                                            <tr>
+                                                                <td>
+                                                                    <div align="right">
+                                                                        <p:outputLabel escape="false" styleClass="format" value="#{msg.COURSE_TITLE}"/>
+                                                                    </div>
+                                                                </td>
+                                                                <td width="75%">
+                                                                    <div align="left">
+                                                                        <p:selectOneMenu id="courseCombo" immediate="true" styleClass="format" value="#{academicTimetableBean.academicTimetable.courseID}">
+                                                                            <f:selectItem itemValue="-1" itemLabel="--#{msg.SELECT_ONE}--"/>
+                                                                            <f:selectItems value="#{academicCourseBean.academicCourseItemList}"/>
+                                                                            <p:ajax update="courseCombo"/>
+                                                                        </p:selectOneMenu>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <div align="right">
+                                                                        <p:outputLabel escape="false" styleClass="format" value="#{msg.DAY_OF_WEEK}"/>
+                                                                    </div>
+                                                                </td>
+                                                                <td width="75%">
+                                                                    <div align="left">
+                                                                        <p:selectOneMenu id="dayOfWeekCombo" immediate="true" styleClass="format" value="#{academicTimetableBean.academicTimetable.dayOfWeek}">
+                                                                            <f:selectItem itemValue="-1" itemLabel="--#{msg.SELECT_ONE}--"/>
+                                                                            <f:selectItem itemValue="SUN" itemLabel="SUNDAY"/>
+                                                                            <f:selectItem itemValue="MON" itemLabel="MONDAY"/>
+                                                                            <f:selectItem itemValue="TUE" itemLabel="TUESDAY"/>
+                                                                            <f:selectItem itemValue="WED" itemLabel="WEDNESDAY"/>
+                                                                            <f:selectItem itemValue="THU" itemLabel="THURSDAY"/>
+                                                                            <f:selectItem itemValue="FRI" itemLabel="FRIDAY"/>
+                                                                            <f:selectItem itemValue="SAT" itemLabel="SATURDAY"/>
+                                                                        </p:selectOneMenu>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <p:fieldset legend="#{msg.LECTURE_START_TIME}" toggleable="true" toggleSpeed="500" style="margin-bottom:20px">
+                                                            <table width="99%" border="0" cellspacing="1" cellpadding="1">
+                                                                <tr>
+                                                                    <td nowrap="nowrap">
+                                                                        <p:selectOneMenu id="startTimeHrTxt" immediate="true" valueChangeListener="#{academicTimetableBean.lectureStartHourSelected}" value="#{academicTimetableBean.academicTimetable.meetingStartTimeHour}">
+                                                                            <f:selectItem itemValue="-1" itemLabel="--#{msg.START_TIME_HOUR}--"/>
+                                                                            <f:selectItems value="#{academicTimetableBean.hourItemList}"/>
+                                                                        </p:selectOneMenu>
+                                                                        <p:message for="startTimeHrTxt"/>
+                                                                    </td>
+                                                                    <td nowrap="nowrap">
+                                                                        <p:selectOneMenu id="startTimeMinTxt" immediate="true" value="#{academicTimetableBean.academicTimetable.meetingStartTimeMinute}" valueChangeListener="#{academicTimetableBean.lectureStartMinuteSelected}">
+                                                                            <f:selectItem itemValue="-1" itemLabel="--#{msg.START_TIME_MIN}--"/>
+                                                                            <f:selectItems value="#{academicTimetableBean.minuteItemList}"/>
+                                                                        </p:selectOneMenu>
+                                                                        <p:message for="startTimeMinTxt"/>
+                                                                    </td>
+                                                                    <td nowrap="nowrap">
+                                                                        <p:selectOneMenu id="startTimeMeridiemTxt" immediate="true" value="#{academicTimetableBean.academicTimetable.meetingStartTimeMeridiem}" valueChangeListener="#{academicTimetableBean.lectureStartMeridiemSelected}">
+                                                                            <f:selectItem itemValue="-1" itemLabel="--#{msg.MERIDIEM}--"/>
+                                                                            <f:selectItems value="#{academicTimetableBean.meridiemItemList}"/>
+                                                                        </p:selectOneMenu>
+                                                                        <p:message for="startTimeMeridiemTxt"/>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </p:fieldset>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <p:fieldset legend="Lecture Stop Time" toggleable="true" toggleSpeed="500" style="margin-bottom:20px">
+                                                            <table width="99%" border="0" cellspacing="1" cellpadding="1">
+                                                                <tr>
+                                                                    <td nowrap="nowrap">
+                                                                        <p:selectOneMenu id="stopTimeHrTxt" immediate="true" valueChangeListener="#{academicTimetableBean.lectureStopHourSelected}" value="#{academicTimetableBean.academicTimetable.meetingStopTimeHour}">
+                                                                            <f:selectItem itemValue="-1" itemLabel="--#{msg.STOP_TIME_HOUR}--"/>
+                                                                            <f:selectItems value="#{academicTimetableBean.hourItemList}"/>
+                                                                        </p:selectOneMenu>
+                                                                        <p:message for="stopTimeHrTxt"/>
+                                                                    </td>
+                                                                    <td nowrap="nowrap">
+                                                                        <p:selectOneMenu id="stopTimeMinTxt" immediate="true" value="#{academicTimetableBean.academicTimetable.meetingStopTimeMinute}" valueChangeListener="#{academicTimetableBean.lectureStopMinuteSelected}">
+                                                                            <f:selectItem itemValue="-1" itemLabel="--#{msg.STOP_TIME_MIN}--"/>
+                                                                            <f:selectItems value="#{academicTimetableBean.minuteItemList}"/>
+                                                                        </p:selectOneMenu>
+                                                                        <p:message for="stopTimeMinTxt"/>
+                                                                    </td>
+                                                                    <td nowrap="nowrap">
+                                                                        <p:selectOneMenu id="stopTimeMeridiemTxt" immediate="true" value="#{academicTimetableBean.academicTimetable.meetingStopTimeMeridiem}" valueChangeListener="#{academicTimetableBean.lectureStopMeridiemSelected}">
+                                                                            <f:selectItem itemValue="-1" itemLabel="--Meridiem--"/>
+                                                                            <f:selectItems value="#{academicTimetableBean.meridiemItemList}"/>
+                                                                        </p:selectOneMenu>
+                                                                        <p:message for="stopTimeMeridiemTxt"/>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </p:fieldset>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <table cellpadding="2" cellspacing="2">
+                                                            <tr>
+                                                                <td nowrap="nowrap" width="25%">
+                                                                    <div align="right">
+                                                                        <p:outputLabel escape="false" styleClass="format" value="#{msg.LECTURE_VENUE}"/>
+                                                                    </div>
+                                                                </td>
+                                                                <td nowrap="nowrap">
+                                                                    <div align="left">
+                                                                        <p:selectOneMenu id="lectureVenueCombo" immediate="true" value="#{academicTimetableBean.academicTimetable.lectureVenueID}">
+                                                                            <f:selectItem itemValue="-1" itemLabel="--#{msg.SELECT_ONE}--"/>
+                                                                            <f:selectItems value="#{academicTimetableBean.lectureVenueItemList}"/>
+                                                                            <p:ajax update="lectureVenueCombo"/>
+                                                                        </p:selectOneMenu>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                <p:panelGrid columns="4">
+                                    <p:commandButton ajax="false" value="#{msg.ADD_ENTRY}" action="#{academicTimetableBean.addTimetableEntry}" styleClass="button"/>
+                                    <p:commandButton ajax="false" value="#{msg.SAVE_UPDATE}" action="#{academicTimetableBean.saveTimetableEntryList}" styleClass="button"/>
+                                  
+                                </p:panelGrid>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p:dataTable paginatorPosition="bottom" scrollable="true" id="dataTable" widgetVar="lectureTimeTable" value="#{academicTimetableBean.academicTimetableList}" var="timetable" paginator="true" rows="10" >
+                                    <f:facet name="header">
+                                        <p:outputLabel value="#{msg.LECTURE_TIME_TABLE}"/>
+                                    </f:facet>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="#{msg.SELECT}"/>
+                                        </f:facet>
+                                        <p:selectBooleanCheckbox id="timetableCheckBox" immediate="true" value="#{timetable.selected}" valueChangeListener="#{academicTimetableBean.timetableSelected}">
+                                            <p:ajax update=":acadatimetableform"/>
+                                        </p:selectBooleanCheckbox>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="#{msg.FACULTY}"/>
+                                        </f:facet>
+                                        <p:outputLabel id="facultyNameCol" value="#{timetable.facultyName}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="#{msg.DEPARTMENT}"/>
+                                        </f:facet>
+                                        <p:outputLabel id="departmentNameCol" value="#{timetable.departmentName}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="#{msg.ACADEMIC_SESSION}"/>
+                                        </f:facet>
+                                        <p:outputLabel id="acadaSessionNameCol" value="#{timetable.sessionPeriod}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="#{msg.COURSE_TITLE}"/>
+                                        </f:facet>
+                                        <p:outputLabel id="courseTitleCol" value="#{timetable.courseTitle}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="#{msg.DAY_OF_WEEK}"/>
+                                        </f:facet>
+                                        <p:outputLabel id="dayOfWeekCol" value="#{timetable.dayOfWeek}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="#{msg.START_TIME}"/>
+                                        </f:facet>
+                                        <p:outputLabel id="startTimeCol" value="#{timetable.startTime}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="#{msg.STOP_TIME}"/>
+                                        </f:facet>
+                                        <p:outputLabel id="stopTimeCol" value="#{timetable.endTime}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <p:outputLabel escape="false" value="#{msg.LECTURE_VENUE}"/>
+                                        </f:facet>
+                                        <p:outputLabel id="lectureVenuCol" value="#{timetable.lectureVenueDesc}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+
+            </p:layoutUnit>
+        </p:layout>
+    </h:body> 
+</f:view>
+</html>

@@ -1,0 +1,283 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:head>  
+        <style type="text/css">
+            .fixed-size {
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .information-mssg {
+                color: blue;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .error-mssg {
+                color: red;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .success-mssg {
+                color: green;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+        </style>
+
+        <script type="text/javascript" src="/scripts/input_validator.js">
+        </script>
+    </h:head>  
+
+    <h:body>  
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="50" >
+                <p:panel>                     
+                    <table align="center">                         
+                        <tr>                             
+                            <td>                                 
+                                <p:graphicImage url="/images/copyright.jpg" height="30"/>                             
+                            </td>                             
+                            <td>                                 
+                                <p:outputLabel value="  S3-Systems #{menuManagerBean.getCurrentYear()} All Rights Reserved" styleClass="format" style="font-weight:bold;"/>                             
+                            </td>                         
+                        </tr>                     
+                    </table>                 
+                </p:panel>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="310" header="#{menuManagerBean.subsystemName}" collapsed="#{menuManagerBean.reportPanelCollapsed}" resizable="true" collapsible="true" effect="drop">
+                <ui:include src="/reports.xhtml"/>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="east" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+
+                <ui:include src="#{menuManagerBean.menuOfSubsystem}"/>
+                
+                <h:form id="acadarespon">
+                    <p:panel>
+                        <table>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="Academic Responsibilities Setup" styleClass="format" style="font-weight:bold;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="#{applicationMessageBean.message.messageText}" styleClass="#{applicationMessageBean.message.messageType}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </p:panel>
+                
+                    <table border="0" align="left">
+                        <tr>
+                            <td valign="top">
+                                <table  border="0" cellspacing="1" cellpadding="1">
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Responsibility Title/Desc"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:inputText id="respDescTxt" size="25" value="#{academicResponsibilityBean.responsibility.responsibilityDesc}"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Academic Role "/>
+                                            </div>
+                                        </td>
+                                        <td width="75%">
+                                            <div align="left">
+                                                <p:selectOneMenu id="acadaRoleCombo" immediate="true" styleClass="format" value="#{academicResponsibilityBean.responsibility.academicRoleID}">
+                                                    <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                    <f:selectItems value="#{academicResponsibilityBean.roleItemList}"/>
+                                                    <p:ajax update="acadaRoleCombo"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Faculty"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:selectOneMenu id="facultyCombo" immediate="true" styleClass="format" value="#{academicResponsibilityBean.responsibility.facultyID}" valueChangeListener="#{academicResponsibilityBean.facultyItemSelected}">
+                                                    <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                    <f:selectItems value="#{facultyBean.facultyItemList}"/>
+                                                    <p:ajax update="departmentCombo"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Department"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:selectOneMenu id="departmentCombo" immediate="true" styleClass="format" value="#{academicResponsibilityBean.responsibility.departmentID}" valueChangeListener="#{academicResponsibilityBean.departmentItemSelected}">
+                                                    <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                    <f:selectItems value="#{academicDepartmentBean.selectedAcademicDepartmentItemList}"/>
+                                                    <p:ajax update="subjectOfStudyCombo"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Subject of Study"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:selectOneMenu id="subjectOfStudyCombo" immediate="true" styleClass="format" value="#{academicResponsibilityBean.responsibility.subjectOfStudyID}" valueChangeListener="#{academicResponsibilityBean.subjectItemSelected}">
+                                                    <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                    <f:selectItems value="#{subjectOfStudyBean.selectedSubjectOfStudyItemList}"/>
+                                                    <p:ajax update="subjectOfStudyCombo"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Year Of Study"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:selectOneMenu id="academicLevelCombo" immediate="true" styleClass="format" value="#{academicResponsibilityBean.responsibility.levelID}">
+                                                    <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                    <f:selectItems value="#{academicLevelBean.academicLievelItemList}"/>
+                                                    <p:ajax update="academicLevelCombo"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Course Title "/>
+                                            </div>
+                                        </td>
+                                        <td width="75%">
+                                            <div align="left">
+                                                <p:selectOneMenu id="courseCombo" immediate="true" styleClass="format" value="#{academicResponsibilityBean.responsibility.courseID}">
+                                                    <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                    <f:selectItems value="#{academicCourseBean.academicCourseItemList}"/>
+                                                    <p:ajax update="courseCombo"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p:panelGrid columns="2">
+                                    <p:commandButton ajax="false" value="Add" action="#{academicResponsibilityBean.addAcademicResponsibility}" styleClass="button"/>
+                                    <p:commandButton ajax="false" value="Save" action="#{academicResponsibilityBean.saveAcademicResponsibility}" styleClass="button"/>
+                                </p:panelGrid>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <p:dataTable scrollable="true" id="dataTable" widgetVar="acadaResponsibleTable" value="#{academicResponsibilityBean.responsibilityList}" var="resp" paginator="true" rows="10" >
+                                                <f:facet name="header">
+                                                    <p:outputLabel value="Responsibility Table"/>
+                                                </f:facet>
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="Select"/>
+                                                    </f:facet>
+                                                    <p:selectBooleanCheckbox id="respCheckBox" disabled="true" immediate="true" value="#{resp.selected}" valueChangeListener="#{academicResponsibilityBean.responsibilitySelected}">
+                                                        <p:ajax update="acadarespon"/>
+                                                    </p:selectBooleanCheckbox>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="Responsibility Desc"/>
+                                                    </f:facet>
+                                                    <p:outputLabel id="respDescCol"  value="#{resp.responsibilityDesc}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="Academic Role"/>
+                                                    </f:facet>
+                                                    <p:outputLabel id="respRoleNameCol"  value="#{resp.academicRoleName}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="Faculty"/>
+                                                    </f:facet>
+                                                    <p:outputLabel id="respFacultyCol"  value="#{resp.facultyName}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="Department"/>
+                                                    </f:facet>
+                                                    <p:outputLabel id="respDeptCol"  value="#{resp.departmentName}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="Subject of Study"/>
+                                                    </f:facet>
+                                                    <p:outputLabel id="subjOfStudyCol"  value="#{resp.subjectOfStudyName}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="Year of Study"/>
+                                                    </f:facet>
+                                                    <p:outputLabel id="yearOfStudyCol"  value="#{resp.levelDesc}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <p:outputLabel escape="false" value="Course Title"/>
+                                                    </f:facet>
+                                                    <p:outputLabel id="courseTitleCol"  value="#{resp.courseTitle}"/>
+                                                </p:column>
+                                            </p:dataTable>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+
+            </p:layoutUnit>
+        </p:layout>
+    </h:body> 
+
+</html>

@@ -1,0 +1,208 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:head>  
+        <style type="text/css">
+            .fixed-size {
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .information-mssg {
+                color: blue;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .error-mssg {
+                color: red;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .success-mssg {
+                color: green;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+        </style>
+
+        <script type="text/javascript" src="/scripts/input_validator.js">
+        </script>
+    </h:head>  
+
+    <h:body>  
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="50" >
+                <p:panel>                     
+                    <table align="center">                         
+                        <tr>                             
+                            <td>                                 
+                                <p:graphicImage url="/images/copyright.jpg" height="30"/>                             
+                            </td>                             
+                            <td>                                 
+                                <p:outputLabel value="  S3-Systems #{menuManagerBean.getCurrentYear()} All Rights Reserved" styleClass="format" style="font-weight:bold;"/>                             
+                            </td>                         
+                        </tr>                     
+                    </table>                 
+                </p:panel>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="310" header="#{menuManagerBean.subsystemName}" collapsed="#{menuManagerBean.reportPanelCollapsed}" resizable="true" collapsible="true" effect="drop">
+                <ui:include src="/reports.xhtml"/>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="east" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+
+                <ui:include src="#{menuManagerBean.menuOfSubsystem}"/>
+
+                <h:form id="examQuestionForm">
+                    <p:panel>
+                        <table>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="Exam Question Setup" styleClass="format" style="font-weight:bold;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="#{applicationMessageBean.message.messageText}" styleClass="#{applicationMessageBean.message.messageType}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </p:panel>
+
+                    <table border="0" align="left">
+                        <tr>
+                            <td width="99%" valign="top">
+                                <table  width="99%" border="0" cellspacing="1" cellpadding="1">
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Question Statement"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:inputTextarea id="questionStatementTxt" immediate="true" value="#{examQuestionBean.examQuestion.questionStatement}" rows="2" cols="50"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Exam Paper Title"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:selectOneMenu id="examPaperTitleCombo" immediate="true" styleClass="format" value="#{examQuestionBean.examQuestion.examPaperID}" valueChangeListener="#{examQuestionBean.examPaperItemSelected}">
+                                                    <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                    <f:selectItems value="#{examPaperBean.examPaperItemList}"/>
+                                                    <p:ajax update="examPaperTitleCombo"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Question Rank"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:selectOneMenu id="questionRankCombo" immediate="true" styleClass="format" value="#{examQuestionBean.examQuestion.questionRankID}" valueChangeListener="#{examQuestionBean.questionRankItemSelected}">
+                                                    <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                    <f:selectItems value="#{questionRankBean.questionRankItemList}"/>
+                                                    <p:ajax update="questionRankCombo"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h:panelGroup>
+                                    <p:commandButton ajax="false" value="Add" action="#{examQuestionBean.addExamQuestion}"/>
+                                    <p:commandButton ajax="false" value="Save/Update" action="#{examQuestionBean.saveExamQuestionList}"/>
+                                    <p:commandButton ajax="false" value="Search" action="#{examQuestionBean.searchForQuestions}"/>
+
+                                    <p:commandButton id="questionOptionBtn" value="Question Options"/>
+                                    <p:overlayPanel for="questionOptionBtn" style="height:500px" showCloseIcon="true" dismissable="false">
+                                        <ui:include src="questionoption.xhtml"/>
+                                    </p:overlayPanel>
+                                </h:panelGroup>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p:panelGrid columns="1">
+                                    <p:dataTable scrollable="true" id="examQuestionList" value="#{examQuestionBean.examQuestionList}" var="examQuestionVar" paginator="true" rows="10" >
+                                        <f:facet name="header">
+                                            <p:outputLabel value="Data Table"/>
+                                        </f:facet>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <p:outputLabel escape="false" value="Select"/>
+                                            </f:facet>
+                                            <p:selectBooleanCheckbox id="examQuestionChkBx" immediate="true" value="#{examQuestionVar.selected}" valueChangeListener="#{examQuestionBean.examQuestionSelected}">
+                                                <p:ajax update="examQuestionForm,questionOptionForm"/>
+                                            </p:selectBooleanCheckbox>
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <p:outputLabel escape="false" value="Question Number"/>
+                                            </f:facet>
+                                            <p:outputLabel id="questionNumberTabCol" value="#{examQuestionVar.questionNumber}"/>
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <p:outputLabel escape="false" value="Question Statement"/>
+                                            </f:facet>
+                                            <p:outputLabel id="questionStatementTabCol" value="#{examQuestionVar.questionStatement}"/>
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <p:outputLabel escape="false" value="Exam Paper Title"/>
+                                            </f:facet>
+                                            <p:outputLabel id="examPaperTitleTabCol" value="#{examQuestionVar.examPaperTitle}"/>
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <p:outputLabel escape="false" value="Question Rank"/>
+                                            </f:facet>
+                                            <p:outputLabel id="questionRankTabCol" value="#{examQuestionVar.questionRankDesc}"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:panelGrid>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+
+            </p:layoutUnit>
+        </p:layout>
+    </h:body> 
+
+</html>

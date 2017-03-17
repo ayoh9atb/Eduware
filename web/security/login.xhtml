@@ -1,0 +1,150 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:head> 
+        <style type="text/css">
+            .ui-layout, .ui-layout-doc, .ui-layout-unit, .ui-layout-wrap, .ui-layout-bd, .ui-layout-hd{
+                border: none;
+            }
+
+            .fixed-size {
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .information-mssg {
+                color: blue;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .error-mssg {
+                color: red;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .success-mssg {
+                color: green;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+        </style>
+    </h:head>  
+
+    <h:body>  
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="center">
+
+                <h:form id="loginForm">
+                    <table style="margin-top: 10%" border="0" align="center">
+                        <tr>
+                            <td>
+                                <p:panel>
+                                    <table col="2" width="99%" border="0" cellspacing="1" cellpadding="1">
+                                        <tr>
+                                            <td>
+                                                <p:graphicImage url="/images/login_sym.png" height="65"/>
+                                            </td>
+                                            <td>
+                                                <p:graphicImage url="/images/s3_logo.png" height="100"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <div align="center">
+                                                    <p:panel style="border: 0;">
+                                                        <p:outputLabel value="#{applicationMessageBean.message.messageText}" styleClass="#{applicationMessageBean.message.messageType}"/>
+                                                    </p:panel>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">
+                                                <div class="label">
+                                                    <label for="username">Username</label>
+                                                </div>
+                                            </td>
+                                            <td align="right">
+                                                <div class="input">
+                                                    <p:inputText id="logonId" size="20" immediate="true" value="#{userManagerBean.userAccount.userName}"/>
+                                                    <p:message id = "logonIdMsg" for = "logonId" rendered = "true"/>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">
+                                                <div class="label">
+                                                    <label for="PIN">PIN+OTP:</label>
+                                                </div>
+                                            </td>
+                                            <td align="right">
+                                                <div class="input">
+                                                    <p:password placeholder="PIN+OTP" size="20" value="#{userManagerBean.userAccount.pinPlusOneTimePassword}"/>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" align="right">
+                                                <div class="buttons">
+                                                    <p:commandButton ajax="false" value="Sign In" action="#{userManagerBean.loginUser}"/>
+                                                    <p:separator/>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <div class="links">
+                                                    <p:commandLink id="forgotLoginBtn" value="Forgot My Login?"/>
+                                                    <p:overlayPanel style="height:200px" showCloseIcon="true" dismissable="false" for="forgotLoginBtn">
+                                                        <p:panel header="Login Recovery Panel">
+                                                            <table width="60%" border="0" align="center">
+                                                                <tr>
+                                                                    <td align="right" width="40%">
+                                                                        <div class="label">
+                                                                            <label for="emailAddrTxt">Email</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td align="right">
+                                                                        <div class="input">
+                                                                            <p:inputText id="emailAddrTxt" size="60" immediate="true" value="#{userManagerBean.emailAddress}" style="text-transform:uppercase;">                                         <f:converter converterId="convertToUpper"></f:converter>                                     </p:inputText>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="2" align="right">
+                                                                        <div class="buttons">
+                                                                            <p:commandButton update="loginForm:passRecoveryMssg" value="Send" action="#{userManagerBean.passwordRecovery}"/>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="2" align="right">
+                                                                        <div class="buttons">
+                                                                            <p:outputLabel id="passRecoveryMssg" value="#{userManagerBean.passwordRecoveryMssg}"/>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </p:panel>
+                                                    </p:overlayPanel>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </p:panel>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+            </p:layoutUnit>
+
+        </p:layout>
+
+    </h:body>  
+</html>  

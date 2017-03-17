@@ -1,0 +1,252 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:head>  
+        <style type="text/css">
+            .fixed-size {
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .information-mssg {
+                color: blue;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .error-mssg {
+                color: red;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+
+            .success-mssg {
+                color: green;
+                font: 15px Helvetica;
+                font-style: italic;
+            }
+        </style>
+
+        <script type="text/javascript" src="/scripts/input_validator.js">
+        </script>
+    </h:head>    
+
+    <h:body>  
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="60" >
+                <p:panel>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <p:graphicImage url="/images/copyright.jpg" height="30"/>
+                            </td>
+                            <td>
+                                <p:outputLabel value="  S3-Systems #{menuManagerBean.getCurrentYear()} All Rights Reserved" styleClass="format" style="font-weight:bold;"/>
+                            </td>
+                        </tr>
+                    </table>
+                </p:panel>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="310" header="#{menuManagerBean.subsystemName}" collapsed="#{menuManagerBean.reportPanelCollapsed}" resizable="true" collapsible="true" effect="drop">
+                <ui:include src="/reports.xhtml"/>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="east" visible="false">
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+                <ui:include src="#{menuManagerBean.menuOfSubsystem}"/>
+
+                <h:form id="menuForm">
+                    <p:panel>
+                        <table>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="Roles" styleClass="format" style="font-weight:bold;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="#{applicationMessageBean.message.messageText}" styleClass="#{applicationMessageBean.message.messageType}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </p:panel>
+
+                    <table>
+                        <tr>
+                            <td width="50%">
+                                <table align="left">
+                                    <tr>
+                                        <td>
+                                            <table cellpadding="1" cellspacing="1" align="left">
+                                                <tr>
+                                                    <td>
+                                                        <p:panelGrid columns="2">
+                                                            <h:outputText escape="false" styleClass="format" value="Application: "/>
+                                                            <p:selectOneMenu id="applicationCombo" immediate="true" value="#{privilegeBean.subsystem.applicationSystemID}" valueChangeListener="#{privilegeBean.applicationSystemMenuSelected}">
+                                                                <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                                <f:selectItems value="#{privilegeBean.applicationSystemItemList}"/>
+                                                                <p:ajax update="subsystemNameCombo"/>
+                                                            </p:selectOneMenu>
+                                                        </p:panelGrid>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td nowrap="nowrap">
+                                                        <p:panelGrid columns="4">
+                                                            <p:commandButton ajax="false" value="Reload Privileges" action="#{privilegeBean.loadMenuList}"/>
+                                                            <p:commandButton ajax="false" value="Clear Selections" action="#{privilegeBean.clearSelections}"/>
+
+                                                            <h:outputText escape="false" styleClass="format" value="Subsystem: "/>
+                                                            <p:selectOneMenu id="subsystemNameCombo" immediate="true" value="#{privilegeBean.subsystemMenuID}" valueChangeListener="#{privilegeBean.subsystemMenuSelected}">
+                                                                <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                                <f:selectItems value="#{privilegeBean.subsystemItemList}"/>
+                                                                <p:ajax update="menuForm"/>
+                                                            </p:selectOneMenu>
+                                                        </p:panelGrid>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td width="99%" valign="top">
+                                                        <p:dataTable id="privilegeTable" styleClass="fixed-size" value="#{privilegeBean.selectedMenuList}" var="menu" paginator="true" rows="10">
+                                                            <f:facet name="header">
+                                                                <h:outputText value="Privileges"/>
+                                                            </f:facet>
+                                                            <p:column width="10%">
+                                                                <f:facet name="header">
+                                                                    <h:outputText escape="false" value="Select"/>
+                                                                </f:facet>
+                                                                <p:selectBooleanCheckbox id="menuCheckBox" immediate="true" value="#{menu.selected}" valueChangeListener="#{privilegeBean.menuSelected}">
+                                                                    <p:ajax update=":menuForm" event="change"/>
+                                                                </p:selectBooleanCheckbox>
+                                                            </p:column>
+
+                                                            <p:column>
+                                                                <f:facet name="header">
+                                                                    <h:outputText escape="false" value="Menu Name"/>
+                                                                </f:facet>
+                                                                <h:outputText id="menuNameCol" value="#{menu.menuLabel}"/>
+                                                            </p:column>
+
+                                                            <p:column>
+                                                                <f:facet name="header">
+                                                                    <h:outputText escape="false" value="Subsystem"/>
+                                                                </f:facet>
+                                                                <h:outputText id="subsysNameCol" value="#{menu.subsystemName}"/>
+                                                            </p:column>
+
+                                                            <p:column>
+                                                                <f:facet name="header">
+                                                                    <h:outputText escape="false" value="Active"/>
+                                                                </f:facet>
+                                                                <p:selectBooleanCheckbox id="activatedCol" value="#{menu.activated}" disabled="true"/>
+                                                            </p:column>
+
+                                                            <p:column>
+                                                                <f:facet name="header">
+                                                                    <p:commandButton ajax="false" value="Read Only >>" action="#{privilegeBean.selectAllAsReadOnlyPrivileges}"/>
+                                                                </f:facet>
+                                                                <p:selectBooleanCheckbox id="readonlyRoleItemBox" immediate="true" value="#{menu.readOnlyRoleItem}" valueChangeListener="#{privilegeBean.readonlyPrivilegeSelected}">
+                                                                    <p:ajax update=":menuForm" event="change"/>
+                                                                </p:selectBooleanCheckbox>
+                                                            </p:column>
+
+                                                            <p:column>
+                                                                <f:facet name="header">
+                                                                    <p:commandButton ajax="false" value="Read/Write >>" action="#{privilegeBean.selectAllAsReadWritePrivileges}"/>
+                                                                </f:facet>
+                                                                <p:selectBooleanCheckbox id="readwriteRoleItemBox" immediate="true" value="#{menu.readWriteRoleItem}" valueChangeListener="#{privilegeBean.readwritePrivilegeSelected}">
+                                                                    <p:ajax update=":menuForm" event="change"/>
+                                                                </p:selectBooleanCheckbox>
+                                                            </p:column>
+                                                        </p:dataTable>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td width="50%">
+                                <table>
+                                    <tr>
+                                        <td nowrap="nowrap">
+                                            <p:panelGrid columns="5">
+                                                <p:selectOneMenu id="reqApprovalMenu" immediate="true" value="#{privilegeBean.role.payReqApprovalID}" styleClass="format">
+                                                    <f:selectItem itemValue="" itemLabel="--Approval Level--"/>
+                                                    <f:selectItems value="#{actionStageBean.payReqStepItemList}"/>
+                                                </p:selectOneMenu>
+
+                                                <p:selectOneMenu id="roleNameCombo" immediate="true" value="#{privilegeBean.role.roleID}" valueChangeListener="#{privilegeBean.roleSelectedForUserPrivCreate}">
+                                                    <f:selectItem itemValue="-1" itemLabel="--Role Name--"/>
+                                                    <f:selectItems value="#{privilegeBean.roleItemList}"/>
+                                                    <p:ajax update="menuForm"/>
+                                                </p:selectOneMenu>
+
+                                                <p:commandButton ajax="false" value="Create/Update" action="#{privilegeBean.saveUserPrivilegeList}"/>
+                                                <p:commandButton ajax="false" value="Drop All" action="#{privilegeBean.removeAllUserPrivileges}"/>
+                                                <p:commandButton ajax="false" value="Done" action="#{sessionDataReinitBean.navigateHome}"/>
+                                            </p:panelGrid>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="99%" valign="top">
+                                            <p:dataTable id="userPrivilgeTable" value="#{privilegeBean.selectedRolePrivilegeList}" var="privilege" paginator="true" rows="10" >
+                                                <f:facet name="header">
+                                                    <h:outputText value="User Privileges"/>
+                                                </f:facet>
+
+                                                <p:column width="10%">
+                                                    <f:facet name="header">
+                                                        <h:outputText escape="false" value="Select"/>
+                                                    </f:facet>
+                                                    <p:selectBooleanCheckbox id="uSelectBox" immediate="true" value="#{privilege.selected}"/>
+                                                </p:column>
+
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText escape="false" value="Privilege"/>
+                                                    </f:facet>
+                                                    <h:outputText id="uPrivilegeDescId" value="#{privilege.privilegeName}"/>
+                                                </p:column>
+
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText escape="false" value="Access Type"/>
+                                                    </f:facet>
+                                                    <h:outputText id="uPrivAccessTypId" value="#{privilege.accessType}"/>
+                                                </p:column>
+
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText escape="false" value=""/>
+                                                    </f:facet>
+                                                    <p:commandButton ajax="false" value="Drop" actionListener="#{privilegeBean.removeSelectedUserPrivileges}"/>
+                                                </p:column>
+                                            </p:dataTable>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
+
+</html>

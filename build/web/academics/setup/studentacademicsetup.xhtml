@@ -1,0 +1,145 @@
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <table border="0" align="left">
+        <tr>
+            <td valign="top">
+                <table border="0" cellspacing="1" cellpadding="1">
+                    <tr>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td nowrap="nowrap" width="25">
+                                        <div align="right">
+                                            <p:outputLabel escape="false" styleClass="format" value="Faculty"/>
+                                        </div>
+                                    </td>
+                                    <td nowrap="nowrap" width="75">
+                                        <div align="left">
+                                            <p:selectOneMenu id="facultyCombo" immediate="true" styleClass="format" value="#{studentBean.student.facultyID}" valueChangeListener="#{studentBean.facultyItemSelected}">
+                                                <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                <f:selectItems value="#{facultyBean.facultyItemList}"/>
+                                                <p:ajax update="departmentCombo"/>
+                                            </p:selectOneMenu>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td nowrap="nowrap" width="25">
+                                        <div align="right">
+                                            <p:outputLabel escape="false" styleClass="format" value="Department"/>
+                                        </div>
+                                    </td>
+                                    <td nowrap="nowrap" width="75">
+                                        <div align="left">
+                                            <p:selectOneMenu id="departmentCombo" immediate="true" styleClass="format" value="#{studentBean.student.departmentID}" valueChangeListener="#{studentBean.departmentItemSelected}">
+                                                <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                <f:selectItems value="#{academicDepartmentBean.selectedAcademicDepartmentItemList}"/>
+                                                <p:ajax update="subjectOfStudyCombo"/>
+                                            </p:selectOneMenu>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td nowrap="nowrap" width="25">
+                                        <div align="right">
+                                            <p:outputLabel escape="false" styleClass="format" value="Subject of Study"/>
+                                        </div>
+                                    </td>
+                                    <td nowrap="nowrap" width="75">
+                                        <div align="left">
+                                            <p:selectOneMenu id="subjectOfStudyCombo" immediate="true" styleClass="format" value="#{studentBean.student.subjectOfStudyID}" valueChangeListener="#{studentBean.subjectItemSelected}">
+                                                <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                <f:selectItems value="#{subjectOfStudyBean.selectedSubjectOfStudyItemList}"/>
+                                                <p:ajax update="subjectOfStudyCombo"/>
+                                            </p:selectOneMenu>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td nowrap="nowrap" width="25">
+                                        <div align="right">
+                                            <p:outputLabel escape="false" styleClass="format" value="Study Mode"/>
+                                        </div>
+                                    </td>
+                                    <td nowrap="nowrap" width="75">
+                                        <div align="left">
+                                            <p:selectOneMenu id="studyModeCombo" immediate="true" styleClass="format" value="#{studentBean.student.admissionType}">
+                                                <f:selectItems value="#{studentBean.admissionTypeItemList}"/>
+                                                <p:ajax update="studyModeCombo"/>
+                                            </p:selectOneMenu>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td nowrap="nowrap" width="25">
+                                        <div align="right">
+                                            <p:outputLabel escape="false" styleClass="format" value="Year Of Study"/>
+                                        </div>
+                                    </td>
+                                    <td nowrap="nowrap" width="75">
+                                        <div align="left">
+                                            <p:selectOneMenu id="academicLevelCombo" immediate="true" styleClass="format" value="#{studentBean.student.yearOfStudy}">
+                                                <f:selectItem itemValue="-1" itemLabel="--Select One--"/>
+                                                <f:selectItems value="#{academicLevelBean.academicLievelItemList}"/>
+                                                <p:ajax update="academicLevelCombo"/>
+                                            </p:selectOneMenu>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p:fieldset legend=">Login Detail" toggleable="true" toggleSpeed="500" style="margin-bottom:20px">
+                                <table>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Username"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <p:inputText id="userNameTxt" immediate="true" size="25" value="#{studentBean.student.username}"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Password"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <h:inputSecret id="passwordTxt" immediate="true" size="25" value="#{studentBean.student.password}"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" width="25">
+                                            <div align="right">
+                                                <p:outputLabel escape="false" styleClass="format" value="Confirm Password"/>
+                                            </div>
+                                        </td>
+                                        <td nowrap="nowrap" width="75">
+                                            <div align="left">
+                                                <h:inputSecret id="confrmdPasswordTxt" immediate="true" size="25" value="#{studentBean.student.confirmedPassword}"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </p:fieldset>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+</html>
